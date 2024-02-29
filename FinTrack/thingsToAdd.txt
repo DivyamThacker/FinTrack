@@ -1,0 +1,86 @@
+﻿Do something about title of the page still showing,
+Change shortcuts ctrl k + ctrl C, ctrl k + ctrl U
+do something about the navigation items in every page
+try other types of collectionviews
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+<SearchBar
+                x:Name="searchBar"
+                Placeholder="Hi user, click here to search..."
+                SearchCommand="{Binding SearchCommand}"
+                SearchCommandParameter="{Binding Source={x:Reference searchBar}, Path=Text}"
+                VerticalOptions="Center" />
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+<!--<VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" 
+              Background="{DynamicResource Blue}" WidthRequest="90" HorizontalOptions="Start" Spacing="10">-->
+                <!--<ImageButton  x:Name="OverviewBtn"  HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="0, 200, 0 ,0" Clicked="NavigationBtnClicked">
+
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xf0e4;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Overview" HorizontalTextAlignment="Center" FontSize="12"/>
+
+            <ImageButton x:Name="TransactionsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Clicked="NavigationBtnClicked">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xf0ec;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Transactions" HorizontalTextAlignment="Center" FontSize="12"/>
+
+            <ImageButton x:Name="AccountsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xf0f2;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Accounts" HorizontalTextAlignment="Center" FontSize="12"/>
+
+            <ImageButton x:Name="BudgetBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xf155;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Budget" HorizontalTextAlignment="Center" FontSize="12"/>
+
+            <ImageButton x:Name="GoalsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xe816;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Goals" HorizontalTextAlignment="Center" FontSize="12"/>
+
+            <ImageButton x:Name="SettingsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons"
+                         Glyph="&#xe80a;"
+                         Color="{DynamicResource LightBlue}"
+                         Size="25"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="Settings" HorizontalTextAlignment="Center" FontSize="12"/>-->
+
+        <!--</VerticalStackLayout>-->
+
+            
+        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+    <BlazorWebView.RootComponents>
+        <RootComponent Selector="#app" ComponentType="{x:Type components:Sidebar}" />
+    </BlazorWebView.RootComponents>
+</BlazorWebView>
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

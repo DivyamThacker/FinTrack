@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:FinTrack.Components.ChildComponents"
+             x:Class="FinTrack.Mvvm.Views.OverviewPage"
+             Title="Title"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+
+    <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
+
+    <!--Start Navigation-->
+        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" 
+              Background="{DynamicResource Blue}" WidthRequest="90" HorizontalOptions="Start" Spacing="10">
+            <ListView ItemsSource="{Binding NavigationItems}" Margin="0,200,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <ImageButton Command="{Binding NavigationBtnCommand}" CommandParameter="{Binding Text}"  Style="{StaticResource NavigationButton}">
+                                    <ImageButton.Source>
+                                        <FontImageSource   FontFamily="Icons" Glyph="{Binding Glyph}" Color="{DynamicResource LightBlue}"
+                         Size="25" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                                <Label  Style="{StaticResource NavigationLabel}" Text="{Binding Text}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+        <!--end Navigation-->
+        
+        <Frame CornerRadius="20" Padding="10" BackgroundColor="{DynamicResource Blue}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" Margin="0,0,40,0">
+            <Grid ColumnDefinitions="0.5*, 6.5*, 2*">
+                <ImageButton x:Name="SearchBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="Icons" Glyph="&#xe800;"
+                         Color="{DynamicResource LightBlue}" Size="20"/>
+                    </ImageButton.Source>
+                </ImageButton>
+                <Entry Placeholder="Hi user, click here to search... " VerticalTextAlignment="Center"  Background="Transparent"
+                       Grid.Column="1" />
+                
+
+                <HorizontalStackLayout Grid.Column="2" Spacing="20" Margin="100, 0, 0, 0">
+                    <ImageButton x:Name="NotificationBtn" HeightRequest="20"  BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe80b;"
+                         Color="{DynamicResource LightBlue}" Size="20"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+
+                    <ImageButton x:Name="ProfileBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe805;"
+                         Color="{DynamicResource LightBlue}" Size="20"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <Label Text="username" VerticalTextAlignment="Center"/>
+                    <ImageButton x:Name="OptionsBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="-15, 0,0,0">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xf142;"
+                         Color="{DynamicResource LightBlue}" Size="20"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+                    </Grid>
+          </Frame>
+
+
+    <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"
+    ColumnDefinitions="1*,1*,1*" RowDefinitions="1*,1*,1*,1*,1*,1*,1*" RowSpacing="25" ColumnSpacing="25" Margin="20, 20, 40, 20">
+            <Label Text="OVERVIEW" FontSize="20" FontAttributes="Bold" TextColor="White" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" Grid.Row="0" />
+            <HorizontalStackLayout Grid.Column="2" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <Button Text="Last Week" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
+                <Button Text="Last Month" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
+            </HorizontalStackLayout>
+
+            <Frame BackgroundColor="Pink" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
+                <Label Text="1" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="3" Grid.Column="0" Grid.RowSpan="4">
+                <Label Text="2" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+                <Label Text="3" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2">
+                <Label Text="4" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="5" Grid.Column="1" Grid.RowSpan="2">
+                <Label Text="5" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
+                <Label Text="6" FontSize="20" TextColor="Black"/>
+            </Frame>
+            <Frame BackgroundColor="Pink" Grid.Row="3" Grid.Column="2" Grid.RowSpan="4">
+                <Label Text="7" FontSize="20" TextColor="Black" />
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentPage>
+    
+    
