@@ -1,8 +1,57 @@
 ﻿Do something about title of the page still showing,
 Change shortcuts ctrl k + ctrl C, ctrl k + ctrl U
-do something about the navigation items in every page
-try other types of collectionviews
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Learn how to change dynamic resources colors by clicking the change theme button
+maybe add total button next to last month and last week
+take toast code from tangy blazor
+think about page for liablities and assets
+otp system to login via email or phone
+view timely bills for more idea
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Things to Remember:-
+add account id to everything, 
+add migration every time model is changed,
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Ideas that I can Implement :-
+
+Register a household so that you can see, the expense of your family members,
+Create an evnolope of budget items with a particular constraint budget,
+Create syncfusion calculator to calculate,
+Give options to add Label tags, description, Payee name, Date time, payment type, status, Place of payment, reciept or attachments(give option to take photos of recipt from camera if possible),
+
+Categories and or subcategories take from timely bills or wallet app,
+Recent records overview, 
+Chart for wallet balance trend with percentage, 
+chart for just the expense structure,
+option to add upcoming planned payments, with its separate timeline,
+option to add more cards to track different things (MAYBE give a separate scrollview page for the same named "Charts"),
+option ot add recurring debts like Loan interests, Leasing, Mortgage,
+Give notification when predicted expense for a month is greater than the budget set,
+maybe add storage for deleted and completed goals,
+search funtionality searchs the records corressponding to the particular category in last month (add SearchResults Page) 
+--------------------------------------------------------------------
+Model variables:-
+
+3 types of payments :- income, expense transfer.
+status :- Cleared, UnCleared, Reconciled (last priority)
+Currency, Accounts, 
+
+Goals:- name of thing you are saving for, category, target amount , saved already, desired date(allow nullable), note for motivating yourself, status (goal reached or not or paused, (settable)), last added week amount , estimated time to reach the goal, percentage already saved amount, checkbox option to give notification when goal is not expected to hit or the date is comming closer to complete the goal etcetra, Goal color and or icons(maybe add this to represent in charts), date time when goal was added
+
+Budgets:- name, period(week, month, year, onetime(specify start and end date)), date time when budget was added, category , amount to spend (dont allow 0), total spent amount in that category (also allow all categories together) ,
+daily average spent , daily average recommended expense to not overspend, expected date when budget money will end, status (pending, Busted/exceeded(overspent but time period not over) , underspent, overspent (time period over));
+
+Transactions:- 
+
+
+Settings:- set first day of the week, month , year; , Clear all data, export csv file of the records, see old records with the given interval, old budgets and goals that are completed, notes (write notes to yourself), maybe sometype of customizable display, select start screen, maybe some type of security pincode, 
+
+Accounts:- Cash, Debit card , credit card etc.
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 <SearchBar
                 x:Name="searchBar"
@@ -11,76 +60,13 @@ try other types of collectionviews
                 SearchCommandParameter="{Binding Source={x:Reference searchBar}, Path=Text}"
                 VerticalOptions="Center" />
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-<!--<VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" 
-              Background="{DynamicResource Blue}" WidthRequest="90" HorizontalOptions="Start" Spacing="10">-->
-                <!--<ImageButton  x:Name="OverviewBtn"  HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="0, 200, 0 ,0" Clicked="NavigationBtnClicked">
-
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xf0e4;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Overview" HorizontalTextAlignment="Center" FontSize="12"/>
-
-            <ImageButton x:Name="TransactionsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Clicked="NavigationBtnClicked">
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xf0ec;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Transactions" HorizontalTextAlignment="Center" FontSize="12"/>
-
-            <ImageButton x:Name="AccountsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xf0f2;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Accounts" HorizontalTextAlignment="Center" FontSize="12"/>
-
-            <ImageButton x:Name="BudgetBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xf155;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Budget" HorizontalTextAlignment="Center" FontSize="12"/>
-
-            <ImageButton x:Name="GoalsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xe816;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Goals" HorizontalTextAlignment="Center" FontSize="12"/>
-
-            <ImageButton x:Name="SettingsBtn" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
-                <ImageButton.Source>
-                    <FontImageSource FontFamily="Icons"
-                         Glyph="&#xe80a;"
-                         Color="{DynamicResource LightBlue}"
-                         Size="25"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label Text="Settings" HorizontalTextAlignment="Center" FontSize="12"/>-->
-
-        <!--</VerticalStackLayout>-->
-
-            
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++            
         <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
     <BlazorWebView.RootComponents>
         <RootComponent Selector="#app" ComponentType="{x:Type components:Sidebar}" />
     </BlazorWebView.RootComponents>
 </BlazorWebView>
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Goal:A specific amount of money you aim to save or acquire by a certain time.
+Budget:A financial plan that outlines how you will allocate your income towards expenses and savings over a specific period (usually a month or year).
+reconciliation refers to the process of verifying that your financial records match the records of another party, typically a bank or credit card company. 

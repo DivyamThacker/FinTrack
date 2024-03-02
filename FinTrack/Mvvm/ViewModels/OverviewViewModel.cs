@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using FinTrack_DataAccess;
 using PropertyChanged;
 using System.Diagnostics;
@@ -6,10 +8,10 @@ using System.Windows.Input;
 namespace FinTrack.Mvvm.ViewModels;
 
 [AddINotifyPropertyChangedInterface]
-public class OverviewViewModel
+public class OverviewViewModel : ObservableObject
 {
     public List<NavigationItem> NavigationItems { get; set; } = new List<NavigationItem>();
-
+    //public ICommand? NavigationBtnCommand { get; }
 
     public OverviewViewModel()
 	{
@@ -33,7 +35,10 @@ public class OverviewViewModel
         NavigationItems.Add(new NavigationItem { Glyph = "\ue80a", Text = "Settings" });
         foreach (var item in NavigationItems)
         {
-            item.NavigationBtnCommand = new Command((text) => { NavigationBtnClicked(text); });
+            item.NavigationBtnCommand = new Command((text) => 
+            { 
+                WeakReferenceMessenger.Default.Send(new MyMessage((string)text)); 
+            });
         }
     }
 }
