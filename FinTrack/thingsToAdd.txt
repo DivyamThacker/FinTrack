@@ -6,11 +6,14 @@ take toast code from tangy blazor
 think about page for liablities and assets
 otp system to login via email or phone
 view timely bills for more idea
+Try to fix (back navigation arrow not working properly) (Try to solve it using navigation stack); 
+What to do if I want to create Blazor Server app as my dummy project but it is only avialable as .NET 6.0 or .NET 7.0 framework, while my other project in the same solution is only compatible with .NET 8.0 framework
+add migration before performing check on budget repo
+ReBuild app first, then carry forward with migration
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Things to Remember:-
 add account id to everything, 
 add migration every time model is changed,
-
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Ideas that I can Implement :-
@@ -48,8 +51,10 @@ Transactions:-
 Settings:- set first day of the week, month , year; , Clear all data, export csv file of the records, see old records with the given interval, old budgets and goals that are completed, notes (write notes to yourself), maybe sometype of customizable display, select start screen, maybe some type of security pincode, 
 
 Accounts:- Cash, Debit card , credit card etc.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Significance of variables:-
 
-
+if period = year, then it takes starting date as 1st jan of the year of when the budget or goal is created.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -70,3 +75,76 @@ Accounts:- Cash, Debit card , credit card etc.
 Goal:A specific amount of money you aim to save or acquire by a certain time.
 Budget:A financial plan that outlines how you will allocate your income towards expenses and savings over a specific period (usually a month or year).
 reconciliation refers to the process of verifying that your financial records match the records of another party, typically a bank or credit card company. 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
+
+        public BudgetRepository(ApplicationDbContext db, IMapper mapper)
+        {
+            _db = db;
+            _mapper = mapper;
+        }
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        public async Task<BudgetDTO> Create(BudgetDTO objDTO)
+{
+    var obj = _mapper.Map<BudgetDTO, Budget>(objDTO);
+    
+    if (obj.Period == SD.Period_OneTime)
+    {
+        Debug.WriteLine(obj);
+    }
+    else if (obj.Period == SD.Period_Week)
+    {
+        obj.StartTime = DateTime.Now;
+        obj.EndTime = DateTime.Now;
+    }
+
+    var addedObj = _db.Budgets.Add(obj);
+    await _db.SaveChangesAsync();
+
+    return _mapper.Map<Budget, BudgetDTO>(addedObj.Entity);
+}
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+FinTrack csproj file:-
+ <PropertyGroup>
+        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+
+        <!-- Note for MacCatalyst:
+            The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+            When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
+            The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+            either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+        <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+
+        <OutputType>Exe</OutputType>
+        <RootNamespace>FinTrack</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnableDefaultCssItems>false</EnableDefaultCssItems>
+        <Nullable>enable</Nullable>
+
+        <!-- Display name -->
+        <ApplicationTitle>FinTrack</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>com.companyname.fintrack</ApplicationId>
+
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+    </PropertyGroup>
+
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

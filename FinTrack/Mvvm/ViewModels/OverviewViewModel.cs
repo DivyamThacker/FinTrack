@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using FinTrack_DataAccess;
 using PropertyChanged;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -25,7 +24,7 @@ public class OverviewViewModel : ObservableObject
     //               Debug.WriteLine(searchText);
     //           });
 
-    public void GetNavigationItems()
+    private void GetNavigationItems()
     {
         NavigationItems.Add(new NavigationItem { Glyph = "\uf0e4", Text = "Overview" });
         NavigationItems.Add(new NavigationItem { Glyph = "\uf0ec", Text = "Transactions" });

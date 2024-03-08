@@ -67,10 +67,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FinTrack_DataAccess\FinTrack_DataAccess.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <MauiXaml Update="Mvvm\Views\AccountsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

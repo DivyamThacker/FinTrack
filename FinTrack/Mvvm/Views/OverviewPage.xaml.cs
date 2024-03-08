@@ -1,7 +1,6 @@
 //using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.Maui.Controls;
 using System.Xml.Linq;
-using FinTrack_DataAccess;
 using System.Diagnostics;
 using System.Windows.Input;
 using PropertyChanged;

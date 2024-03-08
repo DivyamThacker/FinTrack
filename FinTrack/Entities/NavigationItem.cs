@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 
-namespace FinTrack_DataAccess
+namespace FinTrack
 {
     public class NavigationItem
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace FinTrack_DataAccess
+namespace FinTrack
 {
 
     public class MyMessage : ValueChangedMessage<string>
