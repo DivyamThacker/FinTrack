@@ -10,6 +10,8 @@ Try to fix (back navigation arrow not working properly) (Try to solve it using n
 What to do if I want to create Blazor Server app as my dummy project but it is only avialable as .NET 6.0 or .NET 7.0 framework, while my other project in the same solution is only compatible with .NET 8.0 framework
 add migration before performing check on budget repo
 ReBuild app first, then carry forward with migration
+first checkout tangy_api and tangy_server and then try to implement the same in this project
+why did I not find sqlserver package reference in the Tangy project but it still calls usesqlserver method in the program.cs file
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Things to Remember:-
 add account id to everything, 
