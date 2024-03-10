@@ -7,25 +7,10 @@ using System.Threading.Tasks;
 
 namespace FinTrack_DataAccess
 {
-    //public enum Period
-    //{
-    //    Week,
-    //    Month,
-    //    Year, 
-    //    OneTime
-    //}
-
-    //public enum Status
-    //{
-    //    Pending,
-    //    Busted, 
-    //    UnderSpent,
-    //    OverSpent
-    //}
-
-    public class Budget
+    public class Goal
     {
         public int Id { get; set; }
+
         [Required]
         public int UserId { get; set; }
 
@@ -37,13 +22,14 @@ namespace FinTrack_DataAccess
 
         [Required]
         public string? Period { get; set; }
-        public int TotalSpentAmount { get; set; }
         [Required]
-        public int BudgetAmount { get; set; }
+        public int GoalAmount { get; set; }
+        public int TotalSavedAmount { get; set; }//same as total Icome amount till now minus expenses (for now)
         [Required]
-        public string? Status {  get; set; }
+        public string? Status { get; set; }
         public string? Category { get; set; }
 
         public bool Notify { get; set; }
+
     }
 }

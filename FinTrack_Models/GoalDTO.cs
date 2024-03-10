@@ -5,27 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinTrack_DataAccess
+namespace FinTrack_Models
 {
-    //public enum Period
-    //{
-    //    Week,
-    //    Month,
-    //    Year, 
-    //    OneTime
-    //}
-
-    //public enum Status
-    //{
-    //    Pending,
-    //    Busted, 
-    //    UnderSpent,
-    //    OverSpent
-    //}
-
-    public class Budget
+    public class GoalDTO
     {
         public int Id { get; set; }
+
         [Required]
         public int UserId { get; set; }
 
@@ -37,13 +22,21 @@ namespace FinTrack_DataAccess
 
         [Required]
         public string? Period { get; set; }
-        public int TotalSpentAmount { get; set; }
         [Required]
-        public int BudgetAmount { get; set; }
+        public int GoalAmount { get; set; }
+        public int TotalSavedAmount { get; set; }//same as total Icome amount till now minus expenses (for now)
         [Required]
-        public string? Status {  get; set; }
+        public string? Status { get; set; }
         public string? Category { get; set; }
 
         public bool Notify { get; set; }
+
+        public int DailySavedAmount { get; set; }//average of total saved amount till now and the days passed
+
+        public int DailyRecommendedAmount { get; set; } //to reach the daily goal
+
+        public DateTime EstimatedDate { get; set; } //to reach the goal amount
+
+        public int AmountSavedLastWeek { get; set; } //to track the progress
     }
 }

@@ -10,7 +10,8 @@
         public const string Period_Week = "Week";
         public const string Period_Month = "Month";
         public const string Period_Year = "Year";
-        public const string Period_OneTime = "OneTime";
+        public const string Period_Custom = "Custom";
 
+        public const string Category_All = "All";
     }
 }

@@ -7,7 +7,6 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using FinTrack_DataAccess;
-using FinTrack;
 
 namespace FinTrack_Business.Mapper
 {
@@ -16,6 +15,7 @@ namespace FinTrack_Business.Mapper
         public MappingProfile()
         {
             CreateMap<Budget, BudgetDTO>().ReverseMap();
+            CreateMap<Goal, GoalDTO>().ReverseMap();
         }
     }
 }

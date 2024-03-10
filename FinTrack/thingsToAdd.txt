@@ -1,21 +1,21 @@
 ﻿Do something about title of the page still showing,
-Change shortcuts ctrl k + ctrl C, ctrl k + ctrl U
-Learn how to change dynamic resources colors by clicking the change theme button
 maybe add total button next to last month and last week
 take toast code from tangy blazor
 think about page for liablities and assets
 otp system to login via email or phone
-view timely bills for more idea
-Try to fix (back navigation arrow not working properly) (Try to solve it using navigation stack); 
-What to do if I want to create Blazor Server app as my dummy project but it is only avialable as .NET 6.0 or .NET 7.0 framework, while my other project in the same solution is only compatible with .NET 8.0 framework
-add migration before performing check on budget repo
-ReBuild app first, then carry forward with migration
-first checkout tangy_api and tangy_server and then try to implement the same in this project
-why did I not find sqlserver package reference in the Tangy project but it still calls usesqlserver method in the program.cs file
+Try to fix (back navigation arrow not working properly) (Try to solve it using navigation stack);
+Remember to correct the logic of Budgets start time end time and period in budget repository and api controller to check if the request is valid or not, also correct the model of budget to have key and foreign key for spentAmount.
+Disable buttons to add start time and start month if the period is not one time.
+Add default value "All" to Category in Dbinitializer
+Manage new properties in BudgetDTO which are not in Budget model, in BudgetRepository and BudgetController after making UI for the Budget page.Same for goals.
+Make Income and Expense page first then check Budget and goals are working properly or not.
+Change OneTime to ""Custom""
+Everytime you do get request on goals and budgets, you need to compute the properties in their DTOs.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Things to Remember:-
 add account id to everything, 
 add migration every time model is changed,
+SQL Query : Select * from FinTrackDB.dbo.Budgets;
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Ideas that I can Implement :-
@@ -45,7 +45,7 @@ Currency, Accounts,
 Goals:- name of thing you are saving for, category, target amount , saved already, desired date(allow nullable), note for motivating yourself, status (goal reached or not or paused, (settable)), last added week amount , estimated time to reach the goal, percentage already saved amount, checkbox option to give notification when goal is not expected to hit or the date is comming closer to complete the goal etcetra, Goal color and or icons(maybe add this to represent in charts), date time when goal was added
 
 Budgets:- name, period(week, month, year, onetime(specify start and end date)), date time when budget was added, category , amount to spend (dont allow 0), total spent amount in that category (also allow all categories together) ,
-daily average spent , daily average recommended expense to not overspend, expected date when budget money will end, status (pending, Busted/exceeded(overspent but time period not over) , underspent, overspent (time period over));
+daily average spent , daily average recommended expense to not overspend, expected date when budget money will end, status (pending, Busted/exceeded(overspent but time period not over) , underspent, overspent (time period over));, checkbox option to give notification when Budget is expected to run out.
 
 Transactions:- 
 
@@ -109,44 +109,4 @@ private readonly ApplicationDbContext _db;
 }
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-FinTrack csproj file:-
- <PropertyGroup>
-        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
-        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
-        <!-- Note for MacCatalyst:
-            The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
-            When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
-            The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
-            either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-        <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-
-        <OutputType>Exe</OutputType>
-        <RootNamespace>FinTrack</RootNamespace>
-        <UseMaui>true</UseMaui>
-        <SingleProject>true</SingleProject>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <EnableDefaultCssItems>false</EnableDefaultCssItems>
-        <Nullable>enable</Nullable>
-
-        <!-- Display name -->
-        <ApplicationTitle>FinTrack</ApplicationTitle>
-
-        <!-- App Identifier -->
-        <ApplicationId>com.companyname.fintrack</ApplicationId>
-
-        <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>1</ApplicationVersion>
-
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-    </PropertyGroup>
-
-    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
