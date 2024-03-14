@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinTrack.Mvvm.Components.NavigationComponent">
+    <VerticalStackLayout 
+      Background="{DynamicResource Blue}" WidthRequest="90" HorizontalOptions="Start" Spacing="10">
+        <ListView ItemsSource="{Binding NavigationItems}" Margin="0,150,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <ImageButton Command="{Binding NavigationBtnCommand}" CommandParameter="{Binding Text}" Style="{StaticResource NavigationButton}">
+                                <ImageButton.Source>
+                                    <FontImageSource   FontFamily="Icons" Glyph="{Binding Glyph}" Color="{DynamicResource LightBlue}"
+                 Size="25" />
+                                </ImageButton.Source>
+                            </ImageButton>
+                            <Label  Style="{StaticResource NavigationLabel}" Text="{Binding Text}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </VerticalStackLayout>
+</ContentView>

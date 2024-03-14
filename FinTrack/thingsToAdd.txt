@@ -3,7 +3,6 @@ maybe add total button next to last month and last week
 take toast code from tangy blazor
 think about page for liablities and assets
 otp system to login via email or phone
-Try to fix (back navigation arrow not working properly) (Try to solve it using navigation stack);
 Remember to correct the logic of Budgets start time end time and period in budget repository and api controller to check if the request is valid or not, also correct the model of budget to have key and foreign key for spentAmount.
 Disable buttons to add start time and start month if the period is not one time.
 Add default value "All" to Category in Dbinitializer
@@ -11,9 +10,10 @@ Manage new properties in BudgetDTO which are not in Budget model, in BudgetRepos
 Make Income and Expense page first then check Budget and goals are working properly or not.
 Change OneTime to ""Custom""
 Everytime you do get request on goals and budgets, you need to compute the properties in their DTOs.
+try page instead of component for blazor calculator
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Things to Remember:-
-add account id to everything, 
+add account or user id to everything (every model), 
 add migration every time model is changed,
 SQL Query : Select * from FinTrackDB.dbo.Budgets;
 
@@ -77,36 +77,87 @@ if period = year, then it takes starting date as 1st jan of the year of when the
 Goal:A specific amount of money you aim to save or acquire by a certain time.
 Budget:A financial plan that outlines how you will allocate your income towards expenses and savings over a specific period (usually a month or year).
 reconciliation refers to the process of verifying that your financial records match the records of another party, typically a bank or credit card company. 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+<div class="modal">
+        <div class="modal-content">
+            <span class="close-button" @onclick="ToggleDialog">x</span>
+            <p>Some text in the Modal..</p>
+            <h1 class="bg-danger align-content-center border-warning text-lg-center">Calculator WOOOOOOOOOOOOOOOOOOOOOOOOOOW</h1>
+        </div>
+    </div>
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Message Service works like this :-
+    //WeakReferenceMessenger.Default.Register<MyMessage>(this, (r, m) =>
+        //{
+        //    NavigationBtnClicked(m.Value);
+        //});
 
-private readonly ApplicationDbContext _db;
-        private readonly IMapper _mapper;
-
-        public BudgetRepository(ApplicationDbContext db, IMapper mapper)
+        WeakReferenceMessenger.Default.Send(new MyMessage((string)text)); //send message
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+public TransactionController(ITransactionRepository transactionRepository, IMapper mapper)
         {
-            _db = db;
+            _transactionRepository = transactionRepository;
             _mapper = mapper;
         }
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        public async Task<BudgetDTO> Create(BudgetDTO objDTO)
-{
-    var obj = _mapper.Map<BudgetDTO, Budget>(objDTO);
-    
-    if (obj.Period == SD.Period_OneTime)
-    {
-        Debug.WriteLine(obj);
-    }
-    else if (obj.Period == SD.Period_Week)
-    {
-        obj.StartTime = DateTime.Now;
-        obj.EndTime = DateTime.Now;
-    }
 
-    var addedObj = _db.Budgets.Add(obj);
-    await _db.SaveChangesAsync();
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _transactionRepository.GetAll());
+        }
 
-    return _mapper.Map<Budget, BudgetDTO>(addedObj.Entity);
-}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var record = await _transactionRepository.Get(id);
+            if (record == null)
+            {
+                return NotFound();
+            }
+            return Ok(record);
+        }
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        [HttpPost]
+        [ActionName("Create")]
+        public async Task<IActionResult> Create([FromBody] TransactionDTO transactionDTO)
+        {
+            if (transactionDTO.Amount <= 0)
+            {
+                return BadRequest("Please enter valid amount");
+            }
+            transactionDTO.TransactionDate = DateTime.Now;
+            return Ok(await _transactionRepository.Create(transactionDTO));
+        }
 
+        [HttpPatch]
+        [ActionName("Update")]
+        public async Task<IActionResult> Update([FromBody] TransactionDTO transactionDTO)
+        {
+            if (transactionDTO.Amount <= 0)
+            {
+                return BadRequest("Please enter valid amount");
+            }
+
+            var record = await _transactionRepository.Update(transactionDTO);
+            if (record == null)
+            {
+                return NotFound();
+            }
+            return Ok(record);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var record = await _transactionRepository.Get(id);
+            if (record == null)
+            {
+                return NotFound();
+            }
+            var deletedRecord = await _transactionRepository.Delete(id);
+            if (deletedRecord == 0)
+            {
+                return StatusCode(500);
+            }
+            return Ok();
+        }

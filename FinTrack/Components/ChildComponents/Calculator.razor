@@ -1,0 +1,19 @@
+﻿@if (IsDialogOpen)
+{
+    <h1 class="bg-danger text-lg-center text-success">Calculator</h1>
+}
+
+@code {
+    public bool IsDialogOpen { get; set; }
+
+    // protected override  void OnInitialized()
+    // {
+    //     Application.Current.MainPage.DisplayAlert("Alert", "You have been alerted", "OK");
+    // }
+
+    public void ToggleDialog()
+    {
+        IsDialogOpen = !IsDialogOpen;
+
+    }
+}

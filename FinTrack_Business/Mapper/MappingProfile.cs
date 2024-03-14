@@ -16,6 +16,8 @@ namespace FinTrack_Business.Mapper
         {
             CreateMap<Budget, BudgetDTO>().ReverseMap();
             CreateMap<Goal, GoalDTO>().ReverseMap();
+            CreateMap<Record, RecordDTO>().ReverseMap();
+            CreateMap<Transaction, TransactionDTO>().ReverseMap();
         }
     }
 }

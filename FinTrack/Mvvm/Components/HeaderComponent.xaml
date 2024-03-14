@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinTrack.Mvvm.Components.HeaderComponent">
+    <Frame CornerRadius="20" Padding="10" BackgroundColor="{DynamicResource Blue}"  Margin="0,0,40,0">
+        <Grid ColumnDefinitions="0.5*, 6.5*, 2*">
+            <ImageButton x:Name="SearchBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="Icons" Glyph="&#xe800;"
+                 Color="{DynamicResource LightBlue}" Size="20"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Entry Placeholder="Hi user, click here to search... " VerticalTextAlignment="Center"  Background="Transparent"
+               Grid.Column="1" />
+
+
+            <HorizontalStackLayout Grid.Column="2" Spacing="20" Margin="100, 0, 0, 0">
+                <ImageButton x:Name="NotificationBtn" HeightRequest="20"  BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="Icons" Glyph="&#xe80b;"
+                 Color="{DynamicResource LightBlue}" Size="20"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <ImageButton x:Name="ProfileBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="Icons" Glyph="&#xe805;"
+                 Color="{DynamicResource LightBlue}" Size="20"/>
+                    </ImageButton.Source>
+                </ImageButton>
+                <Label Text="username" VerticalTextAlignment="Center"/>
+                <ImageButton x:Name="OptionsBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="-15, 0,0,0">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="Icons" Glyph="&#xf142;"
+                 Color="{DynamicResource LightBlue}" Size="20"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </HorizontalStackLayout>
+        </Grid>
+    </Frame>
+</ContentView>

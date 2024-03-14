@@ -67,6 +67,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Mvvm\Components\NavigationComponent.xaml.cs">
+        <DependentUpon>NavigationComponent.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Mvvm\Components\HeaderComponent.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Mvvm\Views\AccountsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
@@ -74,6 +83,12 @@
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Views\GoalsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Mvvm\Components\NavigationComponent.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Mvvm\Views\RecordsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Views\SettingsPage.xaml">

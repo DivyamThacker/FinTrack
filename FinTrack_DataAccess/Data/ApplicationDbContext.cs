@@ -16,6 +16,8 @@ namespace FinTrack_DataAccess.Data
         }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Goal> Goals { get; set; }
+        public DbSet<Record> Records { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
 
