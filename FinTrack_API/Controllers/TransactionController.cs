@@ -43,7 +43,7 @@ namespace FinTrack_API.Controllers
             {
                 return BadRequest("Please enter valid amount");
             }
-            transactionDTO.TransactionDate = DateTime.Now;
+            //transactionDTO.TransactionDate = DateTime.Now;
             return Ok(await _transactionRepository.Create(transactionDTO));
         }
 

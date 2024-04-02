@@ -18,7 +18,7 @@ namespace FinTrack_Models
         [Required]
         public string? Period { get; set; }
         [Required]
-        public int BudgetAmount { get; set; }
+        public int Amount { get; set; }
         public string? Status { get; set; }
         public string? Category { get; set; }
         public bool Notify { get; set; }

@@ -68,7 +68,8 @@ namespace FinTrack_Business.Repository
                 objFromDb.Status = objDTO.Status;
                 objFromDb.Period = objDTO.Period;
                 objFromDb.Category = objDTO.Category;
-                objFromDb.BudgetAmount = objDTO.BudgetAmount;
+                objFromDb.Amount = objDTO.Amount;
+                objFromDb.Notify = objDTO.Notify;
                 objFromDb.StartTime = objDTO.StartTime;
                 objFromDb.EndTime = objDTO.EndTime;
                 _db.Budgets.Update(objFromDb);

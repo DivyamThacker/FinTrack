@@ -57,7 +57,7 @@ namespace FinTrack_API.Controllers
                 goalDTO.EndTime = new DateTime(DateTime.Now.Year, 12, DateTime.DaysInMonth(DateTime.Now.Year, 12));
             }
             #endregion
-            if (goalDTO.GoalAmount <= 0)
+            if (goalDTO.Amount <= 0)
             {
                 return BadRequest("Please enter valid goal amount");
             }
@@ -132,7 +132,7 @@ namespace FinTrack_API.Controllers
             }
             #endregion
 
-            if (goalDTO.GoalAmount <= 0)
+            if (goalDTO.Amount <= 0)
             {
                 return BadRequest("Please enter valid goal amount");
             }

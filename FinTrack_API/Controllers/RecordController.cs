@@ -39,8 +39,9 @@ namespace FinTrack_API.Controllers
             {
                 return BadRequest("Please enter valid amount");
             }
-            recordDTO.Color = recordDTO.IsIncome ? "green" : "red";
-            recordDTO.RecordDate = DateTime.Now;
+            //recordDTO.Color = recordDTO.IsIncome ? "green" : "red";
+            //if (recordDTO.RecordDate == DateTime.MinValue)
+            //recordDTO.RecordDate = DateTime.Now;
             return Ok(await _recordRepository.Create(recordDTO));
         }
 

@@ -93,71 +93,32 @@ reconciliation refers to the process of verifying that your financial records ma
         //});
 
         WeakReferenceMessenger.Default.Send(new MyMessage((string)text)); //send message
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-public TransactionController(ITransactionRepository transactionRepository, IMapper mapper)
-        {
-            _transactionRepository = transactionRepository;
-            _mapper = mapper;
-        }
+        ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        <BoxView BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Column="1"/>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        <ActivityIndicator IsRunning="True" Color="Blue"/>
+        <ProgressBar Progress=".5"/>
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Syncfusion License Key:-
+	Key:Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcdnVVR2VeVUV/WUE=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+remove calculation properties like last month amount from the dto and add them in entity in frontend
+add arrows to move between different months and weeks
+fix text validator works in Name field while creating new record or transaction.
+find out by IsRecordsEmpty is not working as expected
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _transactionRepository.GetAll());
-        }
+when any record or transaction is added, the amount should be added to the goal saved amount
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var record = await _transactionRepository.Get(id);
-            if (record == null)
-            {
-                return NotFound();
-            }
-            return Ok(record);
-        }
+send notification when goal or budget is not expected to be reached
 
-        [HttpPost]
-        [ActionName("Create")]
-        public async Task<IActionResult> Create([FromBody] TransactionDTO transactionDTO)
-        {
-            if (transactionDTO.Amount <= 0)
-            {
-                return BadRequest("Please enter valid amount");
-            }
-            transactionDTO.TransactionDate = DateTime.Now;
-            return Ok(await _transactionRepository.Create(transactionDTO));
-        }
+goal is the amount of money you saved(income - expense) and budget is max amount of money you want to spend
 
-        [HttpPatch]
-        [ActionName("Update")]
-        public async Task<IActionResult> Update([FromBody] TransactionDTO transactionDTO)
-        {
-            if (transactionDTO.Amount <= 0)
-            {
-                return BadRequest("Please enter valid amount");
-            }
+add button of last week and last month to the list view of goals and budgets instead of the right side
 
-            var record = await _transactionRepository.Update(transactionDTO);
-            if (record == null)
-            {
-                return NotFound();
-            }
-            return Ok(record);
-        }
+add logic of extra things in Goal DTO while creating and updating it, in controller
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var record = await _transactionRepository.Get(id);
-            if (record == null)
-            {
-                return NotFound();
-            }
-            var deletedRecord = await _transactionRepository.Delete(id);
-            if (deletedRecord == 0)
-            {
-                return StatusCode(500);
-            }
-            return Ok();
-        }
+check if goals are loading properly ie. the properties are being computed properly every time the page is loaded
+
+according to previous migration, status is a required field in goal
+
+maybe add progressbar in the goal analytics

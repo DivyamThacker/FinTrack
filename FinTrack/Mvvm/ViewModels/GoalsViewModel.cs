@@ -1,32 +1,30 @@
 ﻿using FinTrack.Services;
 using FinTrack_Models;
-//using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
-using PropertyChanged;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using FinTrack.Converters;
-using FinTrack.Entities;
-using System.ComponentModel;
+using FinTrack_Common;
+
 namespace FinTrack.Mvvm.ViewModels
 {
-//[AddINotifyPropertyChangedInterface]
-    public class RecordsViewModel : INotifyPropertyChanged
+    //[AddINotifyPropertyChangedInterface]
+    public class GoalsViewModel : INotifyPropertyChanged
     {
-        private RecordApiService _recordApiService;
-        public RecordDTO SelectedRecord { get; set; } = default!;
+        private readonly GoalApiService _goalApiService;
+        public GoalDTO SelectedGoal { get; set; } = default!;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public IEnumerable<string> Categories { get; set; }
-        public ObservableCollection<RecordDTO> Records { get; set; } =  new ObservableCollection<RecordDTO>();
-        public RecordDTO NewRecord { get; set; } = new RecordDTO();
+        public IEnumerable<string> Periods { get; set; }
+        public bool IsPeriodCustom { get; set; } = false;
+        public ObservableCollection<GoalDTO> Goals { get; set; } = new ObservableCollection<GoalDTO>();
+        public GoalDTO NewGoal { get; set; } = new GoalDTO();
         public bool IsListVisible { get; set; } = true;
         public bool IsFormVisible { get; set; } = false;
         public bool IsSelected { get; set; } = false;
@@ -35,14 +33,14 @@ namespace FinTrack.Mvvm.ViewModels
         public bool IsLastMonthVisible { get; set; } = false;
         public ICommand TimeBtnCommand { get; set; }
         public ICommand SelectedItemCommand { get; set; }
-        private IEnumerable<RecordDTO>? _lastWeekIncomeRecords;
-        public IEnumerable<RecordDTO>? LastWeekIncomeRecords
+        private IEnumerable<GoalDTO>? _lastWeekGoals;
+        public IEnumerable<GoalDTO>? LastWeekGoals
         {
-            get { return _lastWeekIncomeRecords; }
+            get { return _lastWeekGoals; }
             private set
             {
-                _lastWeekIncomeRecords = value;
-                OnPropertyChanged(nameof(LastWeekIncomeRecords)); 
+                _lastWeekGoals = value;
+                OnPropertyChanged(nameof(LastWeekGoals));
             }
         }
 
@@ -53,14 +51,12 @@ namespace FinTrack.Mvvm.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public IEnumerable<RecordDTO>? LastWeekExpenseRecords { get; set; }
-        public IEnumerable<RecordDTO>? LastMonthIncomeRecords { get; set; }
-        public IEnumerable<RecordDTO>? LastMonthExpenseRecords { get; set; }
-        public RecordsViewModel()
+        public IEnumerable<GoalDTO>? LastMonthGoals { get; set; }
+        public GoalsViewModel()
         {
-            _recordApiService = new RecordApiService();
-            Task.Run(async () => await GetRecords());
-            CancelComand = new Command( () =>
+            _goalApiService = new GoalApiService();
+            Task.Run(async () => await GetGoals());
+            CancelComand = new Command(() =>
             {
                 CancelCommandClicked();
             });
@@ -68,31 +64,38 @@ namespace FinTrack.Mvvm.ViewModels
             {
                 await SaveCommandClicked();
             });
-            NavigateCommand = new Command( (text) =>
+            NavigateCommand = new Command((text) =>
             {
-                 NavigateClicked((string)text);
+                NavigateClicked((string)text);
             });
-            TimeBtnCommand = new Command( (text) =>
+            TimeBtnCommand = new Command((text) =>
             {
-                 TimeBtnClicked((string)text);
+                TimeBtnClicked((string)text);
             });
             Categories = new List<string>
             {
                 "All",
                 "Transport",
+                "Shopping",
+                "Bills",
+                "Business",
                 "Entertainment",
                 "Health",
                 "Education",
                 "Other",
                 "Food"
             };
-            SelectedItemCommand =  new Command((obj) =>
+            Periods = new List<string>
             {
-                OnItemTapped((RecordDTO)obj);
+                SD.Period_Week,SD.Period_Month,SD.Period_Year,SD.Period_Custom
+            };
+            SelectedItemCommand = new Command((obj) =>
+            {
+                OnItemTapped((GoalDTO)obj);
             });
         }
 
-        
+
         private DateTime GetLastWeekStart()
         {
             var today = DateTime.Now;
@@ -104,48 +107,20 @@ namespace FinTrack.Mvvm.ViewModels
             return new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);//.StartOfWeek(DayOfWeek.Monday)
         }
 
-        public void CalculateChartData()
-        {
-            //LastWeekIncomeRecords =  Records.Where(x => x.IsIncome && x.RecordDate >= GetLastWeekStart().Date);
-            LastWeekIncomeRecords = Records
-            .Where(x => x.IsIncome && x.RecordDate >= GetLastWeekStart().Date)
-            .GroupBy(x => x.RecordDate.Date) // Group by the date part of the RecordDate
-            .Select(g => new RecordDTO
-            {
-                RecordDate = g.Key,
-                Amount = g.Sum(x => x.Amount)
-            });
-
-            LastWeekExpenseRecords = Records
-            .Where(x => !x.IsIncome && x.RecordDate >= GetLastWeekStart().Date)
-            .GroupBy(x => x.RecordDate.Date) 
-            .Select(g => new RecordDTO
-            {
-                RecordDate = g.Key,
-                Amount = g.Sum(x => x.Amount)
-            });
-
-            LastMonthIncomeRecords = Records
-            .Where(x => x.IsIncome && x.RecordDate >= GetLastMonthStart().Date)
-            .GroupBy(x => x.RecordDate.Date) 
-            .Select(g => new RecordDTO
-            {
-                RecordDate = g.Key,
-                Amount = g.Sum(x => x.Amount)
-            });
-
-            LastMonthExpenseRecords = Records
-            .Where(x => !x.IsIncome && x.RecordDate >= GetLastMonthStart().Date)
-            .GroupBy(x => x.RecordDate.Date) 
-            .Select(g => new RecordDTO
-            {
-                RecordDate = g.Key,
-                Amount = g.Sum(x => x.Amount)
-            });
-        }
+        //public void CalculateChartData()
+        //{
+        //    LastMonthGoals = Goals
+        //    .Where(x => x.StartTime >= GetLastMonthStart().Date)
+        //    .GroupBy(x => x.GoalDate.Date)
+        //    .Select(g => new GoalDTO
+        //    {
+        //        GoalDate = g.Key,
+        //        Amount = g.Sum(x => x.Amount)
+        //    });
+        //}
         private void TimeBtnClicked(string text)
         {
-            switch(text)
+            switch (text)
             {
                 case "WeekBtn":
                     IsLastMonthVisible = false;
@@ -158,9 +133,9 @@ namespace FinTrack.Mvvm.ViewModels
 
 
 
-        public void OnItemTapped(RecordDTO record)
+        public void OnItemTapped(GoalDTO goal)
         {
-            SelectedRecord = record;
+            SelectedGoal = goal;
             IsSelected = true;
         }
 
@@ -174,15 +149,15 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewRecord = new RecordDTO();
+                    NewGoal = new GoalDTO();
                     break;
 
                 case "Update":
                     if (IsSelected)
                     {
-                        IsCreating = false; 
+                        IsCreating = false;
                         IsUpdating = true;
-                        NewRecord = SelectedRecord;
+                        NewGoal = SelectedGoal;
                         IsFormVisible = true;
                         IsListVisible = false;
                     }
@@ -198,19 +173,19 @@ namespace FinTrack.Mvvm.ViewModels
                     IsFormVisible = false;
                     IsListVisible = true;
                     IsSelected = false;
-                    NewRecord = SelectedRecord;
+                    NewGoal = SelectedGoal;
                     break;
 
                 case "Delete":
                     if (!IsSelected)
-                    App.Current.MainPage.DisplayAlert("Error", "First You need to select the Item to update", "Ok");
-                    var result = await App.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete this record?", "Yes", "No");
+                        App.Current.MainPage.DisplayAlert("Error", "First You need to select the Item to update", "Ok");
+                    var result = await App.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete this goal?", "Yes", "No");
                     if (result)
                     {
                         IsSelected = false;
-                        await _recordApiService.DeleteRecord(SelectedRecord.Id);
-                        Records.Remove(SelectedRecord);
-                        CalculateChartData();
+                        await _goalApiService.DeleteGoal(SelectedGoal.Id);
+                        Goals.Remove(SelectedGoal);
+                        //CalculateChartData();
                     }
                     break;
             }
@@ -218,25 +193,25 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewRecord = new RecordDTO();
+            NewGoal = new GoalDTO();
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
             IsUpdating = false;
         }
 
-        private async Task GetRecords()
+        private async Task GetGoals()
         {
-            Records = await _recordApiService.GetDataAsync();
-            CalculateChartData();
+            Goals = await _goalApiService.GetDataAsync();
+            //CalculateChartData();
         }
 
         public async Task SaveCommandClicked()
         {
             if (IsUpdating)
             {
-                await _recordApiService.UpdateRecord(NewRecord);
-                Records = await _recordApiService.GetDataAsync();
+                await _goalApiService.UpdateGoal(NewGoal);
+                Goals = await _goalApiService.GetDataAsync();
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -244,15 +219,15 @@ namespace FinTrack.Mvvm.ViewModels
             }
             else
             {
-                var record = await _recordApiService.CreateRecord(NewRecord);
-                record.Color = record.IsIncome ? "Green" : "Red";
-                Records.Add(record);
-                NewRecord = new RecordDTO();
+                var goal = await _goalApiService.CreateGoal(NewGoal);
+                goal.Color = goal.TotalSavedAmount<=0 ? "Red" : "Green";
+                Goals.Add(goal);
+                NewGoal = new GoalDTO();
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;
             }
-            CalculateChartData();
+            //CalculateChartData();
         }
     }
 }

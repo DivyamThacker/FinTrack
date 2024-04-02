@@ -13,13 +13,15 @@ namespace FinTrack_DataAccess
         [Required]
         public int UserId { get; set; }
         [Required]
-        public string GiverUserName { get; set; } = default!;
+        public string SenderUsername { get; set; } = default!;
         [Required]
-        public string TakerUserName { get; set; } = default!;
+        public string RecieverUsername { get; set; } = default!;
         [Required]
         public string Name { get; set; } = default!;
+        public bool IsUserSender { get; set; }
         public string? Description { get; set; }
         public DateTime TransactionDate { get; set; }
+        public string? Category { get; set; }
         public int Amount { get; set; }
     }
 }

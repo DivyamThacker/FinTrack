@@ -55,7 +55,7 @@ namespace FinTrack_API.Controllers
                 budgetDTO.EndTime = new DateTime(DateTime.Now.Year, 12, DateTime.DaysInMonth(DateTime.Now.Year, 12));
             }
             #endregion
-            if (budgetDTO.BudgetAmount <= 0)
+            if (budgetDTO.Amount <= 0)
             {
                 return BadRequest("Please enter valid budget amount");
             }
@@ -127,7 +127,7 @@ namespace FinTrack_API.Controllers
             }
             #endregion
 
-            if (budgetDTO.BudgetAmount <= 0)
+            if (budgetDTO.Amount <= 0)
             {
                 return BadRequest("Please enter valid budget amount");
             }

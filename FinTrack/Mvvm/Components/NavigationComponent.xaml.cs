@@ -61,9 +61,9 @@ public partial class NavigationComponent : ContentView
         NavigationItems.Add(new NavigationItem { Glyph = "\ue814", Text = "Records" });
         NavigationItems.Add(new NavigationItem { Glyph = "\uf155", Text = "Budget" });
         NavigationItems.Add(new NavigationItem { Glyph = "\ue816", Text = "Goals" });
-        NavigationItems.Add(new NavigationItem { Glyph = "\uf0f2", Text = "Accounts" });
-        NavigationItems.Add(new NavigationItem { Glyph = "\ue80a", Text = "Settings" });
-        NavigationItems.Add(new NavigationItem { Glyph = "\uf1ec", Text = "Calculator" });
+        //NavigationItems.Add(new NavigationItem { Glyph = "\uf0f2", Text = "Accounts" });
+        //NavigationItems.Add(new NavigationItem { Glyph = "\ue80a", Text = "Settings" });
+        //NavigationItems.Add(new NavigationItem { Glyph = "\uf1ec", Text = "Calculator" });
         foreach (var item in NavigationItems)
         {
             item.NavigationBtnCommand = new Command((text) =>

@@ -7,6 +7,6 @@ public partial class BudgetPage : ContentPage
 	public BudgetPage()
 	{
 		InitializeComponent();
-		BindingContext = new BudgetViewModel();
+		BindingContext = new BudgetsViewModel();
 	}
 }

@@ -65,8 +65,10 @@ namespace FinTrack_Business.Repository
                 objFromDb.Description = objDTO.Description;
                 objFromDb.Amount = objDTO.Amount;
                 objFromDb.TransactionDate = objDTO.TransactionDate;
-                objFromDb.GiverUserName = objDTO.GiverUserName;
-                objFromDb.TakerUserName = objDTO.TakerUserName;
+                objFromDb.SenderUsername = objDTO.SenderUsername;
+                objFromDb.RecieverUsername = objDTO.RecieverUsername;
+                objFromDb.IsUserSender = objDTO.IsUserSender;
+                objFromDb.Category = objDTO.Category;
                 _db.Transactions.Update(objFromDb);
                 await _db.SaveChangesAsync();
                 return _mapper.Map<Transaction, TransactionDTO>(objFromDb);

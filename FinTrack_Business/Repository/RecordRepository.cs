@@ -63,6 +63,7 @@ namespace FinTrack_Business.Repository
             {
                 objFromDb.Name = objDTO.Name;
                 objFromDb.Description = objDTO.Description;
+                objFromDb.RecordDate =objDTO.RecordDate;
                 objFromDb.Amount = objDTO.Amount;
                 objFromDb.Category = objDTO.Category;
                 objFromDb.IsIncome = objDTO.IsIncome;

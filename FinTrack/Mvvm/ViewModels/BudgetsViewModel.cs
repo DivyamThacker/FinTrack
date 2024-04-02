@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FinTrack.Mvvm.ViewModels
 {
-    public class BudgetViewModel : ObservableObject
+    public class BudgetsViewModel : ObservableObject
     {
-        public BudgetViewModel()
+        public BudgetsViewModel()
         {
         }
     }

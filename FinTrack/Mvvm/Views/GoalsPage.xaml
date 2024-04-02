@@ -2,11 +2,247 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinTrack.Mvvm.Views.GoalsPage"
-             Title="GoalsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:converters="clr-namespace:FinTrack.Converters"
+             Title="GoalsPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ColorToHexConverter x:Key="ColorToHexConverter" />
+            <converters:BoolInverter x:Key="BoolInverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
+
+        <local:NavigationComponent Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" />
+
+        <local:HeaderComponent Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
+
+
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"  Margin="20, 20, 40, 20" ColumnSpacing="15" RowSpacing="15" ColumnDefinitions="1*, 1*" RowDefinitions="1*,4.5*">
+
+            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="10" >
+                <Label Text="Goals" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <HorizontalStackLayout  VerticalOptions="Start" HorizontalOptions="Center" Spacing="70">
+                    <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
+                        <Label Text="Viewing" Grid.Row="0" FontSize="20"/>
+                        <BoxView IsVisible="{Binding IsListVisible}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                    </Grid>
+                    <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
+                        <Label Text="Creating" Grid.Row="0" FontSize="20"/>
+                        <BoxView IsVisible="{Binding IsCreating}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                    </Grid>
+                    <Grid  RowDefinitions="19* ,1*" RowSpacing="5">
+                        <Label  Text="Updating" Grid.Row="0" FontSize="20"/>
+                        <BoxView IsVisible="{Binding IsUpdating}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                    </Grid>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="End" Spacing="20" >
+                    <ImageButton x:Name="ViewBtn" Command="{Binding NavigateCommand}" 
+                            CommandParameter="View" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0" 
+                            ToolTipProperties.Text="View List of Goals">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe81b;"
+                                Color="{DynamicResource LightBlue}" Size="25"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="CreateBtn" Command="{Binding NavigateCommand}" 
+                            CommandParameter="Create" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
+                                 ToolTipProperties.Text="Create New Goal">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe807;"
+        Color="{DynamicResource LightBlue}" Size="25"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton  x:Name="UpdateBtn" Command="{Binding NavigateCommand}" 
+                            CommandParameter="Update" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
+                                  ToolTipProperties.Text="Update Existing Goals">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe812;"
+        Color="{DynamicResource LightBlue}" Size="25"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="DeleteBtn" Command="{Binding NavigateCommand}" 
+                            CommandParameter="Delete" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
+                                 ToolTipProperties.Text="Delete Selected Goal">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xe817;"
+        Color="{DynamicResource LightBlue}" Size="25"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <Border IsVisible="{Binding IsFormVisible}" Grid.Row="1" Grid.Column="0" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10">
+                <ScrollView>
+                    <VerticalStackLayout IsVisible="{Binding IsFormVisible}" Spacing="10">
+                        <Label Text="Name :" />
+                        <Entry Placeholder="Enter Name" Text="{Binding NewGoal.Name}">
+                            <Entry.Behaviors>
+                                <toolkit:TextValidationBehavior 
+                            Flags="ValidateOnAttaching,ValidateOnValueChanged" 
+                            MinimumLength="1"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="Amount :" />
+                        <Entry Placeholder="Enter Amount" Text="{Binding NewGoal.Amount}" />
+                        
+                        <Picker Title="Select Period: " ItemsSource="{Binding Periods}" SelectedItem="{Binding NewGoal.Period}" />
+                        <HorizontalStackLayout Spacing="10" >
+                            <Label Text="Start Date :" VerticalOptions="Center"/>
+                            <DatePicker Date="{Binding NewGoal.StartTime}" IsVisible="{Binding IsPeriodCustom}"   />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="10" >
+                            <Label Text="End Date :" VerticalOptions="Center"/>
+                            <DatePicker Date="{Binding NewGoal.EndTime}" IsVisible="{Binding IsPeriodCustom}" />
+                        </HorizontalStackLayout>
+                        <Picker Title="Select Category: " ItemsSource="{Binding Categories}" SelectedItem="{Binding NewGoal.Category}" />
+                        <HorizontalStackLayout Spacing="10" >
+                            <Label Text="Do you want to get notified about the goal data ?" VerticalOptions="Center"/>
+                            <CheckBox IsChecked="{Binding NewGoal.Notify}"/>
+                        </HorizontalStackLayout>
+                        <Label Text="Description:"/>
+                        <Editor Placeholder="Enter Description" Text="{Binding NewGoal.Description}" HeightRequest="100" />
+                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" >
+                            <Button Text="Cancel" Command="{Binding CancelComand}" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" VerticalOptions="Center" WidthRequest="300"/>
+                            <Button Text="Save" Command="{Binding SaveCommand}" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" VerticalOptions="Center" WidthRequest="300"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+            <Border IsVisible="{Binding IsListVisible}" Grid.Row="1" Grid.Column="0" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10">
+                <ListView x:Name="GoalsListView" IsVisible="{Binding IsListVisible}" ItemsSource="{Binding Goals}"  SelectedItem="{Binding SelectedGoal}" ItemTapped="GoalsListView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="15" ColumnDefinitions="1*,1*,1*" RowDefinitions="1*, 1*">
+                                    <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="0" FontSize="20"/>
+                                    <Label Text="{Binding Category}" Grid.Row="1" Grid.Column="0"/>
+                                    <HorizontalStackLayout  Grid.Row="0" Grid.Column="1" Spacing="20">
+                                        <Label Text="From:"/>
+                                        <Label Text="{Binding StartTime, StringFormat='{}{0: MMMM dd, yyyy}'}" Margin="-10, 0,0,0" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout  Grid.Row="1" Grid.Column="1" Spacing="20">
+                                        <Label Text="To:"/>
+                                        <Label Text="{Binding EndTime, StringFormat='{}{0: MMMM dd, yyyy}'}" Margin="-10, 0,0,0" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}" Grid.Row="0" Grid.Column="2" />
+                                    <HorizontalStackLayout  Grid.Row="1" Grid.Column="2" Spacing="20">
+                                        <Label Text="Status:"/>
+                                        <Label Text="{Binding Status}" Margin="-10, 0,0,0" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Border>
+            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10" >
+                <Label Text="Select a Goal to see its data" IsVisible="{Binding IsSelected, Converter={StaticResource BoolInverter}}" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10" IsVisible="{Binding IsSelected}">
+                <ScrollView  IsVisible="{Binding IsSelected}" >
+
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding IsSelected}">
+                        <!--<Label Text="Add some Goals to see more data" IsVisible="{Binding IsGoalsEmpty}" HorizontalOptions="Center" VerticalOptions="Center" />-->
+                        <Label Text="Goals Analytics" FontSize="20" FontAttributes="Bold" TextColor="White"  HorizontalOptions="Center"/>
+                        <!--<HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
+                                <Button x:Name="WeekBtn" Text="Last Week" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent" Command="{Binding TimeBtnCommand}" 
+                               CommandParameter="WeekBtn"/>
+                                <BoxView IsVisible="{Binding IsLastMonthVisible, Converter={StaticResource BoolInverter}}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                            </Grid>
+                            <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
+                                <Button x:Name="MonthBtn" Text="Last Month" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent"  Command="{Binding TimeBtnCommand}" CommandParameter="MonthBtn"/>
+                                <BoxView IsVisible="{Binding IsLastMonthVisible}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                            </Grid>
+                        </HorizontalStackLayout>-->
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Name :"/>
+                            <Label Text="{Binding SelectedGoal.Name}" HorizontalTextAlignment="Center" FontSize="20"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Status :"/>
+                            <Label Text="{Binding SelectedGoal.Status}" HorizontalTextAlignment="Center" FontSize="20"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Amount :"/>
+                        <Label Text="{Binding SelectedGoal.Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Start Date :"/>
+                            <Label Text="{Binding SelectedGoal.StartTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" FontSize="20"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="End Date :"/>
+                            <Label Text="{Binding SelectedGoal.EndTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" FontSize="20"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Category :"/>
+                            <Label Text="{Binding SelectedGoal.Category}" HorizontalTextAlignment="Center" FontSize="20"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Description :"/>
+                            <Label Text="{Binding SelectedGoal.Description}" HorizontalTextAlignment="Center"  LineBreakMode="WordWrap" FontSize="20" />
+                        </HorizontalStackLayout>
+                        
+                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10">
+                            <Label Text="wow" Grid.Row="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"  />
+                            <chart:SfCartesianChart Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <chart:SfCartesianChart.XAxes>
+                                    <chart:CategoryAxis/>
+                                </chart:SfCartesianChart.XAxes>
+
+                                <chart:SfCartesianChart.YAxes>
+                                    <chart:NumericalAxis/>
+                                </chart:SfCartesianChart.YAxes>
+
+                                <chart:LineSeries 
+                            ItemsSource="{Binding LastWeekGoals}" 
+                            XBindingPath="GoalDate"
+                            YBindingPath="Amount">
+                                </chart:LineSeries>
+                            </chart:SfCartesianChart>
+                        </Grid>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Total Saved Amount :"/>
+                            <Label Text="{Binding SelectedGoal.Amount}" HorizontalTextAlignment="Center" FontSize="20" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Daily Saved Amount :"/>
+                            <Label Text="{Binding SelectedGoal.Amount}" HorizontalTextAlignment="Center" FontSize="20" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Daily Recommended Amount :"/>
+                            <Label Text="{Binding SelectedGoal.Amount}" HorizontalTextAlignment="Center" FontSize="20" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Estimated Date :"/>
+                            <Label Text="{Binding SelectedGoal.Amount}" HorizontalTextAlignment="Center" FontSize="20" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                            <Label Text="Amount Saved Last Week :"/>
+                            <Label Text="{Binding SelectedGoal.Amount}" HorizontalTextAlignment="Center" FontSize="20" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+    </Grid>
+
 </ContentPage>

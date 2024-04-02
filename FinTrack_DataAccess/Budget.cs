@@ -28,22 +28,18 @@ namespace FinTrack_DataAccess
         public int Id { get; set; }
         [Required]
         public int UserId { get; set; }
-
         [Required]
         public required string Name { get; set; }
         public string? Description { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
         [Required]
         public string? Period { get; set; }
-        public int TotalSpentAmount { get; set; }
         [Required]
-        public int BudgetAmount { get; set; }
+        public int Amount { get; set; }
         [Required]
         public string? Status {  get; set; }
         public string? Category { get; set; }
-
         public bool Notify { get; set; }
     }
 }

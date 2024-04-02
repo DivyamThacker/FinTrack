@@ -48,6 +48,7 @@ namespace FinTrack_Business.Repository
         public async Task<GoalDTO>? Get(int id)
         {
             var result = await _db.Goals.Where(x => x.Id == id).ProjectTo<GoalDTO>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+
             if (result == null) return null;
             return result;
         }
@@ -66,7 +67,8 @@ namespace FinTrack_Business.Repository
                 objFromDb.Status = objDTO.Status;
                 objFromDb.Period = objDTO.Period;
                 objFromDb.Category = objDTO.Category;
-                objFromDb.GoalAmount = objDTO.GoalAmount;
+                objFromDb.Amount = objDTO.Amount;
+                objFromDb.Notify = objDTO.Notify;
                 objFromDb.StartTime = objDTO.StartTime;
                 objFromDb.EndTime = objDTO.EndTime;
                 _db.Goals.Update(objFromDb);
