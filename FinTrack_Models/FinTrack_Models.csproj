@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FinTrack_Common\FinTrack_Common.csproj" />
+  </ItemGroup>
+
 </Project>

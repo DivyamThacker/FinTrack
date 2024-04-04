@@ -35,7 +35,7 @@ public partial class NavigationComponent : ContentView
                 break;
 
             case "Budget":
-                Navigation.PushAsync(new BudgetPage());
+                Navigation.PushAsync(new BudgetsPage());
                 break;
 
             case "Goals":

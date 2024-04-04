@@ -32,17 +32,17 @@ namespace FinTrack.Mvvm.ViewModels
         public bool IsSelected { get; set; } = false;
         public bool IsCreating { get; set; } = false;
         public bool IsUpdating { get; set; } = false;
-        public bool IsLastMonthVisible { get; set; } = false;
+        public bool IsThisMonthVisible { get; set; } = false;
         public ICommand TimeBtnCommand { get; set; }
         public ICommand SelectedItemCommand { get; set; }
-        private IEnumerable<RecordDTO>? _lastWeekIncomeRecords;
-        public IEnumerable<RecordDTO>? LastWeekIncomeRecords
+        private IEnumerable<RecordDTO>? _ThisWeekIncomeRecords;
+        public IEnumerable<RecordDTO>? ThisWeekIncomeRecords
         {
-            get { return _lastWeekIncomeRecords; }
+            get { return _ThisWeekIncomeRecords; }
             private set
             {
-                _lastWeekIncomeRecords = value;
-                OnPropertyChanged(nameof(LastWeekIncomeRecords)); 
+                _ThisWeekIncomeRecords = value;
+                OnPropertyChanged(nameof(ThisWeekIncomeRecords)); 
             }
         }
 
@@ -53,9 +53,9 @@ namespace FinTrack.Mvvm.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public IEnumerable<RecordDTO>? LastWeekExpenseRecords { get; set; }
-        public IEnumerable<RecordDTO>? LastMonthIncomeRecords { get; set; }
-        public IEnumerable<RecordDTO>? LastMonthExpenseRecords { get; set; }
+        public IEnumerable<RecordDTO>? ThisWeekExpenseRecords { get; set; }
+        public IEnumerable<RecordDTO>? ThisMonthIncomeRecords { get; set; }
+        public IEnumerable<RecordDTO>? ThisMonthExpenseRecords { get; set; }
         public RecordsViewModel()
         {
             _recordApiService = new RecordApiService();
@@ -93,22 +93,22 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         
-        private DateTime GetLastWeekStart()
+        private DateTime GetThisWeekStart()
         {
             var today = DateTime.Now;
             return today.AddDays(-(int)today.DayOfWeek);//.StartOfWeek(DayOfWeek.Monday)
         }
 
-        private DateTime GetLastMonthStart()
+        private DateTime GetThisMonthStart()
         {
             return new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);//.StartOfWeek(DayOfWeek.Monday)
         }
 
         public void CalculateChartData()
         {
-            //LastWeekIncomeRecords =  Records.Where(x => x.IsIncome && x.RecordDate >= GetLastWeekStart().Date);
-            LastWeekIncomeRecords = Records
-            .Where(x => x.IsIncome && x.RecordDate >= GetLastWeekStart().Date)
+            //ThisWeekIncomeRecords =  Records.Where(x => x.IsIncome && x.RecordDate >= GetThisWeekStart().Date);
+            ThisWeekIncomeRecords = Records
+            .Where(x => x.IsIncome && x.RecordDate >= GetThisWeekStart().Date)
             .GroupBy(x => x.RecordDate.Date) // Group by the date part of the RecordDate
             .Select(g => new RecordDTO
             {
@@ -116,8 +116,8 @@ namespace FinTrack.Mvvm.ViewModels
                 Amount = g.Sum(x => x.Amount)
             });
 
-            LastWeekExpenseRecords = Records
-            .Where(x => !x.IsIncome && x.RecordDate >= GetLastWeekStart().Date)
+            ThisWeekExpenseRecords = Records
+            .Where(x => !x.IsIncome && x.RecordDate >= GetThisWeekStart().Date)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {
@@ -125,8 +125,8 @@ namespace FinTrack.Mvvm.ViewModels
                 Amount = g.Sum(x => x.Amount)
             });
 
-            LastMonthIncomeRecords = Records
-            .Where(x => x.IsIncome && x.RecordDate >= GetLastMonthStart().Date)
+            ThisMonthIncomeRecords = Records
+            .Where(x => x.IsIncome && x.RecordDate >= GetThisMonthStart().Date)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {
@@ -134,8 +134,8 @@ namespace FinTrack.Mvvm.ViewModels
                 Amount = g.Sum(x => x.Amount)
             });
 
-            LastMonthExpenseRecords = Records
-            .Where(x => !x.IsIncome && x.RecordDate >= GetLastMonthStart().Date)
+            ThisMonthExpenseRecords = Records
+            .Where(x => !x.IsIncome && x.RecordDate >= GetThisMonthStart().Date)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {
@@ -148,10 +148,10 @@ namespace FinTrack.Mvvm.ViewModels
             switch(text)
             {
                 case "WeekBtn":
-                    IsLastMonthVisible = false;
+                    IsThisMonthVisible = false;
                     break;
                 case "MonthBtn":
-                    IsLastMonthVisible = true;
+                    IsThisMonthVisible = true;
                     break;
             }
         }

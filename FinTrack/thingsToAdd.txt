@@ -1,5 +1,5 @@
 ﻿Do something about title of the page still showing,
-maybe add total button next to last month and last week
+maybe add total button next to This Month and This Week
 take toast code from tangy blazor
 think about page for liablities and assets
 otp system to login via email or phone
@@ -34,7 +34,7 @@ option to add more cards to track different things (MAYBE give a separate scroll
 option ot add recurring debts like Loan interests, Leasing, Mortgage,
 Give notification when predicted expense for a month is greater than the budget set,
 maybe add storage for deleted and completed goals,
-search funtionality searchs the records corressponding to the particular category in last month (add SearchResults Page) 
+search funtionality searchs the records corressponding to the particular category in This Month (add SearchResults Page) 
 --------------------------------------------------------------------
 Model variables:-
 
@@ -48,8 +48,6 @@ Budgets:- name, period(week, month, year, onetime(specify start and end date)), 
 daily average spent , daily average recommended expense to not overspend, expected date when budget money will end, status (pending, Busted/exceeded(overspent but time period not over) , underspent, overspent (time period over));, checkbox option to give notification when Budget is expected to run out.
 
 Transactions:- 
-
-
 Settings:- set first day of the week, month , year; , Clear all data, export csv file of the records, see old records with the given interval, old budgets and goals that are completed, notes (write notes to yourself), maybe sometype of customizable display, select start screen, maybe some type of security pincode, 
 
 Accounts:- Cash, Debit card , credit card etc.
@@ -102,23 +100,12 @@ reconciliation refers to the process of verifying that your financial records ma
 Syncfusion License Key:-
 	Key:Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcdnVVR2VeVUV/WUE=
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-remove calculation properties like last month amount from the dto and add them in entity in frontend
 add arrows to move between different months and weeks
-fix text validator works in Name field while creating new record or transaction.
-find out by IsRecordsEmpty is not working as expected
 
-when any record or transaction is added, the amount should be added to the goal saved amount
+fix text validator works in Name field while creating new record or transaction.
 
 send notification when goal or budget is not expected to be reached
 
-goal is the amount of money you saved(income - expense) and budget is max amount of money you want to spend
+add button of This Week and This Month to the list view of goals and budgets instead of the right side
 
-add button of last week and last month to the list view of goals and budgets instead of the right side
-
-add logic of extra things in Goal DTO while creating and updating it, in controller
-
-check if goals are loading properly ie. the properties are being computed properly every time the page is loaded
-
-according to previous migration, status is a required field in goal
-
-maybe add progressbar in the goal analytics
+make charts after seeing what to show in it after seeing timely bills

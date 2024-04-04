@@ -49,13 +49,84 @@ namespace FinTrack_Business.Repository
         public async Task<BudgetDTO?> Get(int id)
         {
             var result = await _db.Budgets.Where(x => x.Id == id).ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
-            if (result == null) return null;
-            return  result;
+            if (result == null) return new BudgetDTO();
+            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome)).ToListAsync();
+            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender)).ToListAsync();
+            result.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
+
+            result.DailySpentAmount = result.TotalSpentAmount / (DateTime.Now - result.StartTime).Days;
+            result.DailyRecommendedAmount = (result.Amount - result.TotalSpentAmount) / (result.EndTime - DateTime.Now).Days;
+            result.DailyRecommendedAmount = result.DailyRecommendedAmount < 0 ? 0 : result.DailyRecommendedAmount;
+            result.EstimatedDate = DateTime.Now.AddDays((result.Amount - result.TotalSpentAmount) / result.DailySpentAmount);
+            var ThisWeekRecords = records.Where(x => x.RecordDate >= DateTime.Now.AddDays(-7));
+            var ThisWeekTransactions = transactions.Where(x => x.TransactionDate >= DateTime.Now.AddDays(-7));
+
+            result.AmountSpentThisWeek = ThisWeekRecords.Sum(x => x.Amount) + ThisWeekTransactions.Sum(x => x.Amount);
+
+            if (result.TotalSpentAmount >= result.Amount)
+            {
+                result.Color = "Red";
+            }
+            else
+            {
+                result.Color = "Green";
+            }
+            //logic for status
+            if ((result.TotalSpentAmount <= result.Amount) && (result.EndTime > DateTime.Now))
+            {
+                result.Status = SD.Status_Pending;
+            }
+            else if ((result.TotalSpentAmount > result.Amount) && (result.EndTime > DateTime.Now))
+            {
+                result.Status = SD.Status_Busted;
+            }
+            else if ((result.TotalSpentAmount <= result.Amount) && (result.EndTime <= DateTime.Now))
+            {
+                result.Status = SD.Status_UnderSpent;
+            }
+            else if ((result.TotalSpentAmount > result.Amount) && (result.EndTime <= DateTime.Now))
+            {
+                result.Status = SD.Status_UnderSpent;
+            }
+            return result;
         }
 
         public async Task<IEnumerable<BudgetDTO>> GetAll()
         {
-            return await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            foreach (var budget in budgets)
+            {
+                var records = await _db.Records.Where(x => (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome)).ToListAsync();
+                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender)).ToListAsync();
+                budget.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
+                //logic for status
+                if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime > DateTime.Now))
+                {
+                    budget.Status = SD.Status_Pending;
+                }
+                else if ((budget.TotalSpentAmount > budget.Amount) && (budget.EndTime > DateTime.Now))
+                {
+                    budget.Status = SD.Status_Busted;
+                }
+                else if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime <= DateTime.Now))
+                {
+                    budget.Status = SD.Status_UnderSpent;
+                }
+                else if ((budget.TotalSpentAmount > budget.Amount) && (budget.EndTime <= DateTime.Now))
+                {
+                    budget.Status = SD.Status_UnderSpent;
+                }
+                //color logic
+                if (budget.TotalSpentAmount >= budget.Amount)
+                {
+                    budget.Color = "Red";
+                }
+                else
+                {
+                    budget.Color = "Green";
+                }
+            }
+            return budgets;
         }
 
         public async Task<BudgetDTO> Update(BudgetDTO objDTO)

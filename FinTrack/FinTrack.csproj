@@ -69,6 +69,7 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
         <PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.35" />
+        <PackageReference Include="Syncfusion.Maui.ProgressBar" Version="25.1.38" />
     </ItemGroup>
 
     <ItemGroup>
@@ -80,6 +81,9 @@
       <Compile Update="Mvvm\Components\NavigationComponent.xaml.cs">
         <DependentUpon>NavigationComponent.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Mvvm\Views\BudgetsPage.xaml.cs">
+        <DependentUpon>BudgetsPage.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -89,7 +93,7 @@
       <MauiXaml Update="Mvvm\Views\AccountsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
-      <MauiXaml Update="Mvvm\Views\BudgetPage.xaml">
+      <MauiXaml Update="Mvvm\Views\BudgetsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Views\GoalsPage.xaml">

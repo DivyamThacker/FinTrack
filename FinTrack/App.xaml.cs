@@ -7,7 +7,7 @@ namespace FinTrack
         {
             InitializeComponent();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcdnVVR2VeVUV/WUE=");
-            MainPage = new NavigationPage(new TransactionsPage());
+            MainPage = new NavigationPage(new BudgetsPage());
         }
     }
 }

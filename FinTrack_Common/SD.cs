@@ -7,6 +7,10 @@
         public const string Status_UnderSpent = "UnderSpent";
         public const string Status_OverSpent = "OverSpent";
 
+        public const string Status_Achieved = "Achieved";
+        public const string Status_Failed = "Failed";
+        public const string Status_Completed = "Completed";
+
         public const string Period_Week = "Week";
         public const string Period_Month = "Month";
         public const string Period_Year = "Year";

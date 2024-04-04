@@ -7,22 +7,6 @@ using System.Threading.Tasks;
 
 namespace FinTrack_DataAccess
 {
-    //public enum Period
-    //{
-    //    Week,
-    //    Month,
-    //    Year, 
-    //    OneTime
-    //}
-
-    //public enum Status
-    //{
-    //    Pending,
-    //    Busted, 
-    //    UnderSpent,
-    //    OverSpent
-    //}
-
     public class Budget
     {
         public int Id { get; set; }

@@ -17,6 +17,7 @@ namespace FinTrack.Mvvm.ViewModels
     {
         private readonly GoalApiService _goalApiService;
         public GoalDTO SelectedGoal { get; set; } = default!;
+        public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
         public ICommand SaveCommand { get; set; }
@@ -30,17 +31,17 @@ namespace FinTrack.Mvvm.ViewModels
         public bool IsSelected { get; set; } = false;
         public bool IsCreating { get; set; } = false;
         public bool IsUpdating { get; set; } = false;
-        public bool IsLastMonthVisible { get; set; } = false;
+        public bool IsThisMonthVisible { get; set; } = false;
         public ICommand TimeBtnCommand { get; set; }
         public ICommand SelectedItemCommand { get; set; }
-        private IEnumerable<GoalDTO>? _lastWeekGoals;
-        public IEnumerable<GoalDTO>? LastWeekGoals
+        private IEnumerable<GoalDTO>? _ThisWeekGoals;
+        public IEnumerable<GoalDTO>? ThisWeekGoals
         {
-            get { return _lastWeekGoals; }
+            get { return _ThisWeekGoals; }
             private set
             {
-                _lastWeekGoals = value;
-                OnPropertyChanged(nameof(LastWeekGoals));
+                _ThisWeekGoals = value;
+                OnPropertyChanged(nameof(ThisWeekGoals));
             }
         }
 
@@ -51,7 +52,7 @@ namespace FinTrack.Mvvm.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public IEnumerable<GoalDTO>? LastMonthGoals { get; set; }
+        public IEnumerable<GoalDTO>? ThisMonthGoals { get; set; }
         public GoalsViewModel()
         {
             _goalApiService = new GoalApiService();
@@ -96,21 +97,21 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
 
-        private DateTime GetLastWeekStart()
+        private DateTime GetThisWeekStart()
         {
             var today = DateTime.Now;
             return today.AddDays(-(int)today.DayOfWeek);//.StartOfWeek(DayOfWeek.Monday)
         }
 
-        private DateTime GetLastMonthStart()
+        private DateTime GetThisMonthStart()
         {
             return new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);//.StartOfWeek(DayOfWeek.Monday)
         }
 
         //public void CalculateChartData()
         //{
-        //    LastMonthGoals = Goals
-        //    .Where(x => x.StartTime >= GetLastMonthStart().Date)
+        //    ThisMonthGoals = Goals
+        //    .Where(x => x.StartTime >= GetThisMonthStart().Date)
         //    .GroupBy(x => x.GoalDate.Date)
         //    .Select(g => new GoalDTO
         //    {
@@ -123,19 +124,19 @@ namespace FinTrack.Mvvm.ViewModels
             switch (text)
             {
                 case "WeekBtn":
-                    IsLastMonthVisible = false;
+                    IsThisMonthVisible = false;
                     break;
                 case "MonthBtn":
-                    IsLastMonthVisible = true;
+                    IsThisMonthVisible = true;
                     break;
             }
         }
 
 
 
-        public void OnItemTapped(GoalDTO goal)
+        public async void OnItemTapped(GoalDTO goal)
         {
-            SelectedGoal = goal;
+            SelectedGoal = await _goalApiService.GetGoal(goal.Id);
             IsSelected = true;
         }
 
@@ -184,7 +185,8 @@ namespace FinTrack.Mvvm.ViewModels
                     {
                         IsSelected = false;
                         await _goalApiService.DeleteGoal(SelectedGoal.Id);
-                        Goals.Remove(SelectedGoal);
+                        //Goals.Remove(SelectedGoal);
+                        await GetGoals();
                         //CalculateChartData();
                     }
                     break;
@@ -208,6 +210,8 @@ namespace FinTrack.Mvvm.ViewModels
 
         public async Task SaveCommandClicked()
         {
+            if (NewGoal.Status == null || NewGoal.Status == "")
+                NewGoal.Status = SD.Status_Pending;
             if (IsUpdating)
             {
                 await _goalApiService.UpdateGoal(NewGoal);

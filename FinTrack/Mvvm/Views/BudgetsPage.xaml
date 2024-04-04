@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FinTrack.Mvvm.Views.GoalsPage"
-             xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
+             x:Class="FinTrack.Mvvm.Views.BudgetsPage"
+                          xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
              xmlns:converters="clr-namespace:FinTrack.Converters"
-             Title="GoalsPage"
+             Title="BudgetsPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ContentPage.Resources>
@@ -30,7 +30,7 @@
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"  Margin="20, 20, 40, 20" ColumnSpacing="15" RowSpacing="15" ColumnDefinitions="1*, 1*" RowDefinitions="1*,4.5*">
 
             <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="10" >
-                <Label Text="Goals" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <Label Text="Budgets" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                 <HorizontalStackLayout  VerticalOptions="Start" HorizontalOptions="Center" Spacing="70">
                     <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
                         <Label Text="Viewing" Grid.Row="0" FontSize="20"/>
@@ -48,7 +48,7 @@
                 <HorizontalStackLayout HorizontalOptions="End" Spacing="20" >
                     <ImageButton x:Name="ViewBtn" Command="{Binding NavigateCommand}" 
                             CommandParameter="View" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0" 
-                            ToolTipProperties.Text="View List of Goals">
+                            ToolTipProperties.Text="View List of Budgets">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="Icons" Glyph="&#xe81b;"
                                 Color="{DynamicResource LightBlue}" Size="25"/>
@@ -56,7 +56,7 @@
                     </ImageButton>
                     <ImageButton x:Name="CreateBtn" Command="{Binding NavigateCommand}" 
                             CommandParameter="Create" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
-                                 ToolTipProperties.Text="Create New Goal">
+                                 ToolTipProperties.Text="Create New Budget">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="Icons" Glyph="&#xe807;"
         Color="{DynamicResource LightBlue}" Size="25"/>
@@ -64,7 +64,7 @@
                     </ImageButton>
                     <ImageButton  x:Name="UpdateBtn" Command="{Binding NavigateCommand}" 
                             CommandParameter="Update" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
-                                  ToolTipProperties.Text="Update Existing Goals">
+                                  ToolTipProperties.Text="Update Existing Budgets">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="Icons" Glyph="&#xe812;"
         Color="{DynamicResource LightBlue}" Size="25"/>
@@ -72,7 +72,7 @@
                     </ImageButton>
                     <ImageButton x:Name="DeleteBtn" Command="{Binding NavigateCommand}" 
                             CommandParameter="Delete" HeightRequest="25" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Grid.Column="0"
-                                 ToolTipProperties.Text="Delete Selected Goal">
+                                 ToolTipProperties.Text="Delete Selected Budget">
                         <ImageButton.Source>
                             <FontImageSource FontFamily="Icons" Glyph="&#xe817;"
         Color="{DynamicResource LightBlue}" Size="25"/>
@@ -85,7 +85,7 @@
                 <ScrollView>
                     <VerticalStackLayout IsVisible="{Binding IsFormVisible}" Spacing="10">
                         <Label Text="Name :" />
-                        <Entry Placeholder="Enter Name" Text="{Binding NewGoal.Name}">
+                        <Entry Placeholder="Enter Name" Text="{Binding NewBudget.Name}">
                             <Entry.Behaviors>
                                 <toolkit:TextValidationBehavior 
                             Flags="ValidateOnAttaching,ValidateOnValueChanged" 
@@ -93,24 +93,24 @@
                             </Entry.Behaviors>
                         </Entry>
                         <Label Text="Amount :" />
-                        <Entry Placeholder="Enter Amount" Text="{Binding NewGoal.Amount}" />
+                        <Entry Placeholder="Enter Amount" Text="{Binding NewBudget.Amount}" />
 
-                        <Picker Title="Select Period: " ItemsSource="{Binding Periods}" SelectedItem="{Binding NewGoal.Period, Mode=TwoWay}" SelectedIndexChanged="Picker_SelectedIndexChanged" />
+                        <Picker Title="Select Period: " ItemsSource="{Binding Periods}" SelectedItem="{Binding NewBudget.Period, Mode=TwoWay}" SelectedIndexChanged="Picker_SelectedIndexChanged" />
                         <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsDatePickerVisible}" >
                             <Label Text="Start Date :" VerticalOptions="Center"/>
-                            <DatePicker Date="{Binding NewGoal.StartTime}" />
+                            <DatePicker Date="{Binding NewBudget.StartTime}" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="10" IsVisible="{Binding IsDatePickerVisible}" >
                             <Label Text="End Date  :" VerticalOptions="Center"/>
-                            <DatePicker Date="{Binding NewGoal.EndTime}" />
+                            <DatePicker Date="{Binding NewBudget.EndTime}" />
                         </HorizontalStackLayout>
-                        <Picker Title="Select Category: " ItemsSource="{Binding Categories}" SelectedItem="{Binding NewGoal.Category}" />
+                        <Picker Title="Select Category: " ItemsSource="{Binding Categories}" SelectedItem="{Binding NewBudget.Category}" />
                         <HorizontalStackLayout Spacing="10" >
                             <Label Text="Do you want to get notified about the goal data ?" VerticalOptions="Center"/>
-                            <CheckBox IsChecked="{Binding NewGoal.Notify}"/>
+                            <CheckBox IsChecked="{Binding NewBudget.Notify}"/>
                         </HorizontalStackLayout>
                         <Label Text="Description:"/>
-                        <Editor Placeholder="Enter Description" Text="{Binding NewGoal.Description}" HeightRequest="100" />
+                        <Editor Placeholder="Enter Description" Text="{Binding NewBudget.Description}" HeightRequest="100" />
                         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" >
                             <Button Text="Cancel" Command="{Binding CancelComand}" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" VerticalOptions="Center" WidthRequest="300"/>
                             <Button Text="Save" Command="{Binding SaveCommand}" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" VerticalOptions="Center" WidthRequest="300"/>
@@ -119,7 +119,7 @@
                 </ScrollView>
             </Border>
             <Border IsVisible="{Binding IsListVisible}" Grid.Row="1" Grid.Column="0" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10">
-                <ListView x:Name="GoalsListView" IsVisible="{Binding IsListVisible}" ItemsSource="{Binding Goals}"  SelectedItem="{Binding SelectedGoal}" ItemTapped="GoalsListView_ItemTapped">
+                <ListView x:Name="BudgetsListView" IsVisible="{Binding IsListVisible}" ItemsSource="{Binding Budgets}"  SelectedItem="{Binding SelectedBudget}" ItemTapped="BudgetsListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -147,68 +147,56 @@
 
             </Border>
             <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10" >
-                <Label Text="Select a Goal to see its data" IsVisible="{Binding IsSelected, Converter={StaticResource BoolInverter}}" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Label Text="Select a Budget to see its data" IsVisible="{Binding IsSelected, Converter={StaticResource BoolInverter}}" HorizontalOptions="Center" VerticalOptions="Center" />
             </Border>
 
             <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10" IsVisible="{Binding IsSelected}">
                 <ScrollView  IsVisible="{Binding IsSelected}" >
 
                     <VerticalStackLayout Spacing="10" IsVisible="{Binding IsSelected}">
-                        <!--<Label Text="Add some Goals to see more data" IsVisible="{Binding IsGoalsEmpty}" HorizontalOptions="Center" VerticalOptions="Center" />-->
-                        <Label Text="Goal Analytics" FontSize="20" FontAttributes="Bold" TextColor="White"  HorizontalOptions="Center"/>
-                        <!--<HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
-                            <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
-                                <Button x:Name="WeekBtn" Text="This Week" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent" Command="{Binding TimeBtnCommand}" 
-                               CommandParameter="WeekBtn"/>
-                                <BoxView IsVisible="{Binding IsThisMonthVisible, Converter={StaticResource BoolInverter}}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
-                            </Grid>
-                            <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
-                                <Button x:Name="MonthBtn" Text="This Month" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent"  Command="{Binding TimeBtnCommand}" CommandParameter="MonthBtn"/>
-                                <BoxView IsVisible="{Binding IsThisMonthVisible}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
-                            </Grid>
-                        </HorizontalStackLayout>-->
+                        <Label Text="Budget Analytics" FontSize="20" FontAttributes="Bold" TextColor="White"  HorizontalOptions="Center"/>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Name :"/>
-                            <Label Text="{Binding SelectedGoal.Name}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding SelectedBudget.Name}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Status :"/>
-                            <Label Text="{Binding SelectedGoal.Status}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding SelectedBudget.Status}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Amount :"/>
-                        <Label Text="{Binding SelectedGoal.Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}"/>
+                            <Label Text="{Binding SelectedBudget.Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}"/>
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Start Date :"/>
-                            <Label Text="{Binding SelectedGoal.StartTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding SelectedBudget.StartTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="End Date :"/>
-                            <Label Text="{Binding SelectedGoal.EndTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding SelectedBudget.EndTime, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Category :"/>
-                            <Label Text="{Binding SelectedGoal.Category}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="{Binding SelectedBudget.Category}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Description :"/>
-                            <Label Text="{Binding SelectedGoal.Description}" HorizontalTextAlignment="Center"  LineBreakMode="WordWrap" VerticalTextAlignment="Center"   />
+                            <Label Text="{Binding SelectedBudget.Description}" HorizontalTextAlignment="Center"  LineBreakMode="WordWrap" VerticalTextAlignment="Center"   />
                         </HorizontalStackLayout>
 
                         <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" 
                               BackgroundColor="{DynamicResource PageBackgroundColor}">
-                            <progressBar:SfCircularProgressBar Progress="{Binding SelectedGoal.TotalSavedAmount}"
-                              x:Name="GoalProgressBar"
+                            <progressBar:SfCircularProgressBar Progress="{Binding SelectedBudget.TotalSpentAmount}"
+                              x:Name="BudgetProgressBar"
                               Minimum="0"
-                              Maximum="{Binding SelectedGoal.Amount}"
+                              Maximum="{Binding SelectedBudget.Amount}"
                               AnimationEasing="{x:Static Easing.CubicInOut}">
                                 <progressBar:SfCircularProgressBar.BackgroundColor>
                                     <Color>Transparent</Color>
                                 </progressBar:SfCircularProgressBar.BackgroundColor>
-                                
+
                                 <progressBar:SfCircularProgressBar.GradientStops>
                                     <progressBar:ProgressGradientStop Color="Red" Value="0"/>
                                     <progressBar:ProgressGradientStop Color="Green" Value="100"/>
@@ -220,13 +208,13 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <Label TextColor="Green"  
-                                        Text="{Binding SelectedGoal, Converter={StaticResource AmountToPercentageConverter}, StringFormat='{0}%'}"
+                                        Text="{Binding SelectedBudget, Converter={StaticResource AmountToPercentageConverter}, StringFormat='{0}%'}"
                                            HorizontalTextAlignment="Center" 
                                            VerticalTextAlignment="End">
-                                          </Label>
+                                        </Label>
                                         <Label Grid.Row="1" 
                                            TextColor="Green" 
-                                           Text="Achieved" 
+                                           Text="Used" 
                                            VerticalOptions="Start" 
                                            HorizontalTextAlignment="Center" 
                                            VerticalTextAlignment="Start">
@@ -238,28 +226,28 @@
                         </Grid>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
-                            <Label Text="Total Saved Amount :"/>
-                            <Label Text="{Binding SelectedGoal.TotalSavedAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="Total Spent Amount :"/>
+                            <Label Text="{Binding SelectedBudget.TotalSpentAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
-                            <Label Text="Daily Saved Amount :"/>
-                            <Label Text="{Binding SelectedGoal.DailySavedAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="Daily Spent Amount :"/>
+                            <Label Text="{Binding SelectedBudget.DailySpentAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Daily Recommended Amount :"/>
-                            <Label Text="{Binding SelectedGoal.DailyRecommendedAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding SelectedBudget.DailyRecommendedAmount, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
                             <Label Text="Estimated Date :"/>
-                            <Label Text="{Binding SelectedGoal.EstimatedDate, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding SelectedBudget.EstimatedDate, StringFormat='{}{0: MMMM dd, yyyy}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="25" HorizontalOptions="Start" Padding="10">
-                            <Label Text="Amount Saved This Week :"/>
-                            <Label Text="{Binding SelectedGoal.AmountSavedThisWeek, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="Amount Spent This Week :"/>
+                            <Label Text="{Binding SelectedBudget.AmountSpentThisWeek, StringFormat='{}{0:C}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>

@@ -144,16 +144,16 @@
                         <Label Text="Records Analytics" FontSize="20" FontAttributes="Bold" TextColor="White"  HorizontalOptions="Center"/>
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
                             <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
-                                <Button x:Name="WeekBtn" Text="Last Week" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent" Command="{Binding TimeBtnCommand}" 
+                                <Button x:Name="WeekBtn" Text="This Week" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent" Command="{Binding TimeBtnCommand}" 
                                CommandParameter="WeekBtn"/>
-                                <BoxView IsVisible="{Binding IsLastMonthVisible, Converter={StaticResource BoolInverter}}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                                <BoxView IsVisible="{Binding IsThisMonthVisible, Converter={StaticResource BoolInverter}}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
                             </Grid>
                             <Grid  RowDefinitions="10* ,1*" RowSpacing="5">
-                                <Button x:Name="MonthBtn" Text="Last Month" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent"  Command="{Binding TimeBtnCommand}" CommandParameter="MonthBtn"/>
-                        <BoxView IsVisible="{Binding IsLastMonthVisible}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
+                                <Button x:Name="MonthBtn" Text="This Month" BackgroundColor="Transparent" TextColor="White" WidthRequest="130" HeightRequest="40" Grid.Row="0" FontSize="20" BorderColor="Transparent"  Command="{Binding TimeBtnCommand}" CommandParameter="MonthBtn"/>
+                        <BoxView IsVisible="{Binding IsThisMonthVisible}" BackgroundColor="{DynamicResource LightBlue}" Color="Cyan" Grid.Row="1" MinimumHeightRequest="1"/>
                             </Grid>
                         </HorizontalStackLayout>
-                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsLastMonthVisible, Converter={StaticResource BoolInverter}}">
+                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsThisMonthVisible, Converter={StaticResource BoolInverter}}">
                             <Label Text="Income" Grid.Row="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"  />
                             <chart:SfCartesianChart Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <chart:SfCartesianChart.XAxes>
@@ -165,13 +165,13 @@
                                 </chart:SfCartesianChart.YAxes>
 
                                 <chart:LineSeries 
-                            ItemsSource="{Binding LastWeekIncomeRecords}" 
+                            ItemsSource="{Binding ThisWeekIncomeRecords}" 
                             XBindingPath="RecordDate"
                             YBindingPath="Amount">
                                 </chart:LineSeries>
                             </chart:SfCartesianChart>
                         </Grid>
-                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsLastMonthVisible, Converter={StaticResource BoolInverter}}" >
+                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsThisMonthVisible, Converter={StaticResource BoolInverter}}" >
                             <Label Text="Expense" Grid.Row="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" />
                             <chart:SfCartesianChart Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <chart:SfCartesianChart.XAxes>
@@ -183,13 +183,13 @@
                                 </chart:SfCartesianChart.YAxes>
 
                                 <chart:LineSeries 
-                            ItemsSource="{Binding LastWeekExpenseRecords}" 
+                            ItemsSource="{Binding ThisWeekExpenseRecords}" 
                             XBindingPath="RecordDate"
                             YBindingPath="Amount">
                                 </chart:LineSeries>
                             </chart:SfCartesianChart>
                         </Grid>
-                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsLastMonthVisible}">
+                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsThisMonthVisible}">
                             <Label Text="Income" Grid.Row="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"  />
                             <chart:SfCartesianChart Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <chart:SfCartesianChart.XAxes>
@@ -201,13 +201,13 @@
                                 </chart:SfCartesianChart.YAxes>
 
                                 <chart:LineSeries 
-                                    ItemsSource="{Binding LastMonthIncomeRecords}" 
+                                    ItemsSource="{Binding ThisMonthIncomeRecords}" 
                                     XBindingPath="RecordDate"
                                     YBindingPath="Amount">
                                 </chart:LineSeries>
                             </chart:SfCartesianChart>
                         </Grid>
-                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsLastMonthVisible}" >
+                        <Grid Padding="20" RowDefinitions="1*,10*" RowSpacing="10" IsVisible="{Binding IsThisMonthVisible}" >
                             <Label Text="Expense" Grid.Row="0" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" />
                             <chart:SfCartesianChart Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <chart:SfCartesianChart.XAxes>
@@ -219,7 +219,7 @@
                                 </chart:SfCartesianChart.YAxes>
 
                                 <chart:LineSeries 
-                                    ItemsSource="{Binding LastMonthExpenseRecords}" 
+                                    ItemsSource="{Binding ThisMonthExpenseRecords}" 
                                     XBindingPath="RecordDate"
                                     YBindingPath="Amount">
                                 </chart:LineSeries>

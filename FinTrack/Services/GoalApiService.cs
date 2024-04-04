@@ -63,16 +63,16 @@ namespace FinTrack.Services
             return new GoalDTO();
         }
 
-        //public async Task<GoalDTO> GetGoal(int id)
-        //{
-        //    var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
-        //    response.EnsureSuccessStatusCode();
-        //    var json = await response.Content.ReadAsStringAsync();
-        //    var goal = System.Text.Json.JsonSerializer.Deserialize<GoalDTO>(json);
-        //    if (goal != null)
-        //        return goal;
-        //    return new GoalDTO();
-        //}
+        public async Task<GoalDTO> GetGoal(int id)
+        {
+            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var goal = System.Text.Json.JsonSerializer.Deserialize<GoalDTO>(json);
+            if (goal != null)
+                return goal;
+            return new GoalDTO();
+        }
 
         public async Task<int> DeleteGoal(int id)
         {

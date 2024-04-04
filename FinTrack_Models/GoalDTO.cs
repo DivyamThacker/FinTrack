@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using FinTrack_Common;
 
 namespace FinTrack_Models
 {
@@ -14,7 +15,7 @@ namespace FinTrack_Models
         public int Id { get; set; }
         [Required]
         [JsonPropertyName("userId")]
-        public int UserId { get; set; }
+        public int UserId { get; set; } = 1;
 
         [Required]
         [JsonPropertyName("name")]
@@ -32,7 +33,7 @@ namespace FinTrack_Models
         [JsonPropertyName("amount")]
         public int Amount { get; set; }
         [JsonPropertyName("category")]
-        public string? Category { get; set; }
+        public string? Category { get; set; } = SD.Category_All;
         [JsonPropertyName("notify")]
         public bool Notify { get; set; }
         [JsonPropertyName("status")]
@@ -45,8 +46,8 @@ namespace FinTrack_Models
         public int DailyRecommendedAmount { get; set; } //to reach the daily goal
         [JsonPropertyName("estimatedDate")]
         public DateTime EstimatedDate { get; set; } //to reach the goal amount
-        [JsonPropertyName("amountSavedLastWeek")]
-        public int AmountSavedLastWeek { get; set; } //to track the progress
+        [JsonPropertyName("amountSavedThisWeek")]
+        public int AmountSavedThisWeek { get; set; } //to track the progress
         [JsonPropertyName("color")]
         public string? Color { get; set; }
     }

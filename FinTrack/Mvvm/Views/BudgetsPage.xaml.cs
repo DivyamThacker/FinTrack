@@ -4,22 +4,22 @@ using FinTrack_Models;
 
 namespace FinTrack.Mvvm.Views;
 
-public partial class GoalsPage : ContentPage
+public partial class BudgetsPage : ContentPage
 {
-	public GoalsPage()
+	public BudgetsPage()
 	{
 		InitializeComponent();
-        MyViewModel = new GoalsViewModel();
+        MyViewModel = new BudgetsViewModel();
         BindingContext = MyViewModel;
     }
-    public GoalsViewModel MyViewModel { get; private set; }
+    public BudgetsViewModel MyViewModel { get; private set; }
 
-    private void GoalsListView_ItemTapped(object sender, ItemTappedEventArgs e)
+    private void BudgetsListView_ItemTapped(object sender, ItemTappedEventArgs e)
     {
         if (e.Item != null)
         {
-            MyViewModel.SelectedGoal = (GoalDTO)e.Item;  // Update selected item in view model
-            MyViewModel.SelectedItemCommand?.Execute(MyViewModel.SelectedGoal); // Execute the command if available
+            MyViewModel.SelectedBudget = (BudgetDTO)e.Item;  // Update selected item in view model
+            MyViewModel.SelectedItemCommand?.Execute(MyViewModel.SelectedBudget); // Execute the command if available
             // Optional: Perform additional logic with the selected item here
         }
     }

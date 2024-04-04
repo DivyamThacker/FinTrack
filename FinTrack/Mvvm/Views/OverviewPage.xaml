@@ -16,8 +16,8 @@
     ColumnDefinitions="1*,1*,1*" RowDefinitions="1*,1*,1*,1*,1*,1*,1*" RowSpacing="25" ColumnSpacing="25" Margin="20, 20, 40, 20">
             <Label Text="OVERVIEW" FontSize="20" FontAttributes="Bold" TextColor="White" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" Grid.Row="0" />
             <HorizontalStackLayout Grid.Column="2" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
-                <Button Text="Last Week" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
-                <Button Text="Last Month" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
+                <Button Text="This Week" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
+                <Button Text="This Month" BackgroundColor="{DynamicResource LightBlue}" TextColor="White" WidthRequest="110" HeightRequest="40"/>
             </HorizontalStackLayout>
 
             <Frame BackgroundColor="Pink" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">

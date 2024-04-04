@@ -28,10 +28,10 @@ namespace FinTrack_Models
         public string? Category { get; set; }
         [JsonPropertyName("isIncome")]
         public bool IsIncome { get; set; }
-        //[JsonPropertyName("lastWeekAmount")]
-        //public int LastWeekAmount { get; set; }
-        //[JsonPropertyName("lastMonthAmount")]
-        //public int LastMonthAmount { get; set; }
+        //[JsonPropertyName("ThisWeekAmount")]
+        //public int ThisWeekAmount { get; set; }
+        //[JsonPropertyName("ThisMonthAmount")]
+        //public int ThisMonthAmount { get; set; }
         [JsonPropertyName("color")]
         public string? Color { get; set; }
     }
