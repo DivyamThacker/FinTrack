@@ -109,6 +109,7 @@ namespace FinTrack.Mvvm.ViewModels
             //ThisWeekIncomeRecords =  Records.Where(x => x.IsIncome && x.RecordDate >= GetThisWeekStart().Date);
             ThisWeekIncomeRecords = Records
             .Where(x => x.IsIncome && x.RecordDate >= GetThisWeekStart().Date)
+            .OrderBy(x => x.RecordDate)
             .GroupBy(x => x.RecordDate.Date) // Group by the date part of the RecordDate
             .Select(g => new RecordDTO
             {
@@ -118,6 +119,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisWeekExpenseRecords = Records
             .Where(x => !x.IsIncome && x.RecordDate >= GetThisWeekStart().Date)
+            .OrderBy(x => x.RecordDate)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {
@@ -127,6 +129,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisMonthIncomeRecords = Records
             .Where(x => x.IsIncome && x.RecordDate >= GetThisMonthStart().Date)
+            .OrderBy(x => x.RecordDate)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {
@@ -136,6 +139,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisMonthExpenseRecords = Records
             .Where(x => !x.IsIncome && x.RecordDate >= GetThisMonthStart().Date)
+            .OrderBy(x => x.RecordDate)
             .GroupBy(x => x.RecordDate.Date) 
             .Select(g => new RecordDTO
             {

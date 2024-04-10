@@ -57,7 +57,12 @@ namespace FinTrack_Business.Repository
             result.DailySavedAmount = result.TotalSavedAmount / (DateTime.Now - result.StartTime).Days;
             result.DailyRecommendedAmount = (result.Amount- result.TotalSavedAmount) / (result.EndTime - DateTime.Now).Days;
             result.DailyRecommendedAmount = result.DailyRecommendedAmount < 0 ? 0 : result.DailyRecommendedAmount;
+            
             result.EstimatedDate = DateTime.Now.AddDays((result.Amount - result.TotalSavedAmount) / result.DailySavedAmount);
+            if (result.TotalSavedAmount <= 0)
+            {
+                result.EstimatedDate = DateTime.Now;
+            }
             var ThisWeekRecords = records.Where(x => x.RecordDate >= DateTime.Now.AddDays(-7));
             var ThisWeekTransactions = transactions.Where(x => x.TransactionDate >= DateTime.Now.AddDays(-7));
 

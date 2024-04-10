@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinTrack_Common;
+using System.ComponentModel.DataAnnotations;
 using System.Net.NetworkInformation;
 using System.Text.Json.Serialization;
 
@@ -31,7 +32,7 @@ namespace FinTrack_Models
         [JsonPropertyName("notify")]
         public bool Notify { get; set; }
         [JsonPropertyName("status")]
-        public string? Status { get; set; }
+        public string? Status { get; set; } = SD.Status_Pending;
         [JsonPropertyName("totalSpentAmount")]
         public int DailySpentAmount { get; set; }//average of total spent amount till now and the days passed
         [JsonPropertyName("totalSavedAmount")]

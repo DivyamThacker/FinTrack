@@ -210,8 +210,8 @@
                                 </progressBar:SfCircularProgressBar.BackgroundColor>
                                 
                                 <progressBar:SfCircularProgressBar.GradientStops>
-                                    <progressBar:ProgressGradientStop Color="Red" Value="0"/>
-                                    <progressBar:ProgressGradientStop Color="Green" Value="100"/>
+                                    <progressBar:ProgressGradientStop Color="Green" Value="0"/>
+                                    <progressBar:ProgressGradientStop Color="DarkGreen" Value="100"/>
                                 </progressBar:SfCircularProgressBar.GradientStops>
                                 <progressBar:SfCircularProgressBar.Content>
                                     <Grid>

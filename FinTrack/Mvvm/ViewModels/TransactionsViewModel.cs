@@ -106,6 +106,7 @@ namespace FinTrack.Mvvm.ViewModels
         {
             ThisWeekIncomeTransactions = Transactions
             .Where(x => !x.IsUserSender && x.TransactionDate >= GetThisWeekStart().Date)
+            .OrderBy(x => x.TransactionDate)
             .GroupBy(x => x.TransactionDate.Date)
             .Select(g => new TransactionDTO
             {
@@ -115,6 +116,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisWeekExpenseTransactions = Transactions
             .Where(x => x.IsUserSender && x.TransactionDate >= GetThisWeekStart().Date)
+            .OrderBy(x => x.TransactionDate)
             .GroupBy(x => x.TransactionDate.Date)
             .Select(g => new TransactionDTO
             {
@@ -124,6 +126,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisMonthIncomeTransactions = Transactions
             .Where(x => !x.IsUserSender && x.TransactionDate >= GetThisMonthStart().Date)
+            .OrderBy(x => x.TransactionDate)
             .GroupBy(x => x.TransactionDate.Date)
             .Select(g => new TransactionDTO
             {
@@ -134,6 +137,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             ThisMonthExpenseTransactions = Transactions
             .Where(x => x.IsUserSender && x.TransactionDate >= GetThisMonthStart().Date)
+            .OrderBy(x => x.TransactionDate)
             .GroupBy(x => x.TransactionDate.Date)
             .Select(g => new TransactionDTO
             {

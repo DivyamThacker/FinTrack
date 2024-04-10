@@ -37,7 +37,7 @@ namespace FinTrack_Models
         [JsonPropertyName("notify")]
         public bool Notify { get; set; }
         [JsonPropertyName("status")]
-        public string? Status { get; set; }
+        public string? Status { get; set; } = SD.Status_Pending;
         [JsonPropertyName("totalSavedAmount")]
         public int TotalSavedAmount { get; set; }//same as total Icome amount till now minus expenses (for now)
         [JsonPropertyName("dailySavedAmount")]
