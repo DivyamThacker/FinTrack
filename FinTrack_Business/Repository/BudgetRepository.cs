@@ -50,13 +50,23 @@ namespace FinTrack_Business.Repository
         {
             var result = await _db.Budgets.Where(x => x.Id == id).ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             if (result == null) return new BudgetDTO();
-            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome)).ToListAsync();
-            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender)).ToListAsync();
+            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
             result.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
 
-            result.DailySpentAmount = result.TotalSpentAmount / (DateTime.Now - result.StartTime).Days;
+            if (result.StartTime == DateTime.Now)
+                result.DailySpentAmount = 0;
+            else
+                result.DailySpentAmount = result.TotalSpentAmount / (DateTime.Now - result.StartTime).Days;
+
+            if (result.EndTime <= DateTime.Now || result.Amount < result.TotalSpentAmount)
+                result.DailyRecommendedAmount = 0;
+            else
             result.DailyRecommendedAmount = (result.Amount - result.TotalSpentAmount) / (result.EndTime - DateTime.Now).Days;
             result.DailyRecommendedAmount = result.DailyRecommendedAmount < 0 ? 0 : result.DailyRecommendedAmount;
+            
+            if (result.DailySpentAmount == 0 || result.TotalSpentAmount > result.Amount) result.EstimatedDate = DateTime.Now;
+            else
             result.EstimatedDate = DateTime.Now.AddDays((result.Amount - result.TotalSpentAmount) / result.DailySpentAmount);
             var ThisWeekRecords = records.Where(x => x.RecordDate >= DateTime.Now.AddDays(-7));
             var ThisWeekTransactions = transactions.Where(x => x.TransactionDate >= DateTime.Now.AddDays(-7));
@@ -96,8 +106,8 @@ namespace FinTrack_Business.Repository
             var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).ToListAsync();
             foreach (var budget in budgets)
             {
-                var records = await _db.Records.Where(x => (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome)).ToListAsync();
-                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender)).ToListAsync();
+                var records = await _db.Records.Where(x => (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
                 budget.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
                 //logic for status
                 if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime > DateTime.Now))

@@ -26,17 +26,6 @@ namespace FinTrack.Services
             var json = await response.Content.ReadAsStringAsync();
             var budgets = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);
 
-            //foreach (var budget in budgets)
-            //{
-            //    if (budget.TotalSpentAmount <= 0)
-            //    {
-            //        budget.Color = "Red";
-            //    }
-            //    else
-            //    {
-            //        budget.Color = "Green";
-            //    }
-            //}
 
             return budgets ?? new ObservableCollection<BudgetDTO>();
         }

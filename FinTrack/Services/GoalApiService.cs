@@ -26,18 +26,6 @@ namespace FinTrack.Services
             var json = await response.Content.ReadAsStringAsync();
             var goals = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<GoalDTO>>(json);
 
-            foreach (var goal in goals)
-            {
-                if (goal.TotalSavedAmount<=0)
-                {
-                    goal.Color = "Red";
-                }
-                else
-                {
-                    goal.Color = "Green";
-                }
-            }
-
             return goals ?? new ObservableCollection<GoalDTO>();
         }
 

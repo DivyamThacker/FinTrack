@@ -96,4 +96,3 @@ send notification when goal or budget is not expected to be reached
 
 add button of This Week and This Month to the list view of goals and budgets instead of the right side
 
-add this month or this week logic in all frames

@@ -50,31 +50,35 @@ namespace FinTrack_Business.Repository
         {
             var result = await _db.Goals.Where(x => x.Id == id).ProjectTo<GoalDTO>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             if (result == null) return new GoalDTO();
-            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) ).ToListAsync();
-            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime)).ToListAsync();
-            result.TotalSavedAmount = records.Where(x=>x.IsIncome).Sum(x => x.Amount) - records.Where(x => !x.IsIncome).Sum(x => x.Amount) + transactions.Where(x => !x.IsUserSender).Sum(x => x.Amount) - transactions.Where(x => x.IsUserSender).Sum(x => x.Amount);
+            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
 
-            result.DailySavedAmount = result.TotalSavedAmount / (DateTime.Now - result.StartTime).Days;
+            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+            result.TotalSavedAmount = records.Where(x=>x.IsIncome).Sum(x => x.Amount) - records.Where(x => !x.IsIncome).Sum(x => x.Amount) + transactions.Where(x => !x.IsUserSender).Sum(x => x.Amount) - transactions.Where(x => x.IsUserSender).Sum(x => x.Amount);
+            if  (result.StartTime == DateTime.Now)
+                  result.DailySavedAmount = 0;
+            else
+                result.DailySavedAmount = result.TotalSavedAmount / (DateTime.Now - result.StartTime).Days;
+
+            if (result.EndTime <= DateTime.Now || result.Amount > result.TotalSavedAmount)
+                result.DailyRecommendedAmount = 0;
+            else
             result.DailyRecommendedAmount = (result.Amount- result.TotalSavedAmount) / (result.EndTime - DateTime.Now).Days;
-            result.DailyRecommendedAmount = result.DailyRecommendedAmount < 0 ? 0 : result.DailyRecommendedAmount;
             
+            if (result.DailySavedAmount ==0 || result.TotalSavedAmount <= 0)   result.EstimatedDate = DateTime.Now;
+            else
             result.EstimatedDate = DateTime.Now.AddDays((result.Amount - result.TotalSavedAmount) / result.DailySavedAmount);
-            if (result.TotalSavedAmount <= 0)
-            {
-                result.EstimatedDate = DateTime.Now;
-            }
             var ThisWeekRecords = records.Where(x => x.RecordDate >= DateTime.Now.AddDays(-7));
             var ThisWeekTransactions = transactions.Where(x => x.TransactionDate >= DateTime.Now.AddDays(-7));
 
             result.AmountSavedThisWeek = ThisWeekRecords.Where(x => x.IsIncome).Sum(x => x.Amount) - ThisWeekRecords.Where(x => !x.IsIncome).Sum(x => x.Amount) + ThisWeekTransactions.Where(x => !x.IsUserSender).Sum(x => x.Amount) - ThisWeekTransactions.Where(x => x.IsUserSender).Sum(x => x.Amount);
 
-            if (result.TotalSavedAmount <= 0)
+            if (result.TotalSavedAmount > result.Amount)
             {
-                result.Color = "Red";
+                result.Color = "Green";
             }
             else
             {
-                result.Color = "Green";
+                result.Color = "Red";
             }
             //logic for status
             if (result.TotalSavedAmount >=result.Amount)
@@ -98,8 +102,8 @@ namespace FinTrack_Business.Repository
             var goals = await _db.Goals.ProjectTo<GoalDTO>(_mapper.ConfigurationProvider).ToListAsync();
             foreach (var goal in goals)
             {
-                var records = await _db.Records.Where(x => (x.RecordDate >= goal.StartTime) && (x.RecordDate <= goal.EndTime)).ToListAsync();
-                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= goal.StartTime) && (x.TransactionDate <= goal.EndTime)).ToListAsync();
+                var records = await _db.Records.Where(x => (x.RecordDate >= goal.StartTime) && (x.RecordDate <= goal.EndTime) && (goal.Category == "All" || x.Category == goal.Category)).ToListAsync();
+                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= goal.StartTime) && (x.TransactionDate <= goal.EndTime) && (goal.Category == "All" || x.Category == goal.Category)).ToListAsync();
                 goal.TotalSavedAmount = records.Where(x => x.IsIncome).Sum(x => x.Amount) - records.Where(x => !x.IsIncome).Sum(x => x.Amount) + transactions.Where(x => !x.IsUserSender).Sum(x => x.Amount) - transactions.Where(x => x.IsUserSender).Sum(x => x.Amount);
                 //logic for status
                 if (goal.TotalSavedAmount >= goal.Amount)
@@ -115,7 +119,7 @@ namespace FinTrack_Business.Repository
                     goal.Status = SD.Status_Pending;
                 }
                 //color logic
-                if (goal.TotalSavedAmount <= 0)
+                if (goal.TotalSavedAmount < goal.Amount)
                 {
                     goal.Color = "Red";
                 }

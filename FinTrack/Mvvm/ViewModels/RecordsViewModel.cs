@@ -80,6 +80,9 @@ namespace FinTrack.Mvvm.ViewModels
             {
                 "All",
                 "Transport",
+                "Shopping",
+                "Bills",
+                "Business",
                 "Entertainment",
                 "Health",
                 "Education",
