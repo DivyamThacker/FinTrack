@@ -96,3 +96,47 @@ send notification when goal or budget is not expected to be reached
 
 add button of This Week and This Month to the list view of goals and budgets instead of the right side
 
+ensure mvvm pattern iss
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+may be convert the repository structure to the Igeneric repository of type T
+
+inject apiService in frontend rather than creating a new instance of it everytime
+
+His implementation :- API Controller(has service Injected)-> Service(has mapper and repository injected) -> Repository (applicationDbCOntext and DbSet)
+
+My implementation :- APIServiceFrontend (has nothing injected just apiUrl) ->API Controller(has Repository Injected)-> Repository (applicationDbContext and mapper injected)
+
+The problem is that I need to create an interface for apiservice in frontend to inject it, but first I need to figure out if my DTOs need to be the extension of base entity for using generic apiservice.
+
+Also I need to figure out if there is a need to create a seperate DTO for every http method or not like employee create dto, employee update dto, etc.
+
+if not then what changes should be made in the DTOs to make them usable.
+
+also I need to figure out how to call the GetFilteredAsync method of the repository in the frontend.
+
+do I need to create a base entity for the DTOs or not.
+
+First see and understand his architecture then implement in your project in your own way.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+Doubt : This is employeeCreate : 
+public record EmployeeCreate(string FirstName, string LastName, int AddressId, int JobId);
+
+Ans this is Employee model:
+public class Employee : BaseEntity
+{
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
+    public Address Address { get; set; } = default!;
+    public Job Job { get; set; } = default!;
+    public List<Team> Teams { get; set; } = default!;
+}
+
+And this is inside the DTOEntityMapper:
+CreateMap<EmployeeCreate, Employee>()
+	.ForMember(dest => dest.Id, opt => opt.Ignore())
+	.ForMember(dest => dest.Teams, opt => opt.Ignore())
+	.ForMember(dest => dest.Job, opt => opt.Ignore());
+
+what happens to the JobId and AddressId which is sent in EmployeeCreateDTO?
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

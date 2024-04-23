@@ -131,7 +131,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid Padding="15" ColumnDefinitions="0.7*,0.8*,0.9*,1*" RowDefinitions="1*, 1*">
+                                <Grid Padding="15" ColumnDefinitions="0.9*,0.8*,0.9*,1*" RowDefinitions="1*, 1*">
                                     <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="0" FontSize="20"/>
                                     <Label Text="{Binding TransactionDate, StringFormat='{}{0: MMMM dd, yyyy}'}"  Grid.Row="1" Grid.Column="0"/>
                                     <HorizontalStackLayout  Grid.Row="0" Grid.Column="1" Spacing="20">
@@ -147,10 +147,10 @@
                                         <Label Text="Category:"/>
                                         <Label Text="{Binding Category}" Margin="-10, 0,0,0" />
                                     </HorizontalStackLayout>
-                                    <HorizontalStackLayout  Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Spacing="20">
-                                        <Label Text="Description:"/>
-                                        <Label Text="{Binding Description}" Margin="-10, 0,0,0" />
-                                    </HorizontalStackLayout>
+                                    <!--<HorizontalStackLayout  Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Spacing="20">-->
+                                        <!--<Label Text="Description:"/>-->
+                                        <Label Text="{Binding Description}" Margin="-10, 0,0,0" LineBreakMode="WordWrap" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"/>
+                                    <!--</HorizontalStackLayout>-->
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>

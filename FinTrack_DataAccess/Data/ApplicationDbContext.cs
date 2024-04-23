@@ -10,14 +10,14 @@ namespace FinTrack_DataAccess.Data
     public class ApplicationDbContext : DbContext
     {
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-             
-        }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Record> Records { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+             
+        }
     }
 }
 

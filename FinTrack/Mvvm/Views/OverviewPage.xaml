@@ -75,7 +75,7 @@
             </Border>
             <!--3-->
             <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="5" >
-                <Grid  ColumnDefinitions="1*,1.2*" RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" 
+                <Grid  ColumnDefinitions="1*,1*" RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" 
                   BackgroundColor="{DynamicResource PageBackgroundColor}">
                     <Label HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" Text="Recent Goal" TextColor="White" FontSize="25" FontAttributes="Bold" Grid.Column="0" Grid.Row="0"/>
                     <Label Grid.Row="1" Text="{Binding RecentGoal.Name}" TextColor="white" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" FontSize="15"/>
@@ -176,7 +176,7 @@
             </Border>
             <!--6-->
             <Border Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2"  Padding="5" >
-                <Grid  ColumnDefinitions="1*,1.2*"  RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" BackgroundColor="{DynamicResource PageBackgroundColor}">
+                <Grid  ColumnDefinitions="1*,1*"  RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" BackgroundColor="{DynamicResource PageBackgroundColor}">
                     <Label HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" Text="Recent Budget" TextColor="White" FontSize="25" FontAttributes="Bold" Grid.Column="0" Grid.Row="0"/>
                     <Label Grid.Row="1" Text="{Binding RecentBudget.Name}" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="white"  FontSize="15"/>
                     <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="5" HorizontalOptions="Center">

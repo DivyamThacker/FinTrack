@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +18,13 @@ namespace FinTrack_Business.Repository
     {
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
+        //private DbSet<RecordDTO> DbSet { get; }
 
         public RecordRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
+            //DbSet = _db.Set<RecordDTO>();
         }
         public async Task<RecordDTO> Create(RecordDTO objDTO)
         {
@@ -55,6 +58,31 @@ namespace FinTrack_Business.Repository
         {
             return await _db.Records.ProjectTo<RecordDTO>(_mapper.ConfigurationProvider).ToListAsync();
         }
+
+        public Task<List<RecordDTO>> GetFilteredAsync(Expression<Func<RecordDTO, bool>>[] filters, int? skip, int? take, params Expression<Func<RecordDTO, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public async Task<List<RecordDTO>> GetFilteredAsync(Expression<Func<RecordDTO, bool>>[] filters, int? skip, int? take, params Expression<Func<RecordDTO, object>>[] includes)
+        //{
+        //IQueryable<RecordDTO> query = DbSet;
+
+        //foreach (var filter in filters)
+        //    query = query.Where(filter);
+
+        //foreach (var include in includes)
+        //    query = query.Include(include);
+
+        //if (skip != null)
+        //    query = query.Skip(skip.Value);
+
+        //if (take != null)
+        //    query = query.Take(take.Value);
+
+        //return await query.ToListAsync();
+        //    return 
+        //}
 
         public async Task<RecordDTO> Update(RecordDTO objDTO)
         {

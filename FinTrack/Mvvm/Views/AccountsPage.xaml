@@ -2,11 +2,45 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinTrack.Mvvm.Views.AccountsPage"
-             Title="AccountsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
+             xmlns:converters="clr-namespace:FinTrack.Converters"
+             Title="AccountsPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
+    <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
+
+        <local:NavigationComponent Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" />
+
+        <local:HeaderComponent Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
+
+
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"  Margin="20, 20, 40, 20" ColumnSpacing="15" RowSpacing="15" >
+
+            <ListView x:Name="RecordsListView"  ItemsSource="{Binding Records}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="15" ColumnDefinitions="1*,1*,1.5*" RowDefinitions="1*, 1*">
+                                <Label Text="{Binding Name}" FontSize="25" Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding RecordDate, StringFormat='{}{0: MMMM dd, yyyy}'}"  Grid.Row="1" Grid.Column="0"/>
+                                <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}" Grid.Row="0" Grid.Column="1" />
+                                <HorizontalStackLayout  Grid.Row="1" Grid.Column="1" Spacing="20">
+                                    <Label Text="Category:"/>
+                                    <Label Text="{Binding Category}" Margin="-10, 0,0,0" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout  Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Spacing="20">
+                                    <Label Text="Description:"/>
+                                    <Label Text="{Binding Description}" Margin="-10, 0,0,0" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+    </Grid>
 </ContentPage>

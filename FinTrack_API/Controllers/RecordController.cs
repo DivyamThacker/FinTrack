@@ -1,6 +1,10 @@
-﻿using FinTrack_Business.Repository.IRepository;
+﻿using AutoMapper;
+using FinTrack_Business.Repository;
+using FinTrack_Business.Repository.IRepository;
+using FinTrack_DataAccess;
 using FinTrack_Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace FinTrack_API.Controllers
 {
@@ -19,6 +23,23 @@ namespace FinTrack_API.Controllers
         {
             return Ok(await _recordRepository.GetAll());
         }
+
+        //[HttpGet]
+        //[ActionName("GetAll")]
+        ////[Route("Get")]
+        //public async Task<IActionResult> GetAll([FromQuery] RecordDTO recordDTO)
+        //{
+        //    Expression<Func<RecordDTO, bool>> NameFilter = (record) => recordDTO.Name == null ? true :
+        //record.Name.StartsWith(recordDTO.Name);
+
+        //    var entities = await _recordRepository.GetFilteredAsync(new Expression<Func<RecordDTO, bool>>[]
+        //{
+        //    NameFilter
+        //}, null, null, []);
+
+        //    return Ok(entities);
+        //}
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
