@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinTrack.Mvvm.Views.MobileViews.MOverviewPage"
+              xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+            xmlns:converters="clr-namespace:FinTrack.Converters"
+             Title="MoblieStartPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <!--xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"-->
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ColorToHexConverter x:Key="ColorToHexConverter" />
+            <converters:BoolInverter x:Key="BoolInverter" />
+            <!--<converters:ListInverter x:Key="ListInverter" />-->
+            <converters:AmountToPercentageConverter x:Key="AmountToPercentageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
+        <local:NavigationComponent Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" />
+        <Label 
+            Text="Welcome to Start Page of Moblie"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9"/>
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11" Margin="20, 20, 40, 20">
+            <ListView x:Name="RecordsListView" ItemsSource="{Binding ReversedRecords}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid ColumnDefinitions="1.8*, 1.3*, 1*" Padding="10" ColumnSpacing="5">
+
+                                <Label Grid.Column="0" Text="{Binding Name}" FontSize="25" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="1" Text="{Binding RecordDate, StringFormat='{}{0: MMMM dd, yyyy}'}" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="2" Text="{Binding Amount, StringFormat='{}{0:C}'}" TextColor="{Binding  Color , Converter={StaticResource ColorToHexConverter}}" VerticalTextAlignment="Center"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</ContentPage>

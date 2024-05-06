@@ -62,9 +62,10 @@ public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
     public ICommand TimeBtnCommand { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    public OverviewViewModel()
+    private INavigation _navigationService;
+    public OverviewViewModel(INavigation navigation)
 	{
+        this._navigationService = navigation;
         _budgetApiService = new BudgetApiService();
         _recordApiService = new RecordApiService();
         _transactionApiService = new TransactionApiService();

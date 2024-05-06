@@ -8,10 +8,11 @@ using FinTrack.Mvvm.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FinTrack.Components.ChildComponents;
+using FinTrack.IViews;
 
 namespace FinTrack.Mvvm.Views;
 //[AddINotifyPropertyChangedInterface]
-public partial class OverviewPage : ContentPage
+public partial class OverviewPage : ContentPage, IStartPage
 {
     //private Calculator calculatorComponent;
     //public string MyXamlProperty { get; set; } = "Initial Value";
@@ -19,7 +20,7 @@ public partial class OverviewPage : ContentPage
     public OverviewPage()
     {
         InitializeComponent();
-        BindingContext = new OverviewViewModel();
+        BindingContext = new OverviewViewModel(this.Navigation);
         //calculatorComponent= new Calculator();
     }
 

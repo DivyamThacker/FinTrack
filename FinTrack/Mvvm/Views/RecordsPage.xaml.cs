@@ -1,16 +1,17 @@
 //using AndroidX.Lifecycle;
+using FinTrack.IViews;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack_Models;
 
 namespace FinTrack.Mvvm.Views;
 
-public partial class RecordsPage : ContentPage
+public partial class RecordsPage : ContentPage, ISecondPage
 {
 
 	public RecordsPage()
 	{
 		InitializeComponent();
-        MyViewModel = new RecordsViewModel();
+        MyViewModel = new RecordsViewModel(this.Navigation);
         BindingContext = MyViewModel;
 	}
 

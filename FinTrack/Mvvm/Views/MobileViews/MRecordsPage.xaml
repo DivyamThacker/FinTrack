@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinTrack.Mvvm.Views.MobileViews.MRecordsPage"
+             xmlns:local="clr-namespace:FinTrack.Mvvm.Components"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+            xmlns:converters="clr-namespace:FinTrack.Converters"
+            Title="MRecordsPage"
+            BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ColorToHexConverter x:Key="ColorToHexConverter" />
+            <converters:BoolInverter x:Key="BoolInverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="20">
+        <Border IsVisible="{Binding IsListVisible}" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="10">
+            <ListView x:Name="RecordsListView" ItemsSource="{Binding Records}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="15" ColumnDefinitions="1*,1*,1*" RowDefinitions="1*, 1*">
+                                <Label Text="{Binding Name}" FontSize="25" Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding RecordDate, StringFormat='{}{0: MMMM dd, yyyy}'}"  Grid.Row="1" Grid.Column="0"/>
+                                <Label Text="{Binding Amount, StringFormat='{}{0:C}'}" TextColor="{Binding Color , Converter={StaticResource ColorToHexConverter}}" Grid.Row="0" Grid.Column="1" />
+                                <HorizontalStackLayout  Grid.Row="1" Grid.Column="1" Spacing="20">
+                                    <Label Text="Category:"/>
+                                    <Label Text="{Binding Category}" Margin="-10, 0,0,0" />
+                                </HorizontalStackLayout>
+                                <!--<HorizontalStackLayout  Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Spacing="20">
+                            <Label Text="Description:"/>-->
+                                <Label Text="{Binding Description}" Margin="-10, 0,0,0" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" LineBreakMode="WordWrap" />
+                                <!--</HorizontalStackLayout>-->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Border>
+    </Grid>
+</ContentPage>

@@ -84,6 +84,9 @@
       <Compile Update="Mvvm\Views\BudgetsPage.xaml.cs">
         <DependentUpon>BudgetsPage.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Mvvm\Views\MobileViews\MOverviewPage.xaml.cs">
+        <DependentUpon>MOverviewPage.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -100,6 +103,12 @@
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Components\NavigationComponent.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Mvvm\Views\MobileViews\MOverviewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Mvvm\Views\MobileViews\MRecordsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Views\RecordsPage.xaml">

@@ -140,3 +140,12 @@ CreateMap<EmployeeCreate, Employee>()
 
 what happens to the JobId and AddressId which is sent in EmployeeCreateDTO?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+see how navigation is being done using component and figure out how to and where to add use of _navigationService in overviewViewmodel
+
+
+also figure out how to interpret input parameter in navigation in viewservices
+
+rename ViewServices to ViewService 
+
+use Relay command in navigatino component and all area where command is being used to call other methods

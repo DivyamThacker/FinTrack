@@ -56,8 +56,10 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<RecordDTO>? ThisWeekExpenseRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthIncomeRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthExpenseRecords { get; set; }
-        public RecordsViewModel()
+        private INavigation _navigationService;
+        public RecordsViewModel(INavigation navigation)
         {
+            this._navigationService = navigation;
             _recordApiService = new RecordApiService();
             Task.Run(async () => await GetRecords());
             CancelComand = new Command( () =>

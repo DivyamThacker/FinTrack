@@ -1,5 +1,8 @@
 using CommunityToolkit.Mvvm.Messaging;
+using FinTrack.IViews;
+using FinTrack.Mvvm.ViewModels;
 using FinTrack.Mvvm.Views;
+using FinTrack.Services;
 using System.Windows.Input;
 
 namespace FinTrack.Mvvm.Components;
@@ -16,6 +19,7 @@ public partial class NavigationComponent : ContentView
 
     public void NavigationBtnClikced(string value) //object sender, EventArgs e
     {
+        //BindingContext  = new OverviewViewModel(this.Navigation);
         switch (value)
         {
             case "Overview":
@@ -27,7 +31,8 @@ public partial class NavigationComponent : ContentView
                 break;
 
             case "Records":
-                Navigation.PushAsync(new RecordsPage());
+                //Navigation.PushAsync(new RecordsPage());
+                Navigation.PushAsync(ViewServices.ResolvePage<ISecondPage>());
                 break;
 
             case "Accounts":
