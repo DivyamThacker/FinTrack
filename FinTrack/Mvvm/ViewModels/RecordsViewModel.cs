@@ -14,12 +14,13 @@ using System.Windows.Input;
 using FinTrack.Converters;
 using FinTrack.Entities;
 using System.ComponentModel;
+using FinTrack.Services.IServices;
 namespace FinTrack.Mvvm.ViewModels
 {
 //[AddINotifyPropertyChangedInterface]
     public class RecordsViewModel : INotifyPropertyChanged
     {
-        private RecordApiService _recordApiService;
+        private IRecordApiService _recordApiService;
         public RecordDTO SelectedRecord { get; set; } = default!;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
@@ -57,10 +58,10 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<RecordDTO>? ThisMonthIncomeRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthExpenseRecords { get; set; }
         private INavigation _navigationService;
-        public RecordsViewModel(INavigation navigation)
+        public RecordsViewModel(INavigation navigation, IRecordApiService recordApiService)
         {
             this._navigationService = navigation;
-            _recordApiService = new RecordApiService();
+            _recordApiService = recordApiService;
             Task.Run(async () => await GetRecords());
             CancelComand = new Command( () =>
             {

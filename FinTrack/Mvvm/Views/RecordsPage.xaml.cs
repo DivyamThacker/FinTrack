@@ -1,21 +1,29 @@
 //using AndroidX.Lifecycle;
 using FinTrack.IViews;
 using FinTrack.Mvvm.ViewModels;
+using FinTrack.Services.IServices;
 using FinTrack_Models;
 
 namespace FinTrack.Mvvm.Views;
 
 public partial class RecordsPage : ContentPage, ISecondPage
 {
-
-	public RecordsPage()
+    public RecordsViewModel MyViewModel { get; private set; }
+    public RecordsPage()
 	{
 		InitializeComponent();
-        MyViewModel = new RecordsViewModel(this.Navigation);
-        BindingContext = MyViewModel;
+        //MyViewModel = new RecordsViewModel(this.Navigation);
+        //BindingContext = MyViewModel;
 	}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
 
-    public RecordsViewModel MyViewModel { get; private set; }
+        var services = MauiProgram.CreateMauiApp().Services;
+        var recordApiService = services.GetService<IRecordApiService>();
+        MyViewModel = new RecordsViewModel(this.Navigation,recordApiService);
+        BindingContext = MyViewModel;
+    }
 
     private void RecordsListView_ItemTapped(object sender, ItemTappedEventArgs e)
     {

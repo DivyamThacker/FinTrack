@@ -1,0 +1,20 @@
+﻿@page "/login"
+@using FinTrack.Mvvm.Views
+
+
+
+ <AuthorizeView>
+    <Authorized>
+        <h6>Hi, @context.User.Identity.Name</h6>
+    </Authorized>
+    <NotAuthorized>
+        <h6>Hi, Guest</h6>
+    </NotAuthorized>
+ </AuthorizeView>
+<h3>Login Page</h3>
+
+<button @onclick="OpenPage" class="btn btn-primary">Go to overview Page</button>
+
+@code {
+    
+}

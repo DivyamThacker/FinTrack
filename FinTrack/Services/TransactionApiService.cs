@@ -1,4 +1,5 @@
-﻿using FinTrack_Models;
+﻿using FinTrack.Services.IServices;
+using FinTrack_Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinTrack.Services
 {
-    public class TransactionApiService
+    public class TransactionApiService : ITransactionApiService
     {
         private string ApiUrl = "https://localhost:7263/api/Transaction/";
         private readonly HttpClient _httpClient;
@@ -63,16 +64,16 @@ namespace FinTrack.Services
             return new TransactionDTO();
         }
 
-        //public async Task<TransactionDTO> GetTransaction(int id)
-        //{
-        //    var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
-        //    response.EnsureSuccessStatusCode();
-        //    var json = await response.Content.ReadAsStringAsync();
-        //    var transaction = System.Text.Json.JsonSerializer.Deserialize<TransactionDTO>(json);
-        //    if (transaction != null)
-        //        return transaction;
-        //    return new TransactionDTO();
-        //}
+        public async Task<TransactionDTO> GetTransaction(int id)
+        {
+            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var transaction = System.Text.Json.JsonSerializer.Deserialize<TransactionDTO>(json);
+            if (transaction != null)
+                return transaction;
+            return new TransactionDTO();
+        }
 
         public async Task<int> DeleteTransaction(int id)
         {

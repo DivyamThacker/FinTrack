@@ -1,4 +1,5 @@
 ﻿using FinTrack.Services;
+using FinTrack.Services.IServices;
 using FinTrack_Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace FinTrack.Mvvm.ViewModels
     //[AddINotifyPropertyChangedInterface]
     public class TransactionsViewModel : INotifyPropertyChanged
     {
-        private TransactionApiService _transactionApiService;
+        private ITransactionApiService _transactionApiService;
         public TransactionDTO SelectedTransaction { get; set; } = default!;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
@@ -51,9 +52,9 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<TransactionDTO>? ThisWeekExpenseTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthIncomeTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthExpenseTransactions { get; set; }
-        public TransactionsViewModel()
+        public TransactionsViewModel(ITransactionApiService transactionApiService)
         {
-            _transactionApiService = new TransactionApiService();
+            _transactionApiService = transactionApiService;
             Task.Run(async () => await GetTransactions());
             CancelComand = new Command(() =>
             {

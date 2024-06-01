@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using FinTrack.Entities;
 using FinTrack.Services;
+using FinTrack.Services.IServices;
 using FinTrack_Common;
 using FinTrack_Models;
 using PropertyChanged;
@@ -16,10 +17,10 @@ namespace FinTrack.Mvvm.ViewModels;
 //[AddINotifyPropertyChangedInterface]
 public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
 {
-    private readonly BudgetApiService _budgetApiService;
-    private readonly RecordApiService _recordApiService;
-    private readonly TransactionApiService _transactionApiService;
-    private readonly GoalApiService _goalApiService;
+    private readonly IBudgetApiService _budgetApiService;
+    private readonly IRecordApiService _recordApiService;
+    private readonly ITransactionApiService _transactionApiService;
+    private readonly IGoalApiService _goalApiService;
     public ObservableCollection<RecordDTO> Records { get; set; }=new ObservableCollection<RecordDTO>();
     public ObservableCollection<TransactionDTO> Transactions{ get; set; }=new ObservableCollection<TransactionDTO>();
     public ObservableCollection<GoalDTO> Goals { get; set; }=new ObservableCollection<GoalDTO>();
@@ -63,13 +64,13 @@ public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private INavigation _navigationService;
-    public OverviewViewModel(INavigation navigation)
+    public OverviewViewModel(INavigation navigation, IBudgetApiService budgetApiService, IRecordApiService recordApiService, IGoalApiService goalApiService, ITransactionApiService transactionApiService)
 	{
         this._navigationService = navigation;
-        _budgetApiService = new BudgetApiService();
-        _recordApiService = new RecordApiService();
-        _transactionApiService = new TransactionApiService();
-        _goalApiService = new GoalApiService();
+        _budgetApiService = budgetApiService;
+        _recordApiService = recordApiService;
+        _transactionApiService = transactionApiService;
+        _goalApiService = goalApiService;
         TimeBtnCommand = new Command((text) =>
         {
             TimeBtnClicked((string)text);
@@ -107,8 +108,8 @@ public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
         ReversedRecords = Records.Where(x => x.RecordDate >= (IsThisMonthVisible ? GetThisMonthStart().Date : GetThisWeekStart().Date)).OrderByDescending(g => g.Id);
         ReversedTransactions = Transactions.Where(x => x.TransactionDate >= (IsThisMonthVisible ? GetThisMonthStart().Date : GetThisWeekStart().Date)).OrderByDescending(g => g.Id);
 
-        RecentGoal = Goals.Where(g => g.Status == SD.Status_Pending).Last();
-        RecentBudget = Budgets.Where(g => g.Status == SD.Status_Pending).Last();
+        RecentGoal = Goals.Where(g => g.Status == SD.Status_Pending).LastOrDefault();
+        RecentBudget = Budgets.Where(g => g.Status == SD.Status_Pending).LastOrDefault();
 
         if (RecentGoal == null)
         {

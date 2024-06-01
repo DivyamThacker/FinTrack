@@ -1,7 +1,9 @@
-﻿using FinTrack_Models;
+﻿using FinTrack.Services.IServices;
+using FinTrack_Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -9,24 +11,25 @@ using System.Threading.Tasks;
 
 namespace FinTrack.Services
 {
-    public class BudgetApiService
+    public class BudgetApiService : IBudgetApiService
     {
         private string ApiUrl = "https://localhost:7263/api/Budget/";
         private readonly HttpClient _httpClient;
 
-        public BudgetApiService()
+        public BudgetApiService(HttpClient MyNamedHttpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = MyNamedHttpClient;
         }
 
         public async Task<ObservableCollection<BudgetDTO>> GetDataAsync()
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "GetAll");
+            Debug.WriteLine(_httpClient.BaseAddress);
+            var response = await _httpClient.GetAsync(ApiUrl+ "GetAll");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var budgets = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);
 
-
+        
             return budgets ?? new ObservableCollection<BudgetDTO>();
         }
 

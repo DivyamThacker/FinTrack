@@ -9,13 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FinTrack_Common;
+using FinTrack.Services.IServices;
 
 namespace FinTrack.Mvvm.ViewModels
 {
     //[AddINotifyPropertyChangedInterface]
     public class GoalsViewModel : INotifyPropertyChanged
     {
-        private readonly GoalApiService _goalApiService;
+        private readonly IGoalApiService _goalApiService;
         public GoalDTO SelectedGoal { get; set; } = default!;
         public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
@@ -53,9 +54,9 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         public IEnumerable<GoalDTO>? ThisMonthGoals { get; set; }
-        public GoalsViewModel()
+        public GoalsViewModel(IGoalApiService goalApiService)
         {
-            _goalApiService = new GoalApiService();
+            _goalApiService = _goalApiService;
             Task.Run(async () => await GetGoals());
             CancelComand = new Command(() =>
             {

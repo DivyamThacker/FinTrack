@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using FinTrack.Helper;
 using FinTrack.IViews;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack.Mvvm.Views;
@@ -11,8 +12,8 @@ public partial class NavigationComponent : ContentView
 {
     public List<NavigationItem> NavigationItems { get; set; } = new List<NavigationItem>();
     public NavigationComponent()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         GetNavigationItems();
         BindingContext = this;
 	}

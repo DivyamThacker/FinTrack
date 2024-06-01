@@ -1,4 +1,5 @@
-﻿using FinTrack_Models;
+﻿using FinTrack.Services.IServices;
+using FinTrack_Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinTrack.Services
 {
-    public class GoalApiService
+    public class GoalApiService : IGoalApiService
     {
         private string ApiUrl = "https://localhost:7263/api/Goal/";
         private readonly HttpClient _httpClient;

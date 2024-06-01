@@ -1,4 +1,6 @@
 using FinTrack.Mvvm.ViewModels;
+using FinTrack.Services;
+using FinTrack.Services.IServices;
 using FinTrack_Common;
 using FinTrack_Models;
 
@@ -6,13 +8,23 @@ namespace FinTrack.Mvvm.Views;
 
 public partial class BudgetsPage : ContentPage
 {
-	public BudgetsPage()
+    public BudgetsViewModel MyViewModel { get; private set; }
+	public BudgetsPage( )
 	{
 		InitializeComponent();
-        MyViewModel = new BudgetsViewModel();
+        //BindingContext = App.Current.Services.GetService<BudgetsViewModel>();
+        //MyViewModel = new BudgetsViewModel();
+        //BindingContext = MyViewModel;
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        var services = MauiProgram.CreateMauiApp().Services;
+        var budgetApiService = services.GetService<IBudgetApiService>();
+        MyViewModel = new BudgetsViewModel(budgetApiService);
         BindingContext = MyViewModel;
     }
-    public BudgetsViewModel MyViewModel { get; private set; }
 
     private void BudgetsListView_ItemTapped(object sender, ItemTappedEventArgs e)
     {

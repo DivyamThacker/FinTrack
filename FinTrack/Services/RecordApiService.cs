@@ -11,10 +11,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.ObjectModel;
 using System.Formats.Asn1;
+using FinTrack.Services.IServices;
 
 namespace FinTrack.Services
 {
-    public class RecordApiService
+    public class RecordApiService : IRecordApiService
     {
         private string ApiUrl = "https://localhost:7263/api/Record/";
         private readonly HttpClient _httpClient;
@@ -68,16 +69,16 @@ namespace FinTrack.Services
             return new RecordDTO();
         }
 
-        //public async Task<RecordDTO> GetRecord(int id)
-        //{
-        //    var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
-        //    response.EnsureSuccessStatusCode();
-        //    var json = await response.Content.ReadAsStringAsync();
-        //    var record = System.Text.Json.JsonSerializer.Deserialize<RecordDTO>(json);
-        //    if (record != null)
-        //        return record;
-        //    return new RecordDTO();
-        //}
+        public async Task<RecordDTO> GetRecord(int id)
+        {
+            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var record = System.Text.Json.JsonSerializer.Deserialize<RecordDTO>(json);
+            if (record != null)
+                return record;
+            return new RecordDTO();
+        }
 
         public async Task<int> DeleteRecord(int id)
         {
