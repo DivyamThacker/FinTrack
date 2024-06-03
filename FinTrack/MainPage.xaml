@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:FinTrack"
              xmlns:components="clr-namespace:FinTrack.Components.ChildComponents"
              x:Class="FinTrack.MainPage"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             NavigationPage.HasNavigationBar="False">
 
     <BlazorWebView x:Name="blazorWebView" StartPath="login" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>

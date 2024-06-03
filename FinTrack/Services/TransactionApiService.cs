@@ -12,17 +12,16 @@ namespace FinTrack.Services
 {
     public class TransactionApiService : ITransactionApiService
     {
-        private string ApiUrl = "https://localhost:7263/api/Transaction/";
         private readonly HttpClient _httpClient;
 
-        public TransactionApiService()
+        public TransactionApiService(HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
         }
 
         public async Task<ObservableCollection<TransactionDTO>> GetDataAsync()
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "GetAll");
+            var response = await _httpClient.GetAsync("/api/Transaction/GetAll");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var transactions = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<TransactionDTO>>(json);
@@ -44,7 +43,7 @@ namespace FinTrack.Services
 
         public async Task<TransactionDTO> CreateTransaction(TransactionDTO transaction)
         {
-            var response = await _httpClient.PostAsJsonAsync(ApiUrl + "Create", transaction);
+            var response = await _httpClient.PostAsJsonAsync("/api/Transaction/Create", transaction);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var createdTransaction = System.Text.Json.JsonSerializer.Deserialize<TransactionDTO>(json);
@@ -55,7 +54,7 @@ namespace FinTrack.Services
 
         public async Task<TransactionDTO> UpdateTransaction(TransactionDTO transaction)
         {
-            var response = await _httpClient.PatchAsJsonAsync(ApiUrl + "Update", transaction);
+            var response = await _httpClient.PatchAsJsonAsync("/api/Transaction/Update", transaction);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var updatedTransaction = System.Text.Json.JsonSerializer.Deserialize<TransactionDTO>(json);
@@ -66,7 +65,7 @@ namespace FinTrack.Services
 
         public async Task<TransactionDTO> GetTransaction(int id)
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            var response = await _httpClient.GetAsync("/api/Transaction/Get/" + id);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var transaction = System.Text.Json.JsonSerializer.Deserialize<TransactionDTO>(json);
@@ -77,7 +76,7 @@ namespace FinTrack.Services
 
         public async Task<int> DeleteTransaction(int id)
         {
-            var response = await _httpClient.DeleteAsync(ApiUrl + "Delete/" + id);
+            var response = await _httpClient.DeleteAsync("/api/Transaction/Delete/" + id);
             response.EnsureSuccessStatusCode();
             //var json = await response.Content.ReadAsStringAsync();
             //var deletedTransaction = JsonConvert.DeserializeObject<int>(json);

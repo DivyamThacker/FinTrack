@@ -15,12 +15,14 @@ using FinTrack.Converters;
 using FinTrack.Entities;
 using System.ComponentModel;
 using FinTrack.Services.IServices;
+using FinTrack.Helper;
 namespace FinTrack.Mvvm.ViewModels
 {
 //[AddINotifyPropertyChangedInterface]
     public class RecordsViewModel : INotifyPropertyChanged
     {
         private IRecordApiService _recordApiService;
+        private IMenuHandler _menuHandler;
         public RecordDTO SelectedRecord { get; set; } = default!;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
@@ -58,8 +60,11 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<RecordDTO>? ThisMonthIncomeRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthExpenseRecords { get; set; }
         private INavigation _navigationService;
-        public RecordsViewModel(INavigation navigation, IRecordApiService recordApiService)
+        public RecordsViewModel(INavigation navigation, IRecordApiService recordApiService, IMenuHandler menuHandler)
         {
+            _menuHandler = menuHandler;
+
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             this._navigationService = navigation;
             _recordApiService = recordApiService;
             Task.Run(async () => await GetRecords());
@@ -263,6 +268,10 @@ namespace FinTrack.Mvvm.ViewModels
                 IsListVisible = true;
             }
             CalculateChartData();
+        }
+        public void Dispose()
+        {
+            MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
         }
     }
 }

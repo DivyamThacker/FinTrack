@@ -1,3 +1,4 @@
+using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
@@ -12,8 +13,6 @@ public partial class GoalsPage : ContentPage
 	public GoalsPage()
 	{
 		InitializeComponent();
-        //MyViewModel = new GoalsViewModel(_goalApiService);
-        //BindingContext = MyViewModel;
     }
     protected override void OnAppearing()
     {
@@ -21,8 +20,20 @@ public partial class GoalsPage : ContentPage
 
         var services = MauiProgram.CreateMauiApp().Services;
         var goalApiService = services.GetService<IGoalApiService>();
-        MyViewModel = new GoalsViewModel(goalApiService);
+        var menuHandler = services.GetService<IMenuHandler>();
+        MyViewModel = new GoalsViewModel(goalApiService, menuHandler);
         BindingContext = MyViewModel;
+    }
+    private void OnMenuFlyoutItemClick(object sender, EventArgs e)
+    {
+        var item = (MenuFlyoutItem)sender;
+        MenuBarHandler.Instance.HandleMenuFlyoutItemClick(item, Navigation);
+    }
+
+    protected override void OnDisappearing()
+    {
+        MyViewModel.Dispose();
+        base.OnDisappearing();
     }
 
     private void GoalsListView_ItemTapped(object sender, ItemTappedEventArgs e)

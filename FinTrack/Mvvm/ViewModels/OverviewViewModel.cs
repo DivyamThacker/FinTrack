@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using FinTrack.Entities;
+using FinTrack.Helper;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
 using FinTrack_Common;
@@ -15,7 +16,7 @@ using System.Windows.Input;
 namespace FinTrack.Mvvm.ViewModels;
 
 //[AddINotifyPropertyChangedInterface]
-public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
+public class OverviewViewModel : INotifyPropertyChanged , IDisposable//ObservableObject
 {
     private readonly IBudgetApiService _budgetApiService;
     private readonly IRecordApiService _recordApiService;
@@ -57,20 +58,27 @@ public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
         }
     }
 
-    public IEnumerable<ChartEntity>? Expenses { get; set; } = new ObservableCollection<ChartEntity>();//here I am taking RecordDTO but it can also TransactionDTO
+    public IEnumerable<ChartEntity>? Expenses { get; set; } = new ObservableCollection<ChartEntity>();//here I am taking ChartEntity but it can also TransactionDTO
     public IEnumerable<ChartEntity>? Incomes { get; set; } = new ObservableCollection<ChartEntity>();
     public bool IsThisMonthVisible { get; set; } = false;
     public ICommand TimeBtnCommand { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private INavigation _navigationService;
-    public OverviewViewModel(INavigation navigation, IBudgetApiService budgetApiService, IRecordApiService recordApiService, IGoalApiService goalApiService, ITransactionApiService transactionApiService)
+    private IMenuHandler _menuHandler;
+    public string UsernameLabel { get; set; } = "username";
+
+    public OverviewViewModel(INavigation navigation, IBudgetApiService budgetApiService, IRecordApiService recordApiService, IGoalApiService goalApiService, ITransactionApiService transactionApiService, IMenuHandler menuHandler)
 	{
         this._navigationService = navigation;
         _budgetApiService = budgetApiService;
         _recordApiService = recordApiService;
         _transactionApiService = transactionApiService;
         _goalApiService = goalApiService;
+        _menuHandler = menuHandler;
+
+        MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
+
         TimeBtnCommand = new Command((text) =>
         {
             TimeBtnClicked((string)text);
@@ -193,5 +201,10 @@ public class OverviewViewModel : INotifyPropertyChanged //ObservableObject
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void Dispose()
+    {
+        MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
     }
 }

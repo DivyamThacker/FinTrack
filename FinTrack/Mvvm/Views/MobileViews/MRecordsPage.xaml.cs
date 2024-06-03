@@ -1,3 +1,4 @@
+using FinTrack.Helper;
 using FinTrack.IViews;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack.Services.IServices;
@@ -18,7 +19,20 @@ public partial class MRecordsPage : ContentPage, ISecondPage
 
         var services = MauiProgram.CreateMauiApp().Services;
         var recordApiService = services.GetService<IRecordApiService>();
-        MyViewModel = new RecordsViewModel(this.Navigation, recordApiService);
+        var menuHandler = services.GetService<IMenuHandler>();
+        MyViewModel = new RecordsViewModel(this.Navigation, recordApiService,menuHandler);
         BindingContext = MyViewModel;
+    }
+
+    private void OnMenuFlyoutItemClick(object sender, EventArgs e)
+    {
+        var item = (MenuFlyoutItem)sender;
+        MenuBarHandler.Instance.HandleMenuFlyoutItemClick(item, Navigation);
+    }
+
+    protected override void OnDisappearing()
+    {
+        MyViewModel.Dispose();
+        base.OnDisappearing();
     }
 }

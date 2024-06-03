@@ -15,14 +15,13 @@ namespace FinTrack.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly HttpClient _client;
-        //private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationStateProvider _authStateProvider;
-        //ILocalStorageService localStorage,
-        public AuthenticationService(HttpClient client,AuthenticationStateProvider authStateProvider)
+        private readonly IPreferences _preferences;
+        public AuthenticationService(HttpClient client,AuthenticationStateProvider authStateProvider, IPreferences preferences)
         {
             _client = client;
             _authStateProvider = authStateProvider;
-            //_localStorage = localStorage;
+            _preferences = preferences;
         }
 
         public async Task<SignInResponseDTO> Login(SignInRequestDTO signInRequest)
@@ -35,8 +34,9 @@ namespace FinTrack.Services
 
             if (response.IsSuccessStatusCode)
             {
-                //await _localStorage.SetItemAsync(SD.Local_Token, result.Token);
-                //await _localStorage.SetItemAsync(SD.Local_UserDetails, result.UserDTO);
+                _preferences.Set(SD.Local_Token, result.Token);
+                var userJson = JsonConvert.SerializeObject(result.UserDTO);
+                _preferences.Set(SD.Local_UserDetails,userJson);
                 ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(result.Token);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
                 return new SignInResponseDTO() { IsAuthSuccessful = true };
@@ -49,8 +49,8 @@ namespace FinTrack.Services
 
         public async Task Logout()
         {
-            //await _localStorage.RemoveItemAsync(SD.Local_Token);
-            //await _localStorage.RemoveItemAsync(SD.Local_UserDetails);
+            _preferences.Remove(SD.Local_Token);
+            _preferences.Remove(SD.Local_UserDetails);
 
             ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
 

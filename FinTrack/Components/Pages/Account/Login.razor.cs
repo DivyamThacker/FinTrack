@@ -32,10 +32,6 @@ namespace FinTrack.Components.Pages.Account
         public NavigationManager _navigationManager { get; set; }
         public string ReturnUrl { get; set; }
 
-        private async void OpenPage()
-        {
-            await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
-        }
         private async Task LoginUser()
         {
             ShowSignInErrors = false;
@@ -49,7 +45,9 @@ namespace FinTrack.Components.Pages.Account
                 ReturnUrl = queryParam["returnUrl"];
                 if (string.IsNullOrEmpty(ReturnUrl))
                 {
-                    _navigationManager.NavigateTo("/");
+                    //_navigationManager.NavigateTo("/");
+                    await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
+
                 }
                 else
                 {

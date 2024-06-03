@@ -6,7 +6,6 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:converters="clr-namespace:FinTrack.Converters"
-             Title="TransactionsPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ContentPage.Resources>
@@ -15,6 +14,47 @@
             <converters:BoolInverter x:Key="BoolInverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+
+            <MenuFlyoutSubItem Text="New">
+                <MenuFlyoutItem
+                x:Name="MenuItemNew"
+                
+                Text="New project">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="N" Modifiers="Ctrl" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="New file" Clicked="OnMenuFlyoutItemClick"/>
+                <MenuFlyoutItem Text="New class" Clicked="OnMenuFlyoutItemClick"/>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutItem Text="Open" Clicked="OnMenuFlyoutItemClick"/>
+
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Save" Clicked="OnMenuFlyoutItemClick"/>
+            <MenuFlyoutItem Text="Save as" Clicked="OnMenuFlyoutItemClick"/>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Exit" Clicked="OnMenuFlyoutItemClick"/>
+
+        </MenuBarItem>
+        <MenuBarItem Text="Profile">
+            <MenuFlyoutItem Text="View Profile" Clicked="OnMenuFlyoutItemClick"/>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Logout" Clicked="OnMenuFlyoutItemClick"/>
+
+            <MenuFlyoutSeparator />
+            <MenuFlyoutSubItem Text="Options">
+                <MenuFlyoutItem Text="Option 1" />
+                <MenuFlyoutItem Text="Option 2" />
+                <MenuFlyoutItem Text="Option 3" />
+                <MenuFlyoutItem Text="Option 4" />
+
+            </MenuFlyoutSubItem>
+        </MenuBarItem>
+        <MenuBarItem Text="Help" />
+    </ContentPage.MenuBarItems>
 
 
     <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">

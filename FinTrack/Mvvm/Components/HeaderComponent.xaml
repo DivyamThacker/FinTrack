@@ -28,13 +28,13 @@
                  Color="{DynamicResource LightBlue}" Size="20"/>
                     </ImageButton.Source>
                 </ImageButton>
-                <Label Text="username" VerticalTextAlignment="Center"/>
-                <ImageButton x:Name="OptionsBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="-15, 0,0,0">
-                    <ImageButton.Source>
-                        <FontImageSource FontFamily="Icons" Glyph="&#xf142;"
+                <Label x:Name="usernameLabel" Text="{Binding UsernameLabel}" VerticalTextAlignment="Center"/>
+                    <!--<ImageButton x:Name="OptionsBtn" HeightRequest="20" BackgroundColor="{DynamicResource Blue}" BorderColor="{DynamicResource Blue}" Margin="-15, 0,0,0">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="Icons" Glyph="&#xf142;"
                  Color="{DynamicResource LightBlue}" Size="20"/>
-                    </ImageButton.Source>
-                </ImageButton>
+                        </ImageButton.Source>
+                    </ImageButton>-->
             </HorizontalStackLayout>
         </Grid>
     </Frame>

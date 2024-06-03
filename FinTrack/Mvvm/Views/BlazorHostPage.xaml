@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:FinTrack"
+            xmlns:components="clr-namespace:FinTrack.Components.ChildComponents"
+             xmlns:pages="clr-namespace:FinTrack.Components.Pages"
+            x:Class="FinTrack.BlazorHostPage"
+            BackgroundColor="{DynamicResource PageBackgroundColor}"
+            NavigationPage.HasNavigationBar="False">
+
+    <BlazorWebView x:Name="BlazorWebViewControl" StartPath="login" HostPage="wwwroot/index.html">
+    <BlazorWebView.RootComponents>
+        <!--<RootComponent Selector="#app" ComponentType="{x:Type pages:{Binding BlazorPage}}" />-->
+    </BlazorWebView.RootComponents>
+    </BlazorWebView>
+
+</ContentPage>

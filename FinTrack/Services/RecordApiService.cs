@@ -17,17 +17,16 @@ namespace FinTrack.Services
 {
     public class RecordApiService : IRecordApiService
     {
-        private string ApiUrl = "https://localhost:7263/api/Record/";
         private readonly HttpClient _httpClient;
 
-        public RecordApiService()
+        public RecordApiService(HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
         }
 
         public async Task<ObservableCollection<RecordDTO>> GetDataAsync()
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "GetAll");
+            var response = await _httpClient.GetAsync("/api/Record/GetAll");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var records = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<RecordDTO>>(json);
@@ -49,7 +48,7 @@ namespace FinTrack.Services
 
         public async Task<RecordDTO> CreateRecord(RecordDTO record)
         {
-            var response = await _httpClient.PostAsJsonAsync(ApiUrl + "Create", record);
+            var response = await _httpClient.PostAsJsonAsync("/api/Record/Create", record);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var createdRecord = System.Text.Json.JsonSerializer.Deserialize<RecordDTO>(json);
@@ -60,7 +59,7 @@ namespace FinTrack.Services
 
         public async Task<RecordDTO> UpdateRecord(RecordDTO record)
         {
-            var response = await _httpClient.PatchAsJsonAsync(ApiUrl + "Update", record);
+            var response = await _httpClient.PatchAsJsonAsync("/api/Record/Update", record);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var updatedRecord = System.Text.Json.JsonSerializer.Deserialize<RecordDTO>(json);
@@ -71,7 +70,7 @@ namespace FinTrack.Services
 
         public async Task<RecordDTO> GetRecord(int id)
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            var response = await _httpClient.GetAsync("/api/Record/Get/" + id);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var record = System.Text.Json.JsonSerializer.Deserialize<RecordDTO>(json);
@@ -82,7 +81,7 @@ namespace FinTrack.Services
 
         public async Task<int> DeleteRecord(int id)
         {
-            var response = await _httpClient.DeleteAsync(ApiUrl + "Delete/" + id);
+            var response = await _httpClient.DeleteAsync("/api/Record/Delete/" + id);
             response.EnsureSuccessStatusCode();
             //var json = await response.Content.ReadAsStringAsync();
             //var deletedRecord = JsonConvert.DeserializeObject<int>(json);

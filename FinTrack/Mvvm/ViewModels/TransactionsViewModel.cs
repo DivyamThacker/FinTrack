@@ -1,4 +1,5 @@
-﻿using FinTrack.Services;
+﻿using FinTrack.Helper;
+using FinTrack.Services;
 using FinTrack.Services.IServices;
 using FinTrack_Models;
 using System;
@@ -16,6 +17,7 @@ namespace FinTrack.Mvvm.ViewModels
     public class TransactionsViewModel : INotifyPropertyChanged
     {
         private ITransactionApiService _transactionApiService;
+        private IMenuHandler _menuHandler;
         public TransactionDTO SelectedTransaction { get; set; } = default!;
         public ICommand CancelComand { get; set; }
         public ICommand NavigateCommand { get; set; }
@@ -52,8 +54,11 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<TransactionDTO>? ThisWeekExpenseTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthIncomeTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthExpenseTransactions { get; set; }
-        public TransactionsViewModel(ITransactionApiService transactionApiService)
+        public TransactionsViewModel(ITransactionApiService transactionApiService, IMenuHandler menuHandler)
         {
+            _menuHandler = menuHandler;
+
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             _transactionApiService = transactionApiService;
             Task.Run(async () => await GetTransactions());
             CancelComand = new Command(() =>
@@ -256,6 +261,10 @@ namespace FinTrack.Mvvm.ViewModels
                 IsListVisible = true;
             }
             CalculateChartData();
+        }
+        public void Dispose()
+        {
+            MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
         }
     }
 }

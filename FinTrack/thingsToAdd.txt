@@ -90,7 +90,6 @@ Syncfusion License Key:-
                 </b:BlazorWebView>
             </Frame>
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-add arrows to move between different months and weeks
 
 fix text validator works in Name field while creating new record or transaction.
 
@@ -143,239 +142,68 @@ CreateMap<EmployeeCreate, Employee>()
 what happens to the JobId and AddressId which is sent in EmployeeCreateDTO?
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-see how navigation is being done using component and figure out how to and where to add use of _navigationService in overviewViewmodel
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+MainLayout.razor:
+@inherits LayoutComponentBase
 
-
-also figure out how to interpret input parameter in navigation in viewservices
-
-rename ViewServices to ViewService 
-
-use Relay command in navigatino component and all area where command is being used to call other methods
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-@page "/login"
-@using FinTrack.Mvvm.Views
-@inject NavigationManager NavigationManager
-
-<h3>Login Page</h3>
-
-
-<form method="post" @submit="HandleSubmit">
-    <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" class="form-control" id="username" name="username" required @bind="username">
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
     </div>
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" required @bind="password">
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
 
-
-<button @onclick="OpenPage" class="btn btn-primary" >Go to overview Page</button> 
-
-@code {
-    private async void OpenPage() 
-    {
-        await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
-    }
-
-    private string username { get; set; }
-    private string password { get; set; }
-
-    private async Task HandleSubmit()
-    {
-        // Simulate login logic (replace with actual authentication)
-        if (username == "admin" && password == "password123")
-        {
-            // Login successful
-            NavigationManager.NavigateTo("/", true); // Redirect to home page
-        }
-        else
-        {
-            // Login failed
-            // Model.AddModelError("", "Invalid username or password");
-        }
-    }
-}ref="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+NavMenu.razor:
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">FinTrack</a>
+    </div>
+</div>
 
-        I'd be glad to assist you with retrieving the token in your MAUI Blazor Hybrid project's AuthStateProvider file. However, due to security concerns, it's not recommended to directly store the JWT token in local storage within a .NET MAUI Blazor Hybrid application. This is because hybrid apps can potentially access the local storage of the underlying native platform (Android/iOS), which might not offer the same level of security as browser-based local storage.
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
-Here's a more secure approach for your MAUI Blazor Hybrid project:
-
-1. Utilize Secure Enclave (Android) or Keychain (iOS):
-
-These platform-specific secure storage mechanisms offer a more robust way to store sensitive data like JWT tokens on mobile devices. Here's a general outline:
-
-Android: Leverage the Android KeyStore System (KeyStore) or AndroidX EncryptedSharedPreferences to securely store the token. You'll need to interact with these APIs using platform-specific code (e.g., Kotlin/Java for Android).
-iOS: Utilize the iOS Keychain API to securely store the token. You can use C# bindings or platform-specific code (Swift/Objective-C) to interact with the Keychain.
-2. Retrieve Token During Login:
-
-When your application successfully logs in and receives the SignInResponseDTO from the API, extract the token from the Token property within the UserDTO.
-Don't store the token directly! Instead, use the platform-specific secure storage mechanism to store the token (e.g., KeyStore on Android, Keychain on iOS).
-3. Modify AuthStateProvider to Read from Secure Storage:
-
-Create methods in your AuthStateProvider to interact with the secure storage on each platform (Android/iOS).
-In the GetAuthenticationStateAsync method, attempt to retrieve the token from secure storage.
-If the token is found and valid (e.g., not expired), create a ClaimsPrincipal object from the token using JwtParser.ParseClaimsFromJwt.
-Return an AuthenticationState with the ClaimsPrincipal.
-If the token retrieval fails or is invalid, return an AuthenticationState with an empty ClaimsPrincipal.
-4. Handle Token Updates:
-
-When your application needs to refresh the token (e.g., due to expiration), follow a similar approach:
-Call the API to obtain a new token.
-Store the new token securely using the platform-specific storage mechanism.
-Notify the AuthStateProvider about the updated token (if necessary).
-Key Points:
-
-This approach prioritizes security by avoiding local storage for the token in a hybrid app environment.
-You'll need platform-specific code (Kotlin/Java for Android, Swift/Objective-C for iOS) to interact with the secure storage APIs.
-Consider using libraries or frameworks that might simplify secure storage access in .NET MAUI.
-Additional Considerations:
-
-If your project doesn't require offline functionality, you could maintain the token in memory (e.g., using a static variable in a service) and refresh it as needed. This approach can be simpler but depends on your specific use case.
-Always handle potential errors (e.g., secure storage access failures, invalid tokens) gracefully in your code.
-By implementing these steps, you can securely manage JWT tokens in your MAUI Blazor Hybrid project while maintaining a good user experience.
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- <CascadingAuthenticationState>
-<Router AppAssembly="@typeof(MauiProgram).Assembly">
-    <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)">
-             <Authorizing>
-                 <p>Please wait, we are authorizing the user!..</p>
-             </Authorizing>
-             <NotAuthorized>
-                 <p>You're not authorized to view this page</p>
-             </NotAuthorized>
-        </AuthorizeRouteView>/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-</Router>
- </CascadingAuthenticationState>
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- Do this if navigation component dependency injection does not work:
- Give me code for sending dependecies to your viewmodel from the page without explicityly mentioning them while creating a new instannce of the viewmodel in the pageview with the help of prism nuget library
- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- try AutoFac
- try ServiceLocator
- try Navigation wrapper
- try creating a new instance of the http in the content view
- try dying
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- public static class DependencyResolver
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="weather">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            </NavLink>
+        </div>
+    </nav>
+</div>
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Remember to deserialize the response to get the userdetails from preferences :
+var json = Preferences.Default.Get("user", ""); // get the JSON string from preferences
+if (!string.IsNullOrEmpty(json))
 {
-    private static IContainer _container;
-
-    public static void ConfigureContainer(ContainerBuilder builder)
-    {
-        // Register your services and their dependencies here
-        builder.RegisterType<MainPage>().AsSelf();
-        builder.RegisterType<MyViewModel>(); // Example service
-        builder.RegisterType<IMyService, MyService>(); // Example service implementation
-    }
-
-    public static IContainer Container
-    {
-        get
-        {
-            if (_container == null)
-            {
-                var builder = new ContainerBuilder();
-                ConfigureContainer(builder);
-                _container = builder.Build();
-            }
-            return _container;
-        }
-    }
+    var user = JsonConvert.DeserializeObject<FinTrack_Models.UserDTO>(json); // convert JSON string to user object
+    // use user object
 }
-
-public partial class MauiProgram
-{
-    public static MauiApp CreateMauiApp()
-    {
-        var builder = MauiApp.CreateBuilder();
-        builder.UseMauiApp<App>();
-
-        // Configure Autofac container before building the app
-        DependencyResolver.ConfigureContainer(builder.Services); 
-
-        return builder.Build();
-    }
-}
-+++++++++++++++++++++
-the problem is that the navigation component is not able to resolve the dependencies of the viewmodel that is being navigated to, so the viewmodel is not able to get the data from the api service, so the viewmodel is not able to show the data on the page.
-++++++++++++++++++++++++++++++++++
-1.	Use a Dependency Injection (DI) Container: DI containers like Autofac, Unity, or Prism can help manage the dependencies of your viewmodels. You can register your services and their dependencies in the DI container and let it handle the resolution of dependencies when creating instances of the viewmodels. This way, when the navigation component creates a new instance of the viewmodel, it will automatically resolve the required dependencies.
-2.	Service Locator Pattern: If you're not using a DI container, you can implement the Service Locator pattern. Create a static class that acts as a central registry for your services. In this class, you can register your services and their dependencies. Then, in your viewmodel, you can use the service locator to resolve the required dependencies when needed.
-3.	Navigation Wrapper: Another approach is to create a navigation wrapper that handles the navigation logic and dependency resolution. This wrapper can be responsible for creating instances of the viewmodels and resolving their dependencies before navigating to the desired page. By encapsulating the navigation and dependency resolution logic in a separate class, you can ensure that the dependencies are properly resolved before the viewmodel is used.
-4.	Create a New Instance of the HTTP Client: If the issue is specifically related to the HTTP client not being able to resolve its dependencies, you can try creating a new instance of the HTTP client within the content view. This way, the HTTP client will have access to the required dependencies when making API calls.
-+++++++++++++++++++++++++++++++++++++++++++++++++
-Severity	Code	Description	Project	File	Line	Suppression State
-
-Error	CS0246	The type or namespace name 'TransactionApiService' could not be found (are you missing a using directive or an assembly reference?)	FinTrack (net8.0-android)	D:\Projects\dotnetDevelopment\FinTrack\Microsoft.CodeAnalysis.Razor.Compiler.SourceGenerators\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\Components_Pages_Account_Login_razor.g.cs	160	Active
-
-++++++++++++++++++++++++++++++
-
-@inject NavigationManager NavigationManager
-@inject IBudgetApiService budgetApiService
-@inject IGoalApiService goalApiService
-@inject IRecordApiService recordApiService
-@inject ITransactionApiService transactionApiService
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        
+see how navigation is being done using component and figure out how to and where to add use of _navigationService in overviewViewmodel
+also figure out how to interpret input parameter in navigation in viewservices
+    fix username not working in header component
+    how to access user details in maui pages
+    how to give role based access to maui native pages
 
 
-
- <AuthorizeView>
-    <Authorized>
-        <h6>Hi, @context.User.Identity.Name</h6>
-    </Authorized>
-    <NotAuthorized>
-        <h6>Hi, Guest</h6>
-    </NotAuthorized>
- </AuthorizeView>
-<h3>Login Page</h3>
-
-
-
-<button @onclick="OpenPage" class="btn btn-primary" >Go to overview Page</button> 
-
-@code {
-    private async void OpenPage() 
-    {
-        await App.Current.MainPage.Navigation.PushAsync(new OverviewPage(budgetApiService, recordApiService, goalApiService, transactionApiService));
-    }
-
-    private string username { get; set; }
-    private string password { get; set; }
-
-    private async Task HandleSubmit()
-    {
-        Simulate login logic (replace with actual authentication)
-        if (username == "admin" && password == "password123")
-        {
-            Login successful
-            NavigationManager.NavigateTo("/", true); Redirect to home page
-        }
-        else
-        {
-            Login failed
-            Model.AddModelError("", "Invalid username or password");
-        }
-    }
-}
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ways to resolve the service:-
-_goalApiService = this.Handler.MauiContext.Services.GetRequiredService<GoalApiService>();
-
-protected override void OnAppearing()
-{
-    base.OnAppearing();
-
-    var services = MauiProgram.CreateMauiApp().Services;
-    var dependency = services.GetService<IBudgetApiService>();
-    MyViewModel = new BudgetsViewModel(dependency);
-    BindingContext = MyViewModel;
-}
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

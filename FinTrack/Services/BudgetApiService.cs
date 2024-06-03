@@ -13,18 +13,16 @@ namespace FinTrack.Services
 {
     public class BudgetApiService : IBudgetApiService
     {
-        private string ApiUrl = "https://localhost:7263/api/Budget/";
         private readonly HttpClient _httpClient;
 
-        public BudgetApiService(HttpClient MyNamedHttpClient)
+        public BudgetApiService(HttpClient httpClient)
         {
-            _httpClient = MyNamedHttpClient;
+            _httpClient = httpClient;
         }
 
         public async Task<ObservableCollection<BudgetDTO>> GetDataAsync()
         {
-            Debug.WriteLine(_httpClient.BaseAddress);
-            var response = await _httpClient.GetAsync(ApiUrl+ "GetAll");
+            var response = await _httpClient.GetAsync("/api/Budget/GetAll");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var budgets = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);
@@ -35,7 +33,7 @@ namespace FinTrack.Services
 
         public async Task<BudgetDTO> CreateBudget(BudgetDTO budget)
         {
-            var response = await _httpClient.PostAsJsonAsync(ApiUrl + "Create", budget);
+            var response = await _httpClient.PostAsJsonAsync("/api/Budget/Create", budget);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var createdBudget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
@@ -46,7 +44,7 @@ namespace FinTrack.Services
 
         public async Task<BudgetDTO> UpdateBudget(BudgetDTO budget)
         {
-            var response = await _httpClient.PatchAsJsonAsync(ApiUrl + "Update", budget);
+            var response = await _httpClient.PatchAsJsonAsync("/api/Budget/Update", budget);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var updatedBudget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
@@ -57,7 +55,7 @@ namespace FinTrack.Services
 
         public async Task<BudgetDTO> GetBudget(int id)
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            var response = await _httpClient.GetAsync("/api/Budget/Get/" + id);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var budget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
@@ -68,7 +66,7 @@ namespace FinTrack.Services
 
         public async Task<int> DeleteBudget(int id)
         {
-            var response = await _httpClient.DeleteAsync(ApiUrl + "Delete/" + id);
+            var response = await _httpClient.DeleteAsync("/api/Budget/Delete/" + id);
             response.EnsureSuccessStatusCode();
             //var json = await response.Content.ReadAsStringAsync();
             //var deletedBudget = JsonConvert.DeserializeObject<int>(json);

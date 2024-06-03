@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using FinTrack.Helper;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
 using FinTrack_Common;
@@ -19,6 +20,7 @@ namespace FinTrack.Mvvm.ViewModels
     public class BudgetsViewModel : INotifyPropertyChanged
     {
         private readonly IBudgetApiService _budgetApiService;
+        private IMenuHandler _menuHandler;
         public BudgetDTO SelectedBudget { get; set; } = default!;
         public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
@@ -56,10 +58,12 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         public IEnumerable<BudgetDTO>? ThisMonthBudgets { get; set; }
-        public BudgetsViewModel(IBudgetApiService budgetApiService)
+        public BudgetsViewModel(IBudgetApiService budgetApiService, IMenuHandler menuHandler)
         {
             _budgetApiService = budgetApiService;
-            //MauiApp.Current.Services.GetRequiredService<IGoalApiService>(); // Access service manually
+            _menuHandler = menuHandler;
+
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             Task.Run(async () => await GetBudgets());
             CancelComand = new Command(() =>
             {
@@ -237,6 +241,10 @@ namespace FinTrack.Mvvm.ViewModels
                 IsListVisible = true;
             }
             //CalculateChartData();
+        }
+        public void Dispose()
+        {
+            MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
         }
     }
 }

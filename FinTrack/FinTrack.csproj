@@ -87,6 +87,9 @@
       <Compile Update="Mvvm\Views\MobileViews\MOverviewPage.xaml.cs">
         <DependentUpon>MOverviewPage.xaml</DependentUpon>
       </Compile>
+      <Compile Update="BlazorHostPage.xaml.cs">
+        <DependentUpon>BlazorHostPage.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -115,6 +118,9 @@
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Mvvm\Views\SettingsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="BlazorHostPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
     </ItemGroup>

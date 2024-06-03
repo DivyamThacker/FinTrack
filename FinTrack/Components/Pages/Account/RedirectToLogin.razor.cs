@@ -1,0 +1,43 @@
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FinTrack.Components.Pages.Account
+{
+    public partial class RedirectToLogin : ComponentBase
+    {
+        [CascadingParameter]
+        public Task<AuthenticationState> _authState { get; set; }
+        [Inject]
+        public NavigationManager _navigationManager { get; set; }
+
+        bool notAuthorized { get; set; } = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+            var authState = await _authState;
+
+            if (authState?.User?.Identity is null || !authState.User.Identity.IsAuthenticated)
+            {
+                var returnUrl = _navigationManager.ToBaseRelativePath(_navigationManager.Uri);
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    _navigationManager.NavigateTo("login");
+                }
+                else
+                {
+                    _navigationManager.NavigateTo($"login?returnUrl={returnUrl}");
+                }
+            }
+            else
+            {
+                notAuthorized = true;
+            }
+
+        }
+    }
+}

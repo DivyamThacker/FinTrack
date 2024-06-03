@@ -11,6 +11,8 @@ using FinTrack.Components.ChildComponents;
 using FinTrack.IViews;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
+using FinTrack.Helper;
+using Syncfusion.Maui.Core.Carousel;
 
 namespace FinTrack.Mvvm.Views;
 //[AddINotifyPropertyChangedInterface]
@@ -23,8 +25,6 @@ public partial class OverviewPage : ContentPage, IStartPage
     public OverviewPage()
     {
         InitializeComponent();
-        //BindingContext = new OverviewViewModel(this.Navigation, budgetApiService, recordApiService, goalApiService, transactionApiService);
-        //calculatorComponent= new Calculator();
     }
 
     protected override void OnAppearing()
@@ -36,10 +36,22 @@ public partial class OverviewPage : ContentPage, IStartPage
         var budgetApiService = services.GetService<IBudgetApiService>();
         var recordApiService = services.GetService<IRecordApiService>();
         var transactionApiService = services.GetService<ITransactionApiService>();
-        MyViewModel = new OverviewViewModel(this.Navigation, budgetApiService, recordApiService, goalApiService, transactionApiService);
+        var menuHandler = services.GetService<IMenuHandler>();
+        MyViewModel = new OverviewViewModel(this.Navigation, budgetApiService, recordApiService, goalApiService, transactionApiService, menuHandler);
         BindingContext = MyViewModel;
     }
 
+    private void OnMenuFlyoutItemClick(object sender, EventArgs e)
+    {
+        var item = (MenuFlyoutItem)sender;
+        MenuBarHandler.Instance.HandleMenuFlyoutItemClick(item, Navigation);
+    }
+
+    protected override void OnDisappearing()
+    {
+        MyViewModel.Dispose();
+        base.OnDisappearing();
+    }
 
     //private void OnCalculatorClicked()
     //{

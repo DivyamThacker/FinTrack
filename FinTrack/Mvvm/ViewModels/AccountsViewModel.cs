@@ -1,4 +1,6 @@
-﻿using FinTrack.Services;
+﻿using FinTrack.Helper;
+using FinTrack.Services;
+using FinTrack.Services.IServices;
 using FinTrack_Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,8 @@ namespace FinTrack.Mvvm.ViewModels
 {//[AddINotifyPropertyChangedInterface]
     public class AccountsViewModel : INotifyPropertyChanged
     {
-        private readonly RecordApiService _recordApiService;
+        private readonly IRecordApiService _recordApiService;
+        private IMenuHandler _menuHandler;
         public ObservableCollection<RecordDTO> Records { get; set; } = new ObservableCollection<RecordDTO>();
         public IEnumerable<string> Categories { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -22,9 +25,12 @@ namespace FinTrack.Mvvm.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public AccountsViewModel()
+        public AccountsViewModel(IRecordApiService recordApiService, IMenuHandler menuHandler)
         {
-            _recordApiService = new RecordApiService();
+            _menuHandler = menuHandler;
+
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
+            _recordApiService = recordApiService;
             Task.Run(async () => await GetRecords());
             Categories = new List<string>
             {
@@ -43,6 +49,10 @@ namespace FinTrack.Mvvm.ViewModels
         private async Task GetRecords()
         {
             Records = await _recordApiService.GetDataAsync();
+        }
+        public void Dispose()
+        {
+            MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
         }
     }
 }

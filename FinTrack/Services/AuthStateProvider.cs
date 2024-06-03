@@ -8,25 +8,24 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-//using Blazored.LocalStorage;
 
 namespace FinTrack.Services
 {
     public class AuthStateProvider : AuthenticationStateProvider
     {
         private readonly HttpClient _httpClient;
-        //private readonly ILocalStorageService _localStorage;
+        private readonly IPreferences _preferences;
 
-        public AuthStateProvider(HttpClient httpClient)// ,ILocalStorageService localStorage
+        public AuthStateProvider(HttpClient httpClient, IPreferences preferences)// ,ILocalStorageService localStorage
         {
             _httpClient = httpClient;
+            _preferences = preferences;
             //_localStorage = localStorage;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = "";
-            //var token = await _localStorage.GetItemAsync<string>(SD.Local_Token);
+            var token = _preferences.Get(SD.Local_Token, "");
             if (token == null || token =="")
             {
                 //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "Divyam@gmail.com") }, "jwtAuthType")));

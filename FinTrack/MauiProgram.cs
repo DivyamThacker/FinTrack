@@ -6,9 +6,11 @@ using FinTrack.Mvvm.Views;
 using FinTrack.Mvvm.Views.MobileViews;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using Syncfusion.Maui.Core.Hosting;
 using System.Diagnostics;
 
@@ -34,13 +36,11 @@ namespace FinTrack
             //builder.Services.AddHttpClient();
             builder.Configuration.AddConfiguration(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
             var baseApiUrl = builder.Configuration.GetValue<string>("BaseAPIUrl");
-            builder.Services.AddHttpClient("MyNamedHttpClient", client => client.BaseAddress = new Uri(baseApiUrl));
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(baseApiUrl) });
 
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddAuthorizationCore();
-            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetValue<string>("BaseAPIUrl")) });
-           
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
@@ -55,19 +55,22 @@ namespace FinTrack
 #endif
 
             return builder
-            .RegisterAppServices()
+            .RegisterAppServices(baseApiUrl)
             .RegisterViewModels()
             .RegisterViews()
             .Build();
         }
-        public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder)
+        public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder, string baseApiUrl)
         {
             builder.Services.AddScoped<IBudgetApiService, BudgetApiService>();
             builder.Services.AddScoped<IGoalApiService, GoalApiService>();
             builder.Services.AddScoped<IRecordApiService, RecordApiService>();
             builder.Services.AddScoped<ITransactionApiService, TransactionApiService>();
-            builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            builder.Services.AddSingleton<AuthenticationStateProvider, AuthStateProvider>();
+            builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddSingleton<IPreferences>(sp => Preferences.Default);
+            builder.Services.AddSingleton<IMenuHandler, MenuHandler>();
             return builder;
         }
         public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)

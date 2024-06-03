@@ -12,17 +12,16 @@ namespace FinTrack.Services
 {
     public class GoalApiService : IGoalApiService
     {
-        private string ApiUrl = "https://localhost:7263/api/Goal/";
         private readonly HttpClient _httpClient;
 
-        public GoalApiService()
+        public GoalApiService(HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
         }
 
         public async Task<ObservableCollection<GoalDTO>> GetDataAsync()
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "GetAll");
+            var response = await _httpClient.GetAsync("/api/Goal/GetAll");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var goals = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<GoalDTO>>(json);
@@ -32,7 +31,7 @@ namespace FinTrack.Services
 
         public async Task<GoalDTO> CreateGoal(GoalDTO goal)
         {
-            var response = await _httpClient.PostAsJsonAsync(ApiUrl + "Create", goal);
+            var response = await _httpClient.PostAsJsonAsync("/api/Goal/Create", goal);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var createdGoal = System.Text.Json.JsonSerializer.Deserialize<GoalDTO>(json);
@@ -43,7 +42,7 @@ namespace FinTrack.Services
 
         public async Task<GoalDTO> UpdateGoal(GoalDTO goal)
         {
-            var response = await _httpClient.PatchAsJsonAsync(ApiUrl + "Update", goal);
+            var response = await _httpClient.PatchAsJsonAsync("/api/Goal/Update", goal);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var updatedGoal = System.Text.Json.JsonSerializer.Deserialize<GoalDTO>(json);
@@ -54,7 +53,7 @@ namespace FinTrack.Services
 
         public async Task<GoalDTO> GetGoal(int id)
         {
-            var response = await _httpClient.GetAsync(ApiUrl + "Get/" + id);
+            var response = await _httpClient.GetAsync("/api/Goal/Get/" + id);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var goal = System.Text.Json.JsonSerializer.Deserialize<GoalDTO>(json);
@@ -65,7 +64,7 @@ namespace FinTrack.Services
 
         public async Task<int> DeleteGoal(int id)
         {
-            var response = await _httpClient.DeleteAsync(ApiUrl + "Delete/" + id);
+            var response = await _httpClient.DeleteAsync("/api/Goal/Delete/" + id);
             response.EnsureSuccessStatusCode();
             //var json = await response.Content.ReadAsStringAsync();
             //var deletedGoal = JsonConvert.DeserializeObject<int>(json);

@@ -1,3 +1,4 @@
+using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
@@ -13,8 +14,6 @@ public partial class TransactionsPage : ContentPage
     public TransactionsPage()
 	{
 		InitializeComponent();
-        //MyViewModel = new TransactionsViewModel(_transactionApiService);
-        //BindingContext = MyViewModel;
     }
     protected override void OnAppearing()
     {
@@ -22,10 +21,21 @@ public partial class TransactionsPage : ContentPage
 
         var services = MauiProgram.CreateMauiApp().Services;
         var transactionApiService = services.GetService<ITransactionApiService>();
-        MyViewModel = new TransactionsViewModel(transactionApiService);
+        var menuHandler = services.GetService<IMenuHandler>();
+        MyViewModel = new TransactionsViewModel(transactionApiService, menuHandler);
         BindingContext = MyViewModel;
     }
+    private void OnMenuFlyoutItemClick(object sender, EventArgs e)
+    {
+        var item = (MenuFlyoutItem)sender;
+        MenuBarHandler.Instance.HandleMenuFlyoutItemClick(item, Navigation);
+    }
 
+    protected override void OnDisappearing()
+    {
+        MyViewModel.Dispose();
+        base.OnDisappearing();
+    }
     private void TransactionsListView_ItemTapped(object sender, ItemTappedEventArgs e)
     {
         if (e.Item != null)

@@ -1,3 +1,4 @@
+using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
@@ -22,8 +23,20 @@ public partial class BudgetsPage : ContentPage
 
         var services = MauiProgram.CreateMauiApp().Services;
         var budgetApiService = services.GetService<IBudgetApiService>();
-        MyViewModel = new BudgetsViewModel(budgetApiService);
+        var menuHandler = services.GetService<IMenuHandler>();
+        MyViewModel = new BudgetsViewModel(budgetApiService, menuHandler);
         BindingContext = MyViewModel;
+    }
+    private void OnMenuFlyoutItemClick(object sender, EventArgs e)
+    {
+        var item = (MenuFlyoutItem)sender;
+        MenuBarHandler.Instance.HandleMenuFlyoutItemClick(item, Navigation);
+    }
+
+    protected override void OnDisappearing()
+    {
+        MyViewModel.Dispose();
+        base.OnDisappearing();
     }
 
     private void BudgetsListView_ItemTapped(object sender, ItemTappedEventArgs e)

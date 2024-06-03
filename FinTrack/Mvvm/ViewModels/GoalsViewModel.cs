@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FinTrack_Common;
 using FinTrack.Services.IServices;
+using FinTrack.Helper;
 
 namespace FinTrack.Mvvm.ViewModels
 {
@@ -17,6 +18,7 @@ namespace FinTrack.Mvvm.ViewModels
     public class GoalsViewModel : INotifyPropertyChanged
     {
         private readonly IGoalApiService _goalApiService;
+        private IMenuHandler _menuHandler;
         public GoalDTO SelectedGoal { get; set; } = default!;
         public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
@@ -54,8 +56,11 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         public IEnumerable<GoalDTO>? ThisMonthGoals { get; set; }
-        public GoalsViewModel(IGoalApiService goalApiService)
+        public GoalsViewModel(IGoalApiService goalApiService, IMenuHandler menuHandler)
         {
+            _menuHandler = menuHandler;
+
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             _goalApiService = _goalApiService;
             Task.Run(async () => await GetGoals());
             CancelComand = new Command(() =>
@@ -234,5 +239,9 @@ namespace FinTrack.Mvvm.ViewModels
             }
             //CalculateChartData();
         }
+            public void Dispose()
+            {
+                MenuBarHandler.Instance.MenuFlyoutItemClicked -= _menuHandler.HandleMenuFlyoutItemClicked;
+            }
     }
 }
