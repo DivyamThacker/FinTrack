@@ -10,7 +10,7 @@ namespace FinTrack.Services.IServices
 {
     public interface ITransactionApiService
     {
-        Task<ObservableCollection<TransactionDTO>> GetDataAsync();
+        Task<ObservableCollection<TransactionDTO>> GetDataAsync(string id);
         Task<TransactionDTO> CreateTransaction(TransactionDTO transaction);
         Task<TransactionDTO> UpdateTransaction(TransactionDTO transaction);
         Task<TransactionDTO> GetTransaction(int id);

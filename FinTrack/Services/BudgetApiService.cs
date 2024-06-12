@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+//using Windows.System;
 
 namespace FinTrack.Services
 {
@@ -20,12 +22,12 @@ namespace FinTrack.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ObservableCollection<BudgetDTO>> GetDataAsync()
+        public async Task<ObservableCollection<BudgetDTO>> GetDataAsync(string userId)
         {
-            var response = await _httpClient.GetAsync("/api/Budget/GetAll");
+            var response = await _httpClient.GetAsync($"/api/Budget/GetAll/{userId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            var budgets = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);
+            var budgets = JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);
 
         
             return budgets ?? new ObservableCollection<BudgetDTO>();
@@ -36,7 +38,7 @@ namespace FinTrack.Services
             var response = await _httpClient.PostAsJsonAsync("/api/Budget/Create", budget);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            var createdBudget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
+            var createdBudget =JsonSerializer.Deserialize<BudgetDTO>(json);
             if (createdBudget != null)
                 return createdBudget;
             return new BudgetDTO();
@@ -47,7 +49,7 @@ namespace FinTrack.Services
             var response = await _httpClient.PatchAsJsonAsync("/api/Budget/Update", budget);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            var updatedBudget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
+            var updatedBudget = JsonSerializer.Deserialize<BudgetDTO>(json);
             if (updatedBudget != null)
                 return updatedBudget;
             return new BudgetDTO();
@@ -58,7 +60,7 @@ namespace FinTrack.Services
             var response = await _httpClient.GetAsync("/api/Budget/Get/" + id);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            var budget = System.Text.Json.JsonSerializer.Deserialize<BudgetDTO>(json);
+            var budget = JsonSerializer.Deserialize<BudgetDTO>(json);
             if (budget != null)
                 return budget;
             return new BudgetDTO();

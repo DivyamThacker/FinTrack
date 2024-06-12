@@ -1,7 +1,9 @@
 ﻿using FinTrack.Helper;
 using FinTrack.Services;
 using FinTrack.Services.IServices;
+using FinTrack_Common;
 using FinTrack_Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +18,8 @@ namespace FinTrack.Mvvm.ViewModels
     //[AddINotifyPropertyChangedInterface]
     public class TransactionsViewModel : INotifyPropertyChanged
     {
+        public string UsernameLabel { get; set; } = default!;
+        public INavigation Navigation { get; set; }
         private ITransactionApiService _transactionApiService;
         private IMenuHandler _menuHandler;
         public TransactionDTO SelectedTransaction { get; set; } = default!;
@@ -54,12 +58,27 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<TransactionDTO>? ThisWeekExpenseTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthIncomeTransactions { get; set; }
         public IEnumerable<TransactionDTO>? ThisMonthExpenseTransactions { get; set; }
-        public TransactionsViewModel(ITransactionApiService transactionApiService, IMenuHandler menuHandler)
+        private IPreferences _preferences;
+        //private INavigation _navigationService;
+        public UserDTO User { get; set; }
+
+        public TransactionsViewModel(ITransactionApiService transactionApiService, IMenuHandler menuHandler, IPreferences preferences)
         {
+            //this._navigationService = navigation;
+            _preferences = preferences;
+            var userDetails = _preferences.Get(SD.Local_UserDetails, "null");
+            if (userDetails == "null")
+            {
+                //_navigationService.PushAsync(new BlazorHostPage("Login"));
+                Navigation.PushAsync(new BlazorHostPage("Login"));
+            }
+            else { User = JsonConvert.DeserializeObject<UserDTO>(userDetails); }
             _menuHandler = menuHandler;
 
-            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             _transactionApiService = transactionApiService;
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
+            NewTransaction.UserId = User.Id;
+            UsernameLabel = User.Name;
             Task.Run(async () => await GetTransactions());
             CancelComand = new Command(() =>
             {
@@ -182,7 +201,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewTransaction = new TransactionDTO();
+                    NewTransaction = new TransactionDTO{UserId = User.Id};
                     break;
 
                 case "Update":
@@ -226,7 +245,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewTransaction = new TransactionDTO();
+            NewTransaction = new TransactionDTO { UserId = User.Id};
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -235,7 +254,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetTransactions()
         {
-            Transactions = await _transactionApiService.GetDataAsync();
+            Transactions = await _transactionApiService.GetDataAsync(User.Id);
             CalculateChartData();
         }
 
@@ -244,7 +263,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _transactionApiService.UpdateTransaction(NewTransaction);
-                Transactions = await _transactionApiService.GetDataAsync();
+                Transactions = await _transactionApiService.GetDataAsync(User.Id);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -255,7 +274,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var transaction = await _transactionApiService.CreateTransaction(NewTransaction);
                 transaction.Color = transaction.IsUserSender ? "Red" : "Green";
                 Transactions.Add(transaction);
-                NewTransaction = new TransactionDTO();
+                NewTransaction = new TransactionDTO{ UserId = User.Id };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

@@ -10,8 +10,14 @@ Things to Remember:-
 add account or user id to everything (every model), 
 add migration every time model is changed (default project : DataAccess, startup project : FinTrack API),
 SQL Query : Select * from FinTrackDB.dbo.Budgets;
+UPDATE FinTrackDB.dbo.Transactions
+SET UserId = REPLACE(UserId, '0', '7f7d1487-94d2-40ee-b282-d3085edd948f')
+WHERE UserId = '0';
+
+Accoutns:-
 Divyam@gmail.com Divyam@12
 Admin@gmail.com Admin@12
+Divyam12@gmail.com Divyam@1
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Ideas that I can Implement :-
@@ -198,12 +204,24 @@ if (!string.IsNullOrEmpty(json))
     var user = JsonConvert.DeserializeObject<FinTrack_Models.UserDTO>(json); // convert JSON string to user object
     // use user object
 }
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  public class User
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Username { get; set; }
+        public string Password { get; set; }//hash the password later
+        public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+
+    //public ICollection<UserRole> UserRoles { get; set; } // Navigation property for many-to-many relationship with Roles
+    }
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
 see how navigation is being done using component and figure out how to and where to add use of _navigationService in overviewViewmodel
 also figure out how to interpret input parameter in navigation in viewservices
-    fix username not working in header component
-    how to access user details in maui pages
     how to give role based access to maui native pages
-
-
+    
+   
+    

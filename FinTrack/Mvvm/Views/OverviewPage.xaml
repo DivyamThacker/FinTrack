@@ -64,7 +64,7 @@
 
     <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
         <local:NavigationComponent Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" />
-        <local:HeaderComponent Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
+        <local:HeaderComponent UsernameLabel="{Binding UsernameLabel}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
     <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"
     ColumnDefinitions="1*,1*,1*" RowDefinitions="1*,1*,1*,1*,1*,1*,1*" RowSpacing="25" ColumnSpacing="25" Margin="20, 20, 40, 20">
             <Label Text="OVERVIEW" FontSize="20" FontAttributes="Bold" TextColor="White" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" Grid.Row="0" />
@@ -116,22 +116,26 @@
             </Border>
             <!--3-->
             <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2" Padding="5" >
-                <Grid  ColumnDefinitions="1*,1*" RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" 
+                <Grid  ColumnDefinitions="1*,1*" RowDefinitions="1*, 0.9*, 0.9*, 0.9*, 0.9*" ColumnSpacing="2" 
                   BackgroundColor="{DynamicResource PageBackgroundColor}">
                     <Label HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" Text="Recent Goal" TextColor="White" FontSize="25" FontAttributes="Bold" Grid.Column="0" Grid.Row="0"/>
                     <Label Grid.Row="1" Text="{Binding RecentGoal.Name}" TextColor="white" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" FontSize="15"/>
                     <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                        <Label Text="Category:" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding RecentGoal.Category}" VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
                         <Label Text="Target Amount:" VerticalTextAlignment="Center"/>
                         <Label Text="{Binding RecentGoal.Amount, StringFormat='{}{0:C}'}" VerticalTextAlignment="Center"/>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                    <HorizontalStackLayout Grid.Row="4" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
                         <Label Text="Saved Amount:" VerticalTextAlignment="Center"/>
                         <Label Text="{Binding RecentGoal.TotalSavedAmount, StringFormat='{}{0:C}'}" VerticalTextAlignment="Center"/>
                     </HorizontalStackLayout>
                     <progressBar:SfCircularProgressBar Progress="{Binding RecentGoal, Converter={StaticResource AmountToPercentageConverter}}"
                       Grid.Column="1"
                       Grid.Row="0"
-                      Grid.RowSpan="4"
+                      Grid.RowSpan="5"
                       x:Name="GoalProgressBar"
                       Minimum="0"
                       Maximum="100"
@@ -217,21 +221,25 @@
             </Border>
             <!--6-->
             <Border Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Stroke="{StaticResource LightBlue}" StrokeThickness="2"  Padding="5" >
-                <Grid  ColumnDefinitions="1*,1*"  RowDefinitions="1*, 1*, 1*, 1*" ColumnSpacing="2" BackgroundColor="{DynamicResource PageBackgroundColor}">
+                <Grid  ColumnDefinitions="1*,1*"  RowDefinitions="1*, 0.9*, 0.9*, 0.9*, 0.9*" ColumnSpacing="2" BackgroundColor="{DynamicResource PageBackgroundColor}">
                     <Label HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" Text="Recent Budget" TextColor="White" FontSize="25" FontAttributes="Bold" Grid.Column="0" Grid.Row="0"/>
                     <Label Grid.Row="1" Text="{Binding RecentBudget.Name}" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="white"  FontSize="15"/>
                     <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                        <Label Text="Category:" VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding RecentBudget.Category}" VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
                         <Label Text="Budget Amount:" VerticalTextAlignment="Center"/>
                         <Label Text="{Binding RecentBudget.Amount, StringFormat='{}{0:C}'}" VerticalTextAlignment="Center"/>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
+                    <HorizontalStackLayout Grid.Row="4" Grid.Column="0" Spacing="5" HorizontalOptions="Center">
                         <Label Text="Spent Amount:" VerticalTextAlignment="Center"/>
                         <Label Text="{Binding RecentBudget.TotalSpentAmount, StringFormat='{}{0:C}'}" VerticalTextAlignment="Center"/>
                     </HorizontalStackLayout>
                     <progressBar:SfCircularProgressBar Progress="{Binding RecentBudget, Converter={StaticResource AmountToPercentageConverter}}"
                               Grid.Column="1"
                               Grid.Row="0"
-                              Grid.RowSpan="4"
+                              Grid.RowSpan="5"
                               x:Name="BudgetProgressBar"
                               Minimum="0"
                               Maximum="100"

@@ -63,5 +63,10 @@ namespace FinTrack.Components.Pages.Account
             }
             IsProcessing = false;
         }
+        private async void NavigateBtnClicked()
+        {
+                    await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
+
+        }
     }
 }

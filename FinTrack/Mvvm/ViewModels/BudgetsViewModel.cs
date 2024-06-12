@@ -5,6 +5,7 @@ using FinTrack.Services;
 using FinTrack.Services.IServices;
 using FinTrack_Common;
 using FinTrack_Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,8 +20,10 @@ namespace FinTrack.Mvvm.ViewModels
     //[AddINotifyPropertyChangedInterface]
     public class BudgetsViewModel : INotifyPropertyChanged
     {
+        public string UsernameLabel { get; set; } = default!;
         private readonly IBudgetApiService _budgetApiService;
         private IMenuHandler _menuHandler;
+        public INavigation Navigation { get; set; }
         public BudgetDTO SelectedBudget { get; set; } = default!;
         public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
@@ -58,12 +61,25 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         public IEnumerable<BudgetDTO>? ThisMonthBudgets { get; set; }
-        public BudgetsViewModel(IBudgetApiService budgetApiService, IMenuHandler menuHandler)
+        private IPreferences _preferences;
+        //private INavigation _navigationService;
+        public UserDTO User { get; set; }
+        public BudgetsViewModel(IBudgetApiService budgetApiService, IMenuHandler menuHandler, IPreferences preferences)
         {
+            //this._navigationService = navigation;
+            _preferences = preferences;
+            var userDetails = _preferences.Get(SD.Local_UserDetails, "null");
+            if (userDetails == "null")
+            {
+                Navigation.PushAsync(new BlazorHostPage("Login"));
+            }
+            else { User = JsonConvert.DeserializeObject<UserDTO>(userDetails); }
             _budgetApiService = budgetApiService;
             _menuHandler = menuHandler;
 
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
+            NewBudget.UserId = User.Id;
+            UsernameLabel = User.Name;
             Task.Run(async () => await GetBudgets());
             CancelComand = new Command(() =>
             {
@@ -158,7 +174,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewBudget = new BudgetDTO();
+                    NewBudget = new BudgetDTO{ UserId = User.Id };
                     break;
 
                 case "Update":
@@ -212,7 +228,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetBudgets()
         {
-            Budgets = await _budgetApiService.GetDataAsync();
+            Budgets = await _budgetApiService.GetDataAsync(User.Id);
             //CalculateChartData();
         }
 
@@ -224,7 +240,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _budgetApiService.UpdateBudget(NewBudget);
-                Budgets = await _budgetApiService.GetDataAsync();
+                Budgets = await _budgetApiService.GetDataAsync(User.Id);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -235,7 +251,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var budget = await _budgetApiService.CreateBudget(NewBudget);
                 budget.Color = budget.TotalSpentAmount <= 0 ? "Red" : "Green";
                 Budgets.Add(budget);
-                NewBudget = new BudgetDTO();
+                NewBudget = new BudgetDTO{ UserId = User.Id };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

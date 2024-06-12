@@ -1,4 +1,6 @@
 ﻿@page "/login"
+@layout Layout.MainLayout
+
 @using FinTrack.Mvvm.Views
 
 <EditForm Model="SignInRequest" OnValidSubmit="LoginUser">
@@ -28,7 +30,9 @@
                         </div>
                         <div class="py-2">
                             <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Sign in</button>
-                            <a href="/registration" class="btn btn-primary text-white m-2"><i class="bi bi-person-plus-fill"></i> Register as a new user</a>
+                            <a href="/register" class="btn btn-primary text-white m-2"><i class="bi bi-person-plus-fill"></i> Register as a new user</a>
+                        </div>
+                        <div class="py-2">
                         </div>
                     </div>
                 </div>
@@ -36,7 +40,19 @@
         </div>
     </div>
 </EditForm>
+<CascadingAuthenticationState>
+ <AuthorizeView>
+     <Authorized>
+<button @onclick="NavigateBtnClicked" class="btn btn-primary d-block mx-auto">Navigate to OverView</button>
+
+    </Authorized>
+    <NotAuthorized>
+            <h2 class="text-center d-block mx-auto">You need to log in to view other pages.</h2>
+
+    </NotAuthorized>
+</AuthorizeView>
+</CascadingAuthenticationState>
 
 @code {
-
+    
 }

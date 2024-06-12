@@ -1,7 +1,7 @@
 using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
-using FinTrack.Services;
-using FinTrack.Services.IServices;
+//using FinTrack.Services;
+//using FinTrack.Services.IServices;
 using FinTrack_Common;
 using FinTrack_Models;
 
@@ -19,9 +19,13 @@ public partial class GoalsPage : ContentPage
         base.OnAppearing();
 
         var services = MauiProgram.CreateMauiApp().Services;
-        var goalApiService = services.GetService<IGoalApiService>();
-        var menuHandler = services.GetService<IMenuHandler>();
-        MyViewModel = new GoalsViewModel(goalApiService, menuHandler);
+        //var goalApiService = services.GetService<IGoalApiService>();
+        //var menuHandler = services.GetService<IMenuHandler>();
+        //var navigation = services.GetService<INavigation>();
+        //var preferences = services.GetService<IPreferences>();
+        //MyViewModel = new GoalsViewModel(goalApiService, menuHandler, navigation, preferences);
+        MyViewModel = services.GetService<GoalsViewModel>();
+        MyViewModel.Navigation = this.Navigation;
         BindingContext = MyViewModel;
     }
     private void OnMenuFlyoutItemClick(object sender, EventArgs e)

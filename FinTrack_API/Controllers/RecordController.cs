@@ -18,10 +18,10 @@ namespace FinTrack_API.Controllers
             _recordRepository = recordRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetAll(string userId)
         {
-            return Ok(await _recordRepository.GetAll());
+            return Ok(await _recordRepository.GetAll(userId));
         }
 
         //[HttpGet]

@@ -14,10 +14,10 @@ namespace FinTrack_API.Controllers
             _budgetRepository = budgetRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetAll(string userId)
         {
-            return Ok(await _budgetRepository.GetAll());
+            return Ok(await _budgetRepository.GetAll(userId));
         }
 
         [HttpPost]

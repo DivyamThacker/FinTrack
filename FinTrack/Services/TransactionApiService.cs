@@ -19,9 +19,9 @@ namespace FinTrack.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ObservableCollection<TransactionDTO>> GetDataAsync()
+        public async Task<ObservableCollection<TransactionDTO>> GetDataAsync(string userId)
         {
-            var response = await _httpClient.GetAsync("/api/Transaction/GetAll");
+            var response = await _httpClient.GetAsync($"/api/Transaction/GetAll/{userId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var transactions = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<TransactionDTO>>(json);

@@ -1,7 +1,7 @@
 using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
-using FinTrack.Services;
-using FinTrack.Services.IServices;
+//using FinTrack.Services;
+//using FinTrack.Services.IServices;
 using FinTrack_Models;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -20,9 +20,11 @@ public partial class TransactionsPage : ContentPage
         base.OnAppearing();
 
         var services = MauiProgram.CreateMauiApp().Services;
-        var transactionApiService = services.GetService<ITransactionApiService>();
-        var menuHandler = services.GetService<IMenuHandler>();
-        MyViewModel = new TransactionsViewModel(transactionApiService, menuHandler);
+        //var transactionApiService = services.GetService<ITransactionApiService>();
+        //var menuHandler = services.GetService<IMenuHandler>();
+        //MyViewModel = new TransactionsViewModel(transactionApiService, menuHandler);
+        MyViewModel = services.GetService<TransactionsViewModel>();
+        MyViewModel.Navigation = this.Navigation;
         BindingContext = MyViewModel;
     }
     private void OnMenuFlyoutItemClick(object sender, EventArgs e)

@@ -1,6 +1,6 @@
 using FinTrack.Helper;
 using FinTrack.Mvvm.ViewModels;
-using FinTrack.Services.IServices;
+//using FinTrack.Services.IServices;
 
 namespace FinTrack.Mvvm.Views;
 
@@ -18,9 +18,11 @@ public partial class AccountsPage : ContentPage
         base.OnAppearing();
 
         var services = MauiProgram.CreateMauiApp().Services;
-        var recordApiService = services.GetService<IRecordApiService>();
-        var menuHandler = services.GetService<IMenuHandler>();
-        MyViewModel = new AccountsViewModel(recordApiService, menuHandler);
+        //var recordApiService = services.GetService<IRecordApiService>();
+        //var menuHandler = services.GetService<IMenuHandler>();
+        //MyViewModel = new AccountsViewModel(recordApiService, menuHandler);
+        MyViewModel = services.GetService<AccountsViewModel>();
+        MyViewModel.Navigation = this.Navigation;
         BindingContext = MyViewModel;
     }
 

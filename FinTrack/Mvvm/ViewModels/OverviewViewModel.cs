@@ -6,6 +6,8 @@ using FinTrack.Services;
 using FinTrack.Services.IServices;
 using FinTrack_Common;
 using FinTrack_Models;
+using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,6 +24,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
     private readonly IRecordApiService _recordApiService;
     private readonly ITransactionApiService _transactionApiService;
     private readonly IGoalApiService _goalApiService;
+    public INavigation Navigation { get; set; }
     public ObservableCollection<RecordDTO> Records { get; set; }=new ObservableCollection<RecordDTO>();
     public ObservableCollection<TransactionDTO> Transactions{ get; set; }=new ObservableCollection<TransactionDTO>();
     public ObservableCollection<GoalDTO> Goals { get; set; }=new ObservableCollection<GoalDTO>();
@@ -64,13 +67,26 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
     public ICommand TimeBtnCommand { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    private INavigation _navigationService;
+    //private INavigation _navigationService;
     private IMenuHandler _menuHandler;
-    public string UsernameLabel { get; set; } = "username";
+    private IPreferences _preferences;
+    public UserDTO User { get; set; }
+    public string UsernameLabel { get; set; } = default!;
 
-    public OverviewViewModel(INavigation navigation, IBudgetApiService budgetApiService, IRecordApiService recordApiService, IGoalApiService goalApiService, ITransactionApiService transactionApiService, IMenuHandler menuHandler)
+    public OverviewViewModel(IBudgetApiService budgetApiService, IRecordApiService recordApiService, IGoalApiService goalApiService, ITransactionApiService transactionApiService, IMenuHandler menuHandler, IPreferences preferences)
 	{
-        this._navigationService = navigation;
+        //this._navigationService = navigation;
+        _preferences = preferences;
+        var userDetails = _preferences.Get(SD.Local_UserDetails, "null");
+        if (userDetails == "null")
+        {
+            //_navigationService.PushAsync(new BlazorHostPage("Login"));
+            Navigation.PushAsync(new BlazorHostPage("Login"));
+        }
+
+
+        else { User = JsonConvert.DeserializeObject<UserDTO>(userDetails); }
+
         _budgetApiService = budgetApiService;
         _recordApiService = recordApiService;
         _transactionApiService = transactionApiService;
@@ -78,13 +94,16 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
         _menuHandler = menuHandler;
 
         MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
-
+        _recentBudget.UserId = User.Id;
+        _recentGoal.UserId = User.Id;
+        UsernameLabel = User.Name;  
         TimeBtnCommand = new Command((text) =>
         {
             TimeBtnClicked((string)text);
         });
         Task.Run(async () => await GetData());
     }
+
     private async void TimeBtnClicked(string text)
     {
         switch (text)
@@ -100,10 +119,10 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
     }
     private async Task GetData()
     {
-        Records = await _recordApiService.GetDataAsync();
-        Transactions = await _transactionApiService.GetDataAsync();
-        Goals = await _goalApiService.GetDataAsync();
-        Budgets = await _budgetApiService.GetDataAsync();
+        Records = await _recordApiService.GetDataAsync(User.Id);
+        Transactions = await _transactionApiService.GetDataAsync(User.Id);
+        Goals = await _goalApiService.GetDataAsync(User.Id);
+        Budgets = await _budgetApiService.GetDataAsync(User.Id);
 
         //Calculations for frame 1
         CurrentBalance = Records.Where(r => r.IsIncome).Sum(r => r.Amount) - Records.Where(r => !r.IsIncome).Sum(r => r.Amount) + Transactions.Where(r => !r.IsUserSender).Sum(r => r.Amount) - Transactions.Where(r => !r.IsUserSender).Sum(r => r.Amount);
@@ -121,7 +140,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
 
         if (RecentGoal == null)
         {
-            RecentGoal = new GoalDTO();
+            RecentGoal = new GoalDTO{UserId = User.Id};
             RecentGoal.Name = "No Goal available";
             RecentGoal.Amount = 1;
             RecentGoal.TotalSavedAmount = 0;
@@ -131,7 +150,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
         }
         if (RecentBudget == null)
         {
-            RecentBudget = new BudgetDTO();
+            RecentBudget = new BudgetDTO { UserId = User.Id};
             RecentBudget.Name = "No Budget available";
             RecentBudget.Amount = 1;
             RecentBudget.TotalSpentAmount = 0;

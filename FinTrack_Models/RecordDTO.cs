@@ -14,7 +14,7 @@ namespace FinTrack_Models
         public int Id { get; set; }
         [JsonPropertyName("userId")]
         [Required]
-        public int UserId { get; set; } = 1;
+        public string UserId { get; set; }
         [JsonPropertyName("name")]
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = "default";

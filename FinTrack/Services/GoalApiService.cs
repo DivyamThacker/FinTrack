@@ -19,9 +19,11 @@ namespace FinTrack.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ObservableCollection<GoalDTO>> GetDataAsync()
+        public async Task<ObservableCollection<GoalDTO>> GetDataAsync(string userId)
         {
-            var response = await _httpClient.GetAsync("/api/Goal/GetAll");
+            //var response = await _httpClient.GetAsync("/api/Goal/GetAll?userId={userId}");
+            var response = await _httpClient.GetAsync($"/api/Goal/GetAll/{userId}");
+
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var goals = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<GoalDTO>>(json);

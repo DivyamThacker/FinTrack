@@ -64,7 +64,7 @@
 
         <local:NavigationComponent Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" />
 
-        <local:HeaderComponent Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
+        <local:HeaderComponent  UsernameLabel="{Binding UsernameLabel}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="9" />
 
 
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="9" Grid.RowSpan="11"  Margin="20, 20, 40, 20" ColumnSpacing="15" RowSpacing="15" ColumnDefinitions="1*, 1*" RowDefinitions="1*,4.5*">

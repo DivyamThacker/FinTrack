@@ -13,6 +13,6 @@ namespace FinTrack_Business.Repository.IRepository
         public Task<TransactionDTO> Update(TransactionDTO objDTO);
         public Task<int> Delete(int id);
         public Task<TransactionDTO>? Get(int id);
-        public Task<IEnumerable<TransactionDTO>> GetAll();
+        public Task<IEnumerable<TransactionDTO>> GetAll(string userId);
     }
 }

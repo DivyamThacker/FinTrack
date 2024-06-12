@@ -54,7 +54,8 @@ namespace FinTrack.Mvvm.ViewModels
             {
                 "Login" => typeof(Login),
                 "Dashboard" => typeof(Dashboard),
-                _ => typeof(Counter) // Handle unknown pages
+                "Counter"=>typeof(Counter),
+                _ => typeof(Login) // Handle unknown pages
             };
         }
 

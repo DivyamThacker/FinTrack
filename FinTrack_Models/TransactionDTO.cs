@@ -14,7 +14,7 @@ namespace FinTrack_Models
         public int Id { get; set; }
         [Required]
         [JsonPropertyName("userId")]
-        public int UserId { get; set; } = 1;
+        public string UserId { get; set; }
         [Required]
         [JsonPropertyName("senderUsername")]
         public string SenderUsername { get; set; } = "me";

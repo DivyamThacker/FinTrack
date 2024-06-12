@@ -16,10 +16,10 @@ namespace FinTrack_API.Controllers
             _goalRepository = goalRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetAll(string userId)
         {
-            return Ok(await _goalRepository.GetAll());
+            return Ok(await _goalRepository.GetAll(userId));
         }
 
         [HttpPost]
@@ -61,10 +61,7 @@ namespace FinTrack_API.Controllers
             {
                 return BadRequest("Please enter valid goal amount");
             }
-            if (goalDTO.UserId <= 0)
-            {
-                return BadRequest("Please enter valid user id");
-            }
+           
             if (goalDTO.Name == null || goalDTO.Name == "")
             {
                 return BadRequest("");

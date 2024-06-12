@@ -16,12 +16,16 @@ using FinTrack.Entities;
 using System.ComponentModel;
 using FinTrack.Services.IServices;
 using FinTrack.Helper;
+using FinTrack_Common;
+using Newtonsoft.Json;
 namespace FinTrack.Mvvm.ViewModels
 {
 //[AddINotifyPropertyChangedInterface]
     public class RecordsViewModel : INotifyPropertyChanged
     {
         private IRecordApiService _recordApiService;
+        public string UsernameLabel { get; set; } = default!;
+        public INavigation Navigation { get; set; }
         private IMenuHandler _menuHandler;
         public RecordDTO SelectedRecord { get; set; } = default!;
         public ICommand CancelComand { get; set; }
@@ -59,14 +63,27 @@ namespace FinTrack.Mvvm.ViewModels
         public IEnumerable<RecordDTO>? ThisWeekExpenseRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthIncomeRecords { get; set; }
         public IEnumerable<RecordDTO>? ThisMonthExpenseRecords { get; set; }
-        private INavigation _navigationService;
-        public RecordsViewModel(INavigation navigation, IRecordApiService recordApiService, IMenuHandler menuHandler)
+        private IPreferences _preferences;
+        //private INavigation _navigationService;
+        public UserDTO User { get; set; }
+        public RecordsViewModel(IRecordApiService recordApiService, IMenuHandler menuHandler, IPreferences preferences)
         {
+            //this._navigationService = navigation;
+            _preferences = preferences;
+            var userDetails = _preferences.Get(SD.Local_UserDetails, "null");
+            if (userDetails == "null")
+            {
+                //_navigationService.PushAsync(new BlazorHostPage("Login"));
+                Navigation.PushAsync(new BlazorHostPage("Login"));
+            }
+            else { User = JsonConvert.DeserializeObject<UserDTO>(userDetails); }
             _menuHandler = menuHandler;
 
-            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
-            this._navigationService = navigation;
             _recordApiService = recordApiService;
+            MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
+
+            NewRecord.UserId = User.Id;
+            UsernameLabel = User.Name;
             Task.Run(async () => await GetRecords());
             CancelComand = new Command( () =>
             {
@@ -189,7 +206,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewRecord = new RecordDTO();
+                    NewRecord = new RecordDTO{UserId = User.Id};
                     break;
 
                 case "Update":
@@ -233,7 +250,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewRecord = new RecordDTO();
+            NewRecord = new RecordDTO { UserId = User.Id};
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -242,7 +259,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetRecords()
         {
-            Records = await _recordApiService.GetDataAsync();
+            Records = await _recordApiService.GetDataAsync(User.Id);
             CalculateChartData();
         }
 
@@ -251,7 +268,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _recordApiService.UpdateRecord(NewRecord);
-                Records = await _recordApiService.GetDataAsync();
+                Records = await _recordApiService.GetDataAsync(User.Id);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -262,7 +279,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var record = await _recordApiService.CreateRecord(NewRecord);
                 record.Color = record.IsIncome ? "Green" : "Red";
                 Records.Add(record);
-                NewRecord = new RecordDTO();
+                NewRecord = new RecordDTO{ UserId = User.Id };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

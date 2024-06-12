@@ -11,6 +11,10 @@ using System.Windows.Input;
 using FinTrack_Common;
 using FinTrack.Services.IServices;
 using FinTrack.Helper;
+using Microsoft.Maui.Controls;
+using Newtonsoft.Json;
+//using Windows.Security.Authentication.OnlineId;
+//using Windows.System;
 
 namespace FinTrack.Mvvm.ViewModels
 {
@@ -18,7 +22,9 @@ namespace FinTrack.Mvvm.ViewModels
     public class GoalsViewModel : INotifyPropertyChanged
     {
         private readonly IGoalApiService _goalApiService;
+        public string UsernameLabel { get; set; } = default!;
         private IMenuHandler _menuHandler;
+        public INavigation Navigation { get; set; }
         public GoalDTO SelectedGoal { get; set; } = default!;
         public bool IsDatePickerVisible { get; set; } = false;
         public ICommand CancelComand { get; set; }
@@ -56,12 +62,26 @@ namespace FinTrack.Mvvm.ViewModels
         }
 
         public IEnumerable<GoalDTO>? ThisMonthGoals { get; set; }
-        public GoalsViewModel(IGoalApiService goalApiService, IMenuHandler menuHandler)
+        private IPreferences _preferences;
+        //private INavigation _navigationService;
+        public UserDTO User { get; set; }
+        public GoalsViewModel(IGoalApiService goalApiService, IMenuHandler menuHandler, IPreferences preferences)
         {
+            //this._navigationService = navigation;
+            _preferences = preferences;
+            var userDetails = _preferences.Get(SD.Local_UserDetails, "null");
+            if (userDetails == "null")
+            {
+                //_navigationService.PushAsync(new BlazorHostPage("Login"));
+                Navigation.PushAsync(new BlazorHostPage("Login"));
+            }
+            else { User = JsonConvert.DeserializeObject<UserDTO>(userDetails); }
             _menuHandler = menuHandler;
-
+            _goalApiService = goalApiService;
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
-            _goalApiService = _goalApiService;
+            NewGoal.UserId = User.Id;
+            UsernameLabel = User.Name;
+
             Task.Run(async () => await GetGoals());
             CancelComand = new Command(() =>
             {
@@ -123,6 +143,7 @@ namespace FinTrack.Mvvm.ViewModels
         //    {
         //        GoalDate = g.Key,
         //        Amount = g.Sum(x => x.Amount)
+        //        UserId = User.Id
         //    });
         //}
         private void TimeBtnClicked(string text)
@@ -156,7 +177,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewGoal = new GoalDTO();
+                    NewGoal = new GoalDTO{ UserId = User.Id };
                     break;
 
                 case "Update":
@@ -201,7 +222,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewGoal = new GoalDTO();
+            NewGoal = new GoalDTO { UserId = User.Id};
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -210,7 +231,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetGoals()
         {
-            Goals = await _goalApiService.GetDataAsync();
+            Goals = await _goalApiService.GetDataAsync(User.Id);
             //CalculateChartData();
         }
 
@@ -221,7 +242,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _goalApiService.UpdateGoal(NewGoal);
-                Goals = await _goalApiService.GetDataAsync();
+                Goals = await _goalApiService.GetDataAsync(User.Id);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -232,7 +253,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var goal = await _goalApiService.CreateGoal(NewGoal);
                 goal.Color = goal.TotalSavedAmount<=0 ? "Red" : "Green";
                 Goals.Add(goal);
-                NewGoal = new GoalDTO();
+                NewGoal = new GoalDTO{UserId = User.Id };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

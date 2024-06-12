@@ -101,13 +101,13 @@ namespace FinTrack_Business.Repository
             return result;
         }
 
-        public async Task<IEnumerable<BudgetDTO>> GetAll()
+        public async Task<IEnumerable<BudgetDTO>> GetAll(string userId)
         {
-            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).Where(x=>x.UserId== userId).ToListAsync();
             foreach (var budget in budgets)
             {
-                var records = await _db.Records.Where(x => (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
-                var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var records = await _db.Records.Where(x => (x.UserId == userId)&& (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var transactions = await _db.Transactions.Where(x => (x.UserId == userId) && (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
                 budget.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
                 //logic for status
                 if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime > DateTime.Now))
