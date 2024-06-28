@@ -13,6 +13,9 @@ namespace FinTrack_DataAccess
         [Required]
         public string UserId { get; set; }
         [Required]
+        public string AccountId { get; set; } // Foreign key to Account model
+        public Account Account { get; set; }
+        [Required]
         public required string Name { get; set; }
         public string? Description { get; set; }
         public DateTime RecordDate { get; set; }

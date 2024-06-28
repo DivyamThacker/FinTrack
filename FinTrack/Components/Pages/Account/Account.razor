@@ -1,0 +1,115 @@
+@page "/manage-account"
+@layout Layout.MainLayout
+
+<AuthorizeView>
+    <Authorized>
+
+        <style>
+            .container {
+                margin-top: 50px; /* Adjust margin as needed */
+                background-color: #f0f0f0; /* Light grey background for the container */
+                padding: 20px; /* Add padding for spacing */
+            }
+
+            .table {
+                background-color: #343a40; /* Dark background for the table */
+                color: white; /* White text color */
+                border-radius: 10px; /* Rounded corners for the table */
+            }
+
+            .account-button {
+                background-color: transparent;
+                color: white;
+                border: none;
+                padding: 10px;
+                text-align: left;
+                display: inline-block;
+                width: calc(100% - 40px);
+            }
+
+                .account-button:hover {
+                    background-color: #3f3f3f;
+                }
+
+            .delete-button {
+                background-color: transparent;
+                color: white;
+                border: none;
+                padding: 10px;
+                text-align: right;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+                .delete-button:hover {
+                    color: red;
+                }
+        </style>
+        <h2 class="text-center">Manage Accounts</h2>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        @if (InvestmentAccounts.Any())
+                                        {
+                                            <th>Investment Account</th>
+                                        }
+                                        <th>Savings Account</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @if (InvestmentAccounts.Any())
+                                        {
+                                            <td style="vertical-align: top;">
+                                                <div style="max-height: 300px; overflow-y: auto;">
+                                                    @foreach (var account in InvestmentAccounts)
+                                                    {
+                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <button class="account-button" @onclick="() => OnSelectAccount(account)">@account.Name</button>
+                                                            <button class="delete-button" @onclick="() => DeleteBtnClicked(account.Id)">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                        <td style="vertical-align: top;">
+                                            <div style="max-height: 300px; overflow-y: auto;">
+                                                @foreach (var account in SavingAccounts)
+                                                {
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <button class="account-button" @onclick="() => OnSelectAccount(account)">@account.Name</button>
+                                                        <button class="delete-button" @onclick="() => DeleteBtnClicked(account.Id)">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @if (!InvestmentAccounts.Any())
+                            {
+                                <p>No investment accounts found.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</Authorized>
+    <NotAuthorized>
+        <h2 class="text-center">You need to log in to view this page.</h2>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+}

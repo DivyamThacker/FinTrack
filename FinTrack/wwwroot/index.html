@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="FinTrack.styles.css" />
+    <!-- For  Font awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- For  Modal Styling -->
+    <!--<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet" />-->
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 
@@ -24,7 +28,11 @@
     </div>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>
-
+    <script>
+        function showConfirm(message) {
+            return confirm(message);
+        }
+    </script>
 </body>
 
 </html>

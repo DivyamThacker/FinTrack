@@ -1,5 +1,6 @@
-﻿using FinTrack.Mvvm.Views;
+﻿//using FinTrack.Mvvm.Views;
 using FinTrack.Services.IServices;
+using FinTrack_Common;
 using FinTrack_Models;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -17,15 +18,6 @@ namespace FinTrack.Components.Pages.Account
         public bool IsProcessing { get; set; } = false;
         public bool ShowSignInErrors { get; set; }
         public string Errors { get; set; }
-        //[Inject]
-        //public IBudgetApiService budgetApiService { get; set; }
-        [Inject]
-        IGoalApiService goalApiService { get; set; }
-        [Inject]
-        public IRecordApiService recordApiService { get; set; }
-        [Inject]
-        public ITransactionApiService transactionApiService { get; set; }
-
         [Inject]
         public IAuthenticationService _authSerivce { get; set; }
         [Inject]
@@ -45,9 +37,8 @@ namespace FinTrack.Components.Pages.Account
                 ReturnUrl = queryParam["returnUrl"];
                 if (string.IsNullOrEmpty(ReturnUrl))
                 {
-                    //_navigationManager.NavigateTo("/");
-                    await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
-
+                    _navigationManager.NavigateTo("/manage-account");
+                    //await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
                 }
                 else
                 {
@@ -63,9 +54,10 @@ namespace FinTrack.Components.Pages.Account
             }
             IsProcessing = false;
         }
-        private async void NavigateBtnClicked()
+        private async void navigatebtnclicked()
         {
-                    await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
+            //await App.Current.MainPage.Navigation.PushAsync(new OverviewPage());
+            _navigationManager.NavigateTo("/manage-account");
 
         }
     }

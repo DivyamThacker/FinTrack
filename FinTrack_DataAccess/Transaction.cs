@@ -13,6 +13,9 @@ namespace FinTrack_DataAccess
         [Required]
         public string UserId { get; set; }
         [Required]
+        public string AccountId { get; set; } // Foreign key to Account model
+        public Account Account { get; set; }
+        [Required]
         public string SenderUsername { get; set; } = default!;
         [Required]
         public string RecieverUsername { get; set; } = default!;

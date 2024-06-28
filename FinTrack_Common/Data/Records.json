@@ -1,0 +1,232 @@
+[
+  {
+    "Id": 3002,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default1212",
+    "Description": "wow12",
+    "RecordDate": "2024-03-24T00:00:00",
+    "Amount": 1000,
+    "IsIncome": false,
+    "Category": "Other"
+  },
+  {
+    "Id": 4002,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default1212",
+    "Description": "12",
+    "RecordDate": "2024-03-25T16:33:57.6270021",
+    "Amount": 1202,
+    "IsIncome": false,
+    "Category": "Health"
+  },
+  {
+    "Id": 4003,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "defaulte212",
+    "Description": "",
+    "RecordDate": "2024-03-25T16:39:21.2593242",
+    "Amount": 1,
+    "IsIncome": false,
+    "Category": "Health"
+  },
+  {
+    "Id": 4004,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "Enter Description",
+    "RecordDate": "2024-03-25T16:40:35.9518037",
+    "Amount": 10102,
+    "IsIncome": false,
+    "Category": "Other"
+  },
+  {
+    "Id": 5007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "sdf",
+    "RecordDate": "2024-03-28T16:02:28.6511054",
+    "Amount": 10000,
+    "IsIncome": true,
+    "Category": "Other"
+  },
+  {
+    "Id": 5008,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "sdf",
+    "RecordDate": "2024-03-28T16:06:29.6507035",
+    "Amount": 1000,
+    "IsIncome": true,
+    "Category": "Health"
+  },
+  {
+    "Id": 5009,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default121",
+    "Description": "wtwt",
+    "RecordDate": "2024-03-28T16:42:39.7299126",
+    "Amount": 9091,
+    "IsIncome": true,
+    "Category": "Health"
+  },
+  {
+    "Id": 6007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "12",
+    "RecordDate": "2024-03-29T00:00:00",
+    "Amount": 12,
+    "IsIncome": true,
+    "Category": "Entertainment"
+  },
+  {
+    "Id": 6008,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "2",
+    "RecordDate": "2024-03-30T00:00:00",
+    "Amount": 12121,
+    "IsIncome": true,
+    "Category": "Education"
+  },
+  {
+    "Id": 6009,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "21",
+    "RecordDate": "2024-03-29T07:14:54.3108614",
+    "Amount": 1212,
+    "IsIncome": false,
+    "Category": "Health"
+  },
+  {
+    "Id": 7007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default",
+    "Description": "12",
+    "RecordDate": "2024-04-04T06:42:54.5215274",
+    "Amount": 100,
+    "IsIncome": true,
+    "Category": "Health"
+  },
+  {
+    "Id": 8007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "fornewGOal",
+    "Description": "new record",
+    "RecordDate": "2024-04-09T07:02:05.5500546",
+    "Amount": 32322,
+    "IsIncome": true,
+    "Category": "Health"
+  },
+  {
+    "Id": 9007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "default23",
+    "Description": "serious injury",
+    "RecordDate": "2024-04-08T00:00:00",
+    "Amount": 8291,
+    "IsIncome": true,
+    "Category": "Health"
+  },
+  {
+    "Id": 10007,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "big expenditure",
+    "Description": "huihui",
+    "RecordDate": "2024-04-11T22:29:13.1798911",
+    "Amount": 8000,
+    "IsIncome": false,
+    "Category": "Business"
+  },
+  {
+    "Id": 10008,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "new record for testing",
+    "Description": "eating healthy food",
+    "RecordDate": "2024-04-11T22:35:25.0576781",
+    "Amount": 1000,
+    "IsIncome": false,
+    "Category": "Food"
+  },
+  {
+    "Id": 10009,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "headlight of car",
+    "Description": "fix broken headlight",
+    "RecordDate": "2024-04-23T00:00:00",
+    "Amount": 10000,
+    "IsIncome": false,
+    "Category": "Transport"
+  },
+  {
+    "Id": 10010,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "fix car scratch and servicing ",
+    "Description": "suzuki",
+    "RecordDate": "2024-04-22T00:00:00",
+    "Amount": 20000,
+    "IsIncome": false,
+    "Category": "Transport"
+  },
+  {
+    "Id": 10011,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "fix car mirror and glass",
+    "Description": "new glass",
+    "RecordDate": "2024-04-21T00:00:00",
+    "Amount": 35000,
+    "IsIncome": false,
+    "Category": "Transport"
+  },
+  {
+    "Id": 10012,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "lottery",
+    "Description": "small win in lottery",
+    "RecordDate": "2024-04-23T00:00:00",
+    "Amount": 5000,
+    "IsIncome": true,
+    "Category": "Other"
+  },
+  {
+    "Id": 10013,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "salary",
+    "Description": "job ",
+    "RecordDate": "2024-04-21T00:00:00",
+    "Amount": 23000,
+    "IsIncome": true,
+    "Category": "Education"
+  },
+  {
+    "Id": 11009,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "Movie",
+    "Description": "John wick 4",
+    "RecordDate": "2024-04-23T17:02:17.7941652",
+    "Amount": 300,
+    "IsIncome": false,
+    "Category": "Entertainment"
+  },
+  {
+    "Id": 12009,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "Main job Salary",
+    "Description": "June Salary",
+    "RecordDate": "2024-06-11T07:41:45.1227607",
+    "Amount": 43000,
+    "IsIncome": true,
+    "Category": "Bills"
+  },
+  {
+    "Id": 12010,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "Salary",
+    "Description": "Side job Salary",
+    "RecordDate": "2024-06-11T07:44:09.6637386",
+    "Amount": 50000,
+    "IsIncome": true,
+    "Category": "Bills"
+  }
+]

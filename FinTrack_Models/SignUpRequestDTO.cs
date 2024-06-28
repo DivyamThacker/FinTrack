@@ -18,6 +18,12 @@ namespace FinTrack_Models
 
         public string PhoneNumber { get; set; }
 
+        [Required]
+        public string AccountName { get; set; }
+
+        [Required]
+        public string AccountType { get; set; }
+
 
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]

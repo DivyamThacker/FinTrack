@@ -14,6 +14,8 @@ UPDATE FinTrackDB.dbo.Transactions
 SET UserId = REPLACE(UserId, '0', '7f7d1487-94d2-40ee-b282-d3085edd948f')
 WHERE UserId = '0';
 
+Select * from FinTrackDB.dbo.AspNetUsers for json auto; (way to get json output from the ms sql server)
+
 Accoutns:-
 Divyam@gmail.com Divyam@12
 Admin@gmail.com Admin@12
@@ -222,6 +224,142 @@ if (!string.IsNullOrEmpty(json))
 see how navigation is being done using component and figure out how to and where to add use of _navigationService in overviewViewmodel
 also figure out how to interpret input parameter in navigation in viewservices
     how to give role based access to maui native pages
-    
-   
-    
+
+    add get filtered async in all controllers and also add a method to calculate account balance with respect to
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Ideas for blazor frontend:
+
+Implement such that you cannot add send money in a transaction without having much money in the account in MAUI app;
+
+make a pie chart for account summary that contains what percentage of cash is in which stock or cash
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Schema:
+Tables:
+
+Users:
+
+user_id (primary key): Unique identifier for the user.
+username: Username for login.
+(other user information relevant to finance tracking)
+
+Accounts:
+//account_type: (e.g., Brokerage account, IRA)
+
+account_id (primary key): Unique identifier for the investment account.
+user_id (foreign key): References user_id in Users table.
+institution_name: Name of the financial institution holding the account.
+account_balance: Current cash balance in the account.
+
+
+Holdings:
+
+holding_id (primary key): Unique identifier for the holding.
+account_id (foreign key): References account_id in Accounts table.
+symbol: Stock ticker symbol.
+quantity: Number of shares held.
+average_cost: Average price per share purchased.
+Transactions:
+
+transaction_id (primary key): Unique identifier for the transaction.
+account_id (foreign key): References account_id in Accounts table.
+symbol: Stock ticker symbol (may be null for cash deposits/withdrawals).
+transaction_type: (e.g., Buy, Sell, Dividend, Deposit, Withdrawal)
+transaction_date: Date the transaction occurred.
+price: Price per share for buy/sell transactions (null for deposits/withdrawals).
+quantity: Number of shares bought/sold (null for deposits/withdrawals).
+amount: Total amount of the transaction (positive for deposits, negative for withdrawals).
+
+Market_Data:
+
+symbol (primary key): Stock ticker symbol (matches symbol in Holdings table).
+last_price: Current price of the stock.
+change: Change in price since the previous market close (positive or negative).
+change_percent: Percentage change since the previous market close.
+day_range: Range of the stock's price for the current trading day (low and high).
+data_update_time: Timestamp of the last update for this market data.
+
+
+Relationships:
+
+A User can have many Accounts (One-to-Many).
+An Account belongs to one User (Many-to-One).
+An Account can have many Holdings (One-to-Many).
+A Holding belongs to one Account (Many-to-One).
+An Account can have many Transactions (One-to-Many).
+A Transaction belongs to one Account (Many-to-One).
+A Holding can reference one record in Market_Data (One-to-One).
+A record in Market_Data can be referenced by many Holdings (One-to-Many).
+
+  ++++++++++++++++++++++++++++++++++++++
+  If I add account balance in accounts model, then I would need to send the state has changed attribute to a common shared model like acocunts
+
+(for understanding purpose (for your information) FYI )    
+IN my project positive records are deposits and negative records are withdrawals from the account.
+
+Remove user id from everywhere after adding account ids
+
+++++++++++++++++++++++++++++++++++++
+ var user = await _userManager.GetUserAsync(User.Identity);
+    var account = await _context.Accounts.FindAsync(user.AccountId);
++++++++++++++++++++++++++++++++++++++=
+    public async Task<decimal> GetCurrentBalance()
+{
+    var user = await _userManager.GetUserAsync(User.Identity);
+    var account = await _context.Accounts.FindAsync(user.AccountId);
+
+    return account?.Balance ?? 0; // Return 0 if account not found
+}
++++++++++++++++++++++++++++++++++++++++++++++
+we need to create new blazor form to create a new account for an existing user.
+
+Add verification process that if a user tries to create an account with an existing account name then it fails and shows it in the frontend
+
+think about if we need to reauthenticate the user everytime they want to switch to their other account
++++++++++++++++++++++++++++++
+
+start with creating account service in account controller.
+
+check if there is any error in the account service and account controller, also check sign up endpoint.
+
+do checking for duplicate account id in  database and invalid user id in the account repository.
+
+Add accounts in menu bar in every menu page.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++]
+Steps to insert json data into the database:-
+
+JsondataService.cs:
+public class JsonDataService
+{
+    private readonly FinTrackDbContext _context;
+
+    public JsonDataService(FinTrackDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task InsertDataFromJsonAsync(string jsonFilePath)
+    {
+        string json = await File.ReadAllTextAsync(jsonFilePath);
+        List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(json);
+
+        _context.Accounts.AddRange(accounts);
+        await _context.SaveChangesAsync();
+    }
+}
+
+blazor page:
+@page "/import-data"
+@inject JsonDataService JsonDataService
+
+<button @onclick="InsertData">Insert Data from JSON</button>
+
+@code {
+    private async Task InsertData()
+    {
+        // Provide the path to your JSON file
+        string jsonFilePath = "path/to/your/json/file/accounts.json";
+        await JsonDataService.InsertDataFromJsonAsync(jsonFilePath);
+    }
+}

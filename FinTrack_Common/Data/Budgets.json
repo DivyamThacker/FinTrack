@@ -1,0 +1,67 @@
+[
+  {
+    "Id": 2002,
+    "Name": "hannah",
+    "Description": "desc",
+    "StartTime": "2024-04-01T00:00:00",
+    "EndTime": "2024-04-30T00:00:00",
+    "Period": "Month",
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Status": "Pending",
+    "Category": "All",
+    "Notify": true,
+    "Amount": 12330
+  },
+  {
+    "Id": 2004,
+    "Name": "Name",
+    "Description": "Notification not true",
+    "StartTime": "2024-04-01T00:00:00",
+    "EndTime": "2024-04-30T00:00:00",
+    "Period": "Month",
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Status": "Pending",
+    "Category": "Business",
+    "Notify": false,
+    "Amount": 14000
+  },
+  {
+    "Id": 3003,
+    "Name": "currBUdget",
+    "Description": "string new",
+    "StartTime": "2024-04-09T00:00:00",
+    "EndTime": "2024-04-12T00:00:00",
+    "Period": "Custom",
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Status": "Pending",
+    "Category": "All",
+    "Notify": false,
+    "Amount": 10000
+  },
+  {
+    "Id": 4002,
+    "Name": "Car budget",
+    "Description": "Servicing of car",
+    "StartTime": "2024-04-01T00:00:00",
+    "EndTime": "2024-04-30T00:00:00",
+    "Period": "Month",
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Status": "Pending",
+    "Category": "Transport",
+    "Notify": false,
+    "Amount": 1000000
+  },
+  {
+    "Id": 5002,
+    "Name": "June and July expense ",
+    "Description": "expense\r",
+    "StartTime": "2024-06-01T00:00:00",
+    "EndTime": "2024-07-27T00:00:00",
+    "Period": "Custom",
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Status": "Pending",
+    "Category": "Bills",
+    "Notify": true,
+    "Amount": 1000000
+  }
+]

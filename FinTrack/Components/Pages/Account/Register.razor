@@ -30,10 +30,25 @@
                         </div>
                         <div class="py-2 input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"> +1</span>
+                                <span class="input-group-text"> +91</span>
                             </div>
                             <InputText @bind-Value="SignUpRequest.PhoneNumber" type="text" class="form-control"  placeholder="Phone number..." />
                             <ValidationMessage For="(()=>SignUpRequest.PhoneNumber)" />
+                        </div>
+                        <div class="py-2">
+                            <select class="form-select" id="accountType" @bind="SignUpRequest.AccountType">
+                                <option value="">Select Account Type</option>
+                                <option value="Savings">Savings</option>
+                                <option value="Investment">Investment</option>
+                                <!-- Uncomment other options if needed -->
+                                <!-- <option value="Checking">Checking</option> -->
+                                <!-- <option value="Retirement">Retirement</option> -->
+                            </select>
+                        </div>
+
+                        <div class="py-2">
+                            <InputText @bind-Value="SignUpRequest.AccountName" class="form-control" placeholder="Account Name..." />
+                            <ValidationMessage For="(()=>SignUpRequest.AccountName)" />
                         </div>
                         <div class="form-row py-2">
                             <div class="col">

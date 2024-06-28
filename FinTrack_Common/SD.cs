@@ -23,5 +23,10 @@
 
         public const string Local_Token = "JWT Token";
         public const string Local_UserDetails = "UserDetails";
+
+        public const string Account_Savings = "Savings";
+        public const string Account_Investment = "Investment";
+        public const string Account_Checking = "Checking";
+        public const string Account_Retirement = "Retirement";
     }
 }

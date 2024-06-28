@@ -1,11 +1,17 @@
 ﻿using FinTrack_API.Helper;
+using FinTrack_Business.Repository;
+using FinTrack_Business.Repository.IRepository;
 using FinTrack_Common;
 using FinTrack_DataAccess;
+using FinTrack_DataAccess.Data;
 using FinTrack_Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,13 +26,18 @@ namespace FinTrack_API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _aPISettings;
-
+        //private readonly ApplicationDbContext _db;
+        private readonly IAccountRepository _accountRepository;
         public AccountController(
+            IAccountRepository accountRepository,
+            //ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<APISettings> options)
         {
+            _accountRepository = accountRepository;
+            //_db = db;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -58,6 +69,47 @@ namespace FinTrack_API.Controllers
                 {
                     IsRegisterationSuccessful = false,
                     Errors = result.Errors.Select(u => u.Description)
+                });
+            }
+            string accountId =null;
+
+            var accountRequest = new AccountCreationRequestDTO
+            {
+                AccountName = signUpRequestDTO.AccountName,
+                AccountType = signUpRequestDTO.AccountType,
+                UserId = user.Id
+            };
+            if (result.Succeeded)
+            {
+                if (accountRequest.AccountName == null || !ModelState.IsValid)
+                {
+                    return BadRequest(new SignUpResponseDTO()
+                    {
+                        IsRegisterationSuccessful = false,
+                        Errors = new string[] { "Please Enter valid Account Name" }
+                    });
+                }
+                //if (accountRequest.AccountType != SD.Account_Investment && accountRequest.AccountType != SD.Account_Savings)
+                //{
+                //    return BadRequest(new SignUpResponseDTO()
+                //    {
+                //        IsRegisterationSuccessful = false,
+                //        Errors = new string[] { "Please Enter valid Account Type" }
+                //    });
+                //}
+                var accountResponse = await _accountRepository.Create(accountRequest);
+                if (accountResponse.Success)
+                {
+                    accountId = accountResponse.AccountId;
+                }
+            }
+
+            if (accountId == null)
+            {
+                return BadRequest(new SignUpResponseDTO()
+                {
+                    IsRegisterationSuccessful = false,
+                    Errors = new string[] { "Account Creation Failed" }
                 });
             }
 
@@ -131,6 +183,45 @@ namespace FinTrack_API.Controllers
             }
 
             return StatusCode(201);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAccountAsync([FromBody] AccountCreationRequestDTO accountRequest)
+        {
+            if (accountRequest.AccountName == null || !ModelState.IsValid)
+            {
+                return BadRequest(new AccountCreationResponseDTO
+                {
+                    Success = false,
+                    Message = "Please Enter valid Account Name"
+                });
+            }
+            //if (accountRequest.AccountType != SD.Account_Investment && accountRequest.AccountType != SD.Account_Savings)
+            //{
+            //    return BadRequest(new AccountCreationResponseDTO
+            //    {
+            //        Success = false,
+            //        Message = "Please Enter valid Account Type"
+            //    });
+            //}
+            var result = await _accountRepository.Create(accountRequest);
+            return Ok(result);
+        }
+
+        [HttpDelete("{accountId}")]
+        [ActionName("DeleteAccount")]
+        public async Task<IActionResult> DeleteAccount(string accountId)
+        {
+            var result = await _accountRepository.DeleteAccount(accountId);
+            return Ok(result);
+        }
+
+        [HttpGet("{userId}")]
+        [ActionName("GetAccounts")]
+         public async Task<IActionResult> GetAccounts(string userId)
+        {
+            var result = _accountRepository.GetAllAccounts(userId);
+            return  Ok(result);
         }
 
 

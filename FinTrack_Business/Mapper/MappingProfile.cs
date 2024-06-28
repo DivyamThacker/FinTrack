@@ -18,6 +18,7 @@ namespace FinTrack_Business.Mapper
             CreateMap<Goal, GoalDTO>().ReverseMap();
             CreateMap<Record, RecordDTO>().ReverseMap();
             CreateMap<Transaction, TransactionDTO>().ReverseMap();
+            CreateMap<Account, AccountDTO>().ReverseMap();
             //CreateMap<User, UserDTO>().ReverseMap();
         }
     }

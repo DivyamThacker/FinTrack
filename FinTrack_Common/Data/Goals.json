@@ -1,0 +1,54 @@
+[
+  {
+    "Id": 4002,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "newGOal1",
+    "Description": "get notified now, with this awesome description",
+    "StartTime": "2024-04-01T00:00:00",
+    "EndTime": "2024-04-30T00:00:00",
+    "Period": "Month",
+    "Amount": 40000,
+    "Status": "Pending",
+    "Category": "All",
+    "Notify": true
+  },
+  {
+    "Id": 4003,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "goal 2",
+    "Description": "save money for bill goal ",
+    "StartTime": "2024-04-07T00:00:00",
+    "EndTime": "2024-04-13T00:00:00",
+    "Period": "Week",
+    "Amount": 12000,
+    "Status": "Pending",
+    "Category": "Bills",
+    "Notify": false
+  },
+  {
+    "Id": 4004,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "Life Goals",
+    "Description": "Earn money\r",
+    "StartTime": "2024-06-01T00:00:00",
+    "EndTime": "2024-08-01T00:00:00",
+    "Period": "Custom",
+    "Amount": 99900,
+    "Status": "Pending",
+    "Category": "All",
+    "Notify": false
+  },
+  {
+    "Id": 4005,
+    "UserId": "71ff1210-1168-4af7-a40a-f8f79a91a98c",
+    "Name": "DivyamGOals",
+    "Description": "goal goals",
+    "StartTime": "2024-06-01T00:00:00",
+    "EndTime": "2024-06-30T00:00:00",
+    "Period": "Month",
+    "Amount": 93849,
+    "Status": "Pending",
+    "Category": "Business",
+    "Notify": true
+  }
+]

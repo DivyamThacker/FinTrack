@@ -67,6 +67,7 @@ namespace FinTrack
             builder.Services.AddScoped<IRecordApiService, RecordApiService>();
             builder.Services.AddScoped<ITransactionApiService, TransactionApiService>();
 
+            builder.Services.AddSingleton<IAccountService, AccountService>();
             builder.Services.AddSingleton<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
             builder.Services.AddSingleton<IPreferences>(sp => Preferences.Default);
