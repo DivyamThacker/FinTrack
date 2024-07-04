@@ -64,7 +64,7 @@ namespace FinTrack.Mvvm.ViewModels
         }
         private async Task GetRecords()
         {
-            Records = await _recordApiService.GetDataAsync(User.Id);
+            Records = await _recordApiService.GetDataAsync(User.AccountId);
         }
         public void Dispose()
         {

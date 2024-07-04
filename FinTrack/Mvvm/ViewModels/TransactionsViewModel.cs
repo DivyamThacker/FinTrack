@@ -78,6 +78,7 @@ namespace FinTrack.Mvvm.ViewModels
             _transactionApiService = transactionApiService;
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             NewTransaction.UserId = User.Id;
+            NewTransaction.AccountId = User.AccountId;
             UsernameLabel = User.Name;
             Task.Run(async () => await GetTransactions());
             CancelComand = new Command(() =>
@@ -201,7 +202,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewTransaction = new TransactionDTO{UserId = User.Id};
+                    NewTransaction = new TransactionDTO{UserId = User.Id, AccountId = User.AccountId};
                     break;
 
                 case "Update":
@@ -245,7 +246,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewTransaction = new TransactionDTO { UserId = User.Id};
+            NewTransaction = new TransactionDTO { UserId = User.Id, AccountId = User.AccountId};
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -254,7 +255,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetTransactions()
         {
-            Transactions = await _transactionApiService.GetDataAsync(User.Id);
+            Transactions = await _transactionApiService.GetDataAsync(User.AccountId);
             CalculateChartData();
         }
 
@@ -263,7 +264,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _transactionApiService.UpdateTransaction(NewTransaction);
-                Transactions = await _transactionApiService.GetDataAsync(User.Id);
+                Transactions = await _transactionApiService.GetDataAsync(User.AccountId);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -274,7 +275,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var transaction = await _transactionApiService.CreateTransaction(NewTransaction);
                 transaction.Color = transaction.IsUserSender ? "Red" : "Green";
                 Transactions.Add(transaction);
-                NewTransaction = new TransactionDTO{ UserId = User.Id };
+                NewTransaction = new TransactionDTO{ UserId = User.Id, AccountId = User.AccountId };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

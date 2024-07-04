@@ -96,6 +96,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
         MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
         _recentBudget.UserId = User.Id;
         _recentGoal.UserId = User.Id;
+        _recentGoal.AccountId = User.AccountId;
         UsernameLabel = User.Name;  
         TimeBtnCommand = new Command((text) =>
         {
@@ -119,10 +120,10 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
     }
     private async Task GetData()
     {
-        Records = await _recordApiService.GetDataAsync(User.Id);
-        Transactions = await _transactionApiService.GetDataAsync(User.Id);
-        Goals = await _goalApiService.GetDataAsync(User.Id);
-        Budgets = await _budgetApiService.GetDataAsync(User.Id);
+        Records = await _recordApiService.GetDataAsync(User.AccountId);
+        Transactions = await _transactionApiService.GetDataAsync(User.AccountId);
+        Goals = await _goalApiService.GetDataAsync(User.AccountId);
+        Budgets = await _budgetApiService.GetDataAsync(User.AccountId);
 
         //Calculations for frame 1
         CurrentBalance = Records.Where(r => r.IsIncome).Sum(r => r.Amount) - Records.Where(r => !r.IsIncome).Sum(r => r.Amount) + Transactions.Where(r => !r.IsUserSender).Sum(r => r.Amount) - Transactions.Where(r => !r.IsUserSender).Sum(r => r.Amount);
@@ -140,7 +141,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
 
         if (RecentGoal == null)
         {
-            RecentGoal = new GoalDTO{UserId = User.Id};
+            RecentGoal = new GoalDTO{UserId = User.Id, AccountId = User.AccountId };
             RecentGoal.Name = "No Goal available";
             RecentGoal.Amount = 1;
             RecentGoal.TotalSavedAmount = 0;
@@ -150,7 +151,7 @@ public class OverviewViewModel : INotifyPropertyChanged , IDisposable//Observabl
         }
         if (RecentBudget == null)
         {
-            RecentBudget = new BudgetDTO { UserId = User.Id};
+            RecentBudget = new BudgetDTO { UserId = User.Id, AccountId = User.AccountId };
             RecentBudget.Name = "No Budget available";
             RecentBudget.Amount = 1;
             RecentBudget.TotalSpentAmount = 0;

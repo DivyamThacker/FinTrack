@@ -79,6 +79,7 @@ namespace FinTrack.Mvvm.ViewModels
 
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             NewBudget.UserId = User.Id;
+            NewBudget.AccountId = User.AccountId;
             UsernameLabel = User.Name;
             Task.Run(async () => await GetBudgets());
             CancelComand = new Command(() =>
@@ -174,7 +175,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewBudget = new BudgetDTO{ UserId = User.Id };
+                    NewBudget = new BudgetDTO{ UserId = User.Id, AccountId = User.AccountId };
                     break;
 
                 case "Update":
@@ -228,7 +229,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetBudgets()
         {
-            Budgets = await _budgetApiService.GetDataAsync(User.Id);
+            Budgets = await _budgetApiService.GetDataAsync(User.AccountId);
             //CalculateChartData();
         }
 
@@ -240,7 +241,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _budgetApiService.UpdateBudget(NewBudget);
-                Budgets = await _budgetApiService.GetDataAsync(User.Id);
+                Budgets = await _budgetApiService.GetDataAsync(User.AccountId);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -251,7 +252,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var budget = await _budgetApiService.CreateBudget(NewBudget);
                 budget.Color = budget.TotalSpentAmount <= 0 ? "Red" : "Green";
                 Budgets.Add(budget);
-                NewBudget = new BudgetDTO{ UserId = User.Id };
+                NewBudget = new BudgetDTO{ UserId = User.Id, AccountId = User.AccountId };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

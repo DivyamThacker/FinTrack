@@ -1,7 +1,7 @@
 ﻿ <CascadingAuthenticationState>
 <Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)">
+        <AuthorizeRouteView RouteData="@routeData" > @* DefaultLayout="@typeof(Components.Layout.MainLayout)" *@
              <Authorizing>
                  <p>Please wait, we are authorizing the user!..</p>
              </Authorizing>
@@ -12,7 +12,8 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <LayoutView DefaultLayout="@typeof(Components.Layout.MainLayout)">
+            <LayoutView>
+                @* DefaultLayout="@typeof(Components.Layout.MainLayout)" *@
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>

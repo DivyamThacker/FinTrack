@@ -10,7 +10,7 @@ namespace FinTrack.Services.IServices
 {
     public interface IBudgetApiService
     {
-        Task<ObservableCollection<BudgetDTO>> GetDataAsync(string id);
+        Task<ObservableCollection<BudgetDTO>> GetDataAsync(string accountId);
         Task<BudgetDTO> CreateBudget(BudgetDTO budget);
         Task<BudgetDTO> UpdateBudget(BudgetDTO budget);
         Task<BudgetDTO> GetBudget(int id);

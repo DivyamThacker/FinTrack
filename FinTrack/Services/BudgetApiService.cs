@@ -22,9 +22,9 @@ namespace FinTrack.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ObservableCollection<BudgetDTO>> GetDataAsync(string userId)
+        public async Task<ObservableCollection<BudgetDTO>> GetDataAsync(string accountId)
         {
-            var response = await _httpClient.GetAsync($"/api/Budget/GetAll/{userId}");
+            var response = await _httpClient.GetAsync($"/api/Budget/GetAll/{accountId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             var budgets = JsonSerializer.Deserialize<ObservableCollection<BudgetDTO>>(json);

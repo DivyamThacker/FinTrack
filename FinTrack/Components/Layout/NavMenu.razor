@@ -8,11 +8,6 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         
           <li class="nav-item p-0">
-        <NavLink class="nav-link" href="/cart">
-                            <span class="p-2">
-                                <i class="bi bi-cart"></i> 
-                            </span>
-        </NavLink>
         </li>
       </ul>
       <form class="d-flex">
@@ -20,10 +15,17 @@
 
               <AuthorizeView>
                   <Authorized>
-                       <li class="nav-item p-0">
+                    <li class="nav-item p-0">
                         <NavLink class="nav-link" href="#">
                             <span class="p-2">
                                 Hello, @context.User.Identity.Name
+                            </span>
+                        </NavLink>
+                    </li>
+                    <li class="nav-item p-0">
+                        <NavLink class="nav-link" href="manage-account">
+                            <span class="p-2">
+                                Manage Account
                             </span>
                         </NavLink>
                     </li>

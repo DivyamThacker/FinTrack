@@ -10,7 +10,7 @@ namespace FinTrack.Services.IServices
 {
     public interface IGoalApiService
     {
-        Task<ObservableCollection<GoalDTO>> GetDataAsync(string id);
+        Task<ObservableCollection<GoalDTO>> GetDataAsync(string accountId);
         Task<GoalDTO> CreateGoal(GoalDTO goal);
         Task<GoalDTO> UpdateGoal(GoalDTO goal);
         Task<GoalDTO> GetGoal(int id);

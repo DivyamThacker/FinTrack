@@ -26,9 +26,13 @@ namespace FinTrack.Services
                     navigationService.PushAsync(new MainPage());
                     break;
                 case "Exit":
-                    navigationService.PushAsync(new BlazorHostPage("Counter"));
+                    navigationService.PushAsync(new BlazorHostPage("counter"));
                     break;
-                default: navigationService.PushAsync(new BlazorHostPage("/")); break;
+                case "Manage Accounts":
+                    navigationService.PushAsync(new BlazorHostPage("manage-account"));
+                    break;
+
+                default: navigationService.PushAsync(new BlazorHostPage("dashboard")); break;
             }
         }
     }

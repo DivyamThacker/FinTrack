@@ -19,10 +19,10 @@ namespace FinTrack.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ObservableCollection<GoalDTO>> GetDataAsync(string userId)
+        public async Task<ObservableCollection<GoalDTO>> GetDataAsync(string accountId)
         {
-            //var response = await _httpClient.GetAsync("/api/Goal/GetAll?userId={userId}");
-            var response = await _httpClient.GetAsync($"/api/Goal/GetAll/{userId}");
+            //var response = await _httpClient.GetAsync("/api/Goal/GetAll?accountId={useaccountIdrId}");
+            var response = await _httpClient.GetAsync($"/api/Goal/GetAll/{accountId}");
 
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();

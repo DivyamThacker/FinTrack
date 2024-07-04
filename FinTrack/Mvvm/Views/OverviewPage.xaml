@@ -58,6 +58,9 @@
 
             </MenuFlyoutSubItem>
         </MenuBarItem>
+        <MenuBarItem Text="Account">
+            <MenuFlyoutItem Text="Manage Accounts" Clicked="OnMenuFlyoutItemClick"/>
+        </MenuBarItem>
         <MenuBarItem Text="Help" />
     </ContentPage.MenuBarItems>
     

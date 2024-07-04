@@ -101,13 +101,13 @@ namespace FinTrack_Business.Repository
             return result;
         }
 
-        public async Task<IEnumerable<BudgetDTO>> GetAll(string userId)
+        public async Task<IEnumerable<BudgetDTO>> GetAll(string accountId)
         {
-            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).Where(x=>x.UserId== userId).ToListAsync();
+            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).Where(x=>x.AccountId== accountId).ToListAsync();
             foreach (var budget in budgets)
             {
-                var records = await _db.Records.Where(x => (x.UserId == userId)&& (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
-                var transactions = await _db.Transactions.Where(x => (x.UserId == userId) && (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var records = await _db.Records.Where(x => (x.AccountId == accountId) && (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var transactions = await _db.Transactions.Where(x => (x.AccountId == accountId) && (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
                 budget.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
                 //logic for status
                 if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime > DateTime.Now))
@@ -153,6 +153,7 @@ namespace FinTrack_Business.Repository
                 objFromDb.Notify = objDTO.Notify;
                 objFromDb.StartTime = objDTO.StartTime;
                 objFromDb.EndTime = objDTO.EndTime;
+
                 _db.Budgets.Update(objFromDb);
                 await _db.SaveChangesAsync();
                 return _mapper.Map<Budget, BudgetDTO>(objFromDb);

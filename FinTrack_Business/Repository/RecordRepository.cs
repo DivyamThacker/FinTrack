@@ -54,9 +54,9 @@ namespace FinTrack_Business.Repository
             return result;
         }
 
-        public async Task<IEnumerable<RecordDTO>> GetAll(string userId)
+        public async Task<IEnumerable<RecordDTO>> GetAll(string accountId)
         {
-            return await _db.Records.ProjectTo<RecordDTO>(_mapper.ConfigurationProvider).Where(x=> (x.UserId == userId)).ToListAsync();
+            return await _db.Records.ProjectTo<RecordDTO>(_mapper.ConfigurationProvider).Where(x=> (x.AccountId == accountId)).ToListAsync();
         }
 
         public Task<List<RecordDTO>> GetFilteredAsync(Expression<Func<RecordDTO, bool>>[] filters, int? skip, int? take, params Expression<Func<RecordDTO, object>>[] includes)

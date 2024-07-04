@@ -83,6 +83,7 @@ namespace FinTrack.Mvvm.ViewModels
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
 
             NewRecord.UserId = User.Id;
+            NewRecord.AccountId = User.AccountId;
             UsernameLabel = User.Name;
             Task.Run(async () => await GetRecords());
             CancelComand = new Command( () =>
@@ -206,7 +207,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewRecord = new RecordDTO{UserId = User.Id};
+                    NewRecord = new RecordDTO{UserId = User.Id, AccountId = User.AccountId };
                     break;
 
                 case "Update":
@@ -250,7 +251,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewRecord = new RecordDTO { UserId = User.Id};
+            NewRecord = new RecordDTO { UserId = User.Id, AccountId = User.AccountId };
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -259,7 +260,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetRecords()
         {
-            Records = await _recordApiService.GetDataAsync(User.Id);
+            Records = await _recordApiService.GetDataAsync(User.AccountId);
             CalculateChartData();
         }
 
@@ -268,7 +269,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _recordApiService.UpdateRecord(NewRecord);
-                Records = await _recordApiService.GetDataAsync(User.Id);
+                Records = await _recordApiService.GetDataAsync(User.AccountId);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -279,7 +280,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var record = await _recordApiService.CreateRecord(NewRecord);
                 record.Color = record.IsIncome ? "Green" : "Red";
                 Records.Add(record);
-                NewRecord = new RecordDTO{ UserId = User.Id };
+                NewRecord = new RecordDTO{ UserId = User.Id, AccountId = User.AccountId };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

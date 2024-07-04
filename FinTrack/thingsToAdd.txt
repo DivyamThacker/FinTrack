@@ -312,54 +312,6 @@ Remove user id from everywhere after adding account ids
     return account?.Balance ?? 0; // Return 0 if account not found
 }
 +++++++++++++++++++++++++++++++++++++++++++++
-we need to create new blazor form to create a new account for an existing user.
 
-Add verification process that if a user tries to create an account with an existing account name then it fails and shows it in the frontend
+maybe when recent budget or goal is not available , do conditional rendering of the component and give a plus sign to add budget whiech redirects to budget page and also opens sets the isCreating flag to true so that it shows the create form.
 
-think about if we need to reauthenticate the user everytime they want to switch to their other account
-+++++++++++++++++++++++++++++
-
-start with creating account service in account controller.
-
-check if there is any error in the account service and account controller, also check sign up endpoint.
-
-do checking for duplicate account id in  database and invalid user id in the account repository.
-
-Add accounts in menu bar in every menu page.
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++]
-Steps to insert json data into the database:-
-
-JsondataService.cs:
-public class JsonDataService
-{
-    private readonly FinTrackDbContext _context;
-
-    public JsonDataService(FinTrackDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task InsertDataFromJsonAsync(string jsonFilePath)
-    {
-        string json = await File.ReadAllTextAsync(jsonFilePath);
-        List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(json);
-
-        _context.Accounts.AddRange(accounts);
-        await _context.SaveChangesAsync();
-    }
-}
-
-blazor page:
-@page "/import-data"
-@inject JsonDataService JsonDataService
-
-<button @onclick="InsertData">Insert Data from JSON</button>
-
-@code {
-    private async Task InsertData()
-    {
-        // Provide the path to your JSON file
-        string jsonFilePath = "path/to/your/json/file/accounts.json";
-        await JsonDataService.InsertDataFromJsonAsync(jsonFilePath);
-    }
-}

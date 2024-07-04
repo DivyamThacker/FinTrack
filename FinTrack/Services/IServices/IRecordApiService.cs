@@ -10,7 +10,7 @@ namespace FinTrack.Services.IServices
 {
     public interface IRecordApiService
     {
-        Task<ObservableCollection<RecordDTO>> GetDataAsync(string id);
+        Task<ObservableCollection<RecordDTO>> GetDataAsync(string accountId);
         Task<RecordDTO> CreateRecord(RecordDTO record);
         Task<RecordDTO> UpdateRecord(RecordDTO record);
         Task<RecordDTO> GetRecord(int id);

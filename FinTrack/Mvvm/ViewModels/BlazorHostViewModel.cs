@@ -12,21 +12,21 @@ namespace FinTrack.Mvvm.ViewModels
 {
     public class BlazorHostViewModel : INotifyPropertyChanged
     {
-        private Type _blazorPage;
+        //private Type _blazorPage;
         private string _pageName;
 
-        public Type BlazorPage
-        {
-            get => _blazorPage;
-            private set
-            {
-                if (_blazorPage != value)
-                {
-                    _blazorPage = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        //public Type BlazorPage
+        //{
+        //    get => _blazorPage;
+        //    private set
+        //    {
+        //        if (_blazorPage != value)
+        //        {
+        //            _blazorPage = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
 
         public string PageName
         {
@@ -45,18 +45,20 @@ namespace FinTrack.Mvvm.ViewModels
         public BlazorHostViewModel()
         {
             // Set a default page name
-            PageName = "Login"; // Default page name
+            PageName = "login"; // Default page name
         }
 
         private void UpdateBlazorPage()
         {
-            BlazorPage = PageName switch
-            {
-                "Login" => typeof(Login),
-                "Dashboard" => typeof(Dashboard),
-                "Counter"=>typeof(Counter),
-                _ => typeof(Login) // Handle unknown pages
-            };
+            //BlazorPage = PageName switch
+            //{
+            //    "Login" => typeof(Login),
+            //    "Dashboard" => typeof(Dashboard),
+            //    "Counter"=>typeof(Counter),
+            //    "Account"=>typeof(Account),
+            //    _ => typeof(Login) // Handle unknown pages
+            //};
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

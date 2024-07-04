@@ -27,6 +27,7 @@ namespace FinTrack.Components.Pages.Account
         private IJSRuntime JS { get; set; }
         protected override async Task OnInitializedAsync()
         {
+            IsProcessing = true;
             var user = _preferences.Get<string>(SD.Local_UserDetails, null);
             if (user == null) throw new NullReferenceException();
 
@@ -36,6 +37,7 @@ namespace FinTrack.Components.Pages.Account
             InvestmentAccounts = allAccounts.Where(u => u.Type == SD.Account_Investment).ToList();
             AccountGroups.Add(new AccountGroup { Type = "Savings", Accounts = SavingAccounts });
             AccountGroups.Add(new AccountGroup { Type = "Investment", Accounts = InvestmentAccounts });
+            IsProcessing = false;
         }
 
         public class AccountGroup

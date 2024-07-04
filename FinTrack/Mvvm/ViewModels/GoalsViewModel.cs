@@ -80,6 +80,7 @@ namespace FinTrack.Mvvm.ViewModels
             _goalApiService = goalApiService;
             MenuBarHandler.Instance.MenuFlyoutItemClicked += _menuHandler.HandleMenuFlyoutItemClicked;
             NewGoal.UserId = User.Id;
+            NewGoal.AccountId = User.AccountId;
             UsernameLabel = User.Name;
 
             Task.Run(async () => await GetGoals());
@@ -143,7 +144,7 @@ namespace FinTrack.Mvvm.ViewModels
         //    {
         //        GoalDate = g.Key,
         //        Amount = g.Sum(x => x.Amount)
-        //        UserId = User.Id
+        //        AccountId = User.AccountId
         //    });
         //}
         private void TimeBtnClicked(string text)
@@ -177,7 +178,7 @@ namespace FinTrack.Mvvm.ViewModels
                     IsUpdating = false;
                     IsFormVisible = true;
                     IsListVisible = false;
-                    NewGoal = new GoalDTO{ UserId = User.Id };
+                    NewGoal = new GoalDTO{ UserId = User.Id, AccountId = User.AccountId };
                     break;
 
                 case "Update":
@@ -222,7 +223,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private void CancelCommandClicked()
         {
-            NewGoal = new GoalDTO { UserId = User.Id};
+            NewGoal = new GoalDTO { UserId = User.Id, AccountId = User.AccountId };
             IsFormVisible = false;
             IsListVisible = true;
             IsCreating = false;
@@ -231,7 +232,7 @@ namespace FinTrack.Mvvm.ViewModels
 
         private async Task GetGoals()
         {
-            Goals = await _goalApiService.GetDataAsync(User.Id);
+            Goals = await _goalApiService.GetDataAsync(User.AccountId);
             //CalculateChartData();
         }
 
@@ -242,7 +243,7 @@ namespace FinTrack.Mvvm.ViewModels
             if (IsUpdating)
             {
                 await _goalApiService.UpdateGoal(NewGoal);
-                Goals = await _goalApiService.GetDataAsync(User.Id);
+                Goals = await _goalApiService.GetDataAsync(User.AccountId);
                 IsSelected = false;
                 IsListVisible = true;
                 IsFormVisible = false;
@@ -253,7 +254,7 @@ namespace FinTrack.Mvvm.ViewModels
                 var goal = await _goalApiService.CreateGoal(NewGoal);
                 goal.Color = goal.TotalSavedAmount<=0 ? "Red" : "Green";
                 Goals.Add(goal);
-                NewGoal = new GoalDTO{UserId = User.Id };
+                NewGoal = new GoalDTO{UserId = User.Id , AccountId = User.AccountId };
                 IsCreating = false;
                 IsFormVisible = false;
                 IsListVisible = true;

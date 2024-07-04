@@ -16,6 +16,9 @@ namespace FinTrack_Models
         [JsonPropertyName("userId")]
         public string UserId { get; set; }
         [Required]
+        [JsonPropertyName("accountId")]
+        public string AccountId { get; set; } // Foreign key to Account model
+        [Required]
         [JsonPropertyName("senderUsername")]
         public string SenderUsername { get; set; } = "me";
         [Required]

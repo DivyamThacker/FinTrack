@@ -8,9 +8,11 @@
             BackgroundColor="{DynamicResource PageBackgroundColor}"
             NavigationPage.HasNavigationBar="False">
 
-    <BlazorWebView x:Name="BlazorWebViewControl" StartPath="login" HostPage="wwwroot/index.html">
+    <BlazorWebView x:Name="BlazorWebViewControl" StartPath="login"  HostPage="wwwroot/index.html"> <!--a-->
     <BlazorWebView.RootComponents>
-        <!--<RootComponent Selector="#app" ComponentType="{x:Type pages:{Binding BlazorPage}}" />-->
+            <RootComponent Selector="#app" ComponentType="{x:Type local:Routes}" />
+
+            <!--<RootComponent Selector="#app" ComponentType="{x:Type pages:{Binding BlazorPage}}" />-->
     </BlazorWebView.RootComponents>
     </BlazorWebView>
 

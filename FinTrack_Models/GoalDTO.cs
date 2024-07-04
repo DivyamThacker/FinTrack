@@ -15,7 +15,10 @@ namespace FinTrack_Models
         public int Id { get; set; }
         [Required]
         [JsonPropertyName("userId")]
-        public string UserId { get; set; } 
+        public string UserId { get; set; }
+        [Required]
+        [JsonPropertyName("accountId")]
+        public string AccountId { get; set; } // Foreign key to Account model
 
         [Required]
         [JsonPropertyName("name")]

@@ -27,7 +27,7 @@ public partial class BlazorHostPage : ContentPage
 
     private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.BlazorPage))
+        if (e.PropertyName == nameof(ViewModel.PageName))
         {
             UpdateBlazorComponent();
         }
@@ -35,12 +35,14 @@ public partial class BlazorHostPage : ContentPage
 
     private void UpdateBlazorComponent()
     {
-        BlazorWebViewControl.RootComponents.Clear();
+        //BlazorWebViewControl.RootComponents.Clear();
 
-        BlazorWebViewControl.RootComponents.Add(new RootComponent()
-        {
-            Selector = "#app",
-            ComponentType = ViewModel.BlazorPage
-        });
+        BlazorWebViewControl.StartPath = $"{ViewModel.PageName}";
+
+        //BlazorWebViewControl.RootComponents.Add(new RootComponent()
+        //{
+        //    Selector = "#app",
+        //    ComponentType = ViewModel.BlazorPage
+        //});
     }
 }

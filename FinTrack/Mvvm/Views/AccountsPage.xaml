@@ -46,6 +46,9 @@
 
             </MenuFlyoutSubItem>
         </MenuBarItem>
+        <MenuBarItem Text="Account">
+            <MenuFlyoutItem Text="Manage Accounts" Clicked="OnMenuFlyoutItemClick"/>
+        </MenuBarItem>
         <MenuBarItem Text="Help" />
     </ContentPage.MenuBarItems>
     <Grid ColumnDefinitions="1*, 9*" RowDefinitions="1* ,11*">
