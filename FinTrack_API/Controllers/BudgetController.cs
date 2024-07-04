@@ -2,6 +2,7 @@
 using FinTrack_Common;
 using FinTrack_Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 namespace FinTrack_API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -14,10 +15,10 @@ namespace FinTrack_API.Controllers
             _budgetRepository = budgetRepository;
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetAll(string userId)
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> GetAll(string accountId)
         {
-            return Ok(await _budgetRepository.GetAll(userId));
+            return Ok(await _budgetRepository.GetAll(accountId));
         }
 
         [HttpPost]

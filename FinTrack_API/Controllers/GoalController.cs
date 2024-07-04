@@ -16,10 +16,10 @@ namespace FinTrack_API.Controllers
             _goalRepository = goalRepository;
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetAll(string userId)
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> GetAll(string accountId)
         {
-            return Ok(await _goalRepository.GetAll(userId));
+            return Ok(await _goalRepository.GetAll(accountId));
         }
 
         [HttpPost]

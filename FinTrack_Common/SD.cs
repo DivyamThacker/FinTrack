@@ -28,5 +28,9 @@
         public const string Account_Investment = "Investment";
         public const string Account_Checking = "Checking";
         public const string Account_Retirement = "Retirement";
+
+
+        public const string Trade_Buy = "Buy";
+        public const string Trade_Sell = "Sell";
     }
 }

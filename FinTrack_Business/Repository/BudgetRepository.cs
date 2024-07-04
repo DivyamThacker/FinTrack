@@ -50,8 +50,15 @@ namespace FinTrack_Business.Repository
         {
             var result = await _db.Budgets.Where(x => x.Id == id).ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             if (result == null) return new BudgetDTO();
-            var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
-            var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+
+            var records = await _db.SavingsAccounts.Where(x => x.Id == result.AccountId).SelectMany(x => x.Records).Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+
+            //var records = await _db.Records.Where(x => (x.RecordDate >= result.StartTime) && (x.RecordDate <= result.EndTime) && (!x.IsIncome) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+
+            var transactions = await _db.SavingsAccounts.Where(x => x.Id == result.AccountId).SelectMany(x => x.Transactions).Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+
+            //var transactions = await _db.Transactions.Where(x => (x.TransactionDate >= result.StartTime) && (x.TransactionDate <= result.EndTime) && (x.IsUserSender) && (result.Category == "All" || x.Category == result.Category)).ToListAsync();
+
             result.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
 
             if (result.StartTime == DateTime.Now)
@@ -103,11 +110,20 @@ namespace FinTrack_Business.Repository
 
         public async Task<IEnumerable<BudgetDTO>> GetAll(string accountId)
         {
-            var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).Where(x=>x.AccountId== accountId).ToListAsync();
+            var budgets = await _db.SavingsAccounts.Where(x => x.Id == accountId).SelectMany(x => x.Budgets).ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).ToListAsync();
+
+            //var budgets = await _db.Budgets.ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider).Where(x=>x.AccountId== accountId).ToListAsync();
             foreach (var budget in budgets)
             {
-                var records = await _db.Records.Where(x => (x.AccountId == accountId) && (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
-                var transactions = await _db.Transactions.Where(x => (x.AccountId == accountId) && (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+                var records = await _db.SavingsAccounts.Where(x => x.Id == accountId).SelectMany(x => x.Records).Where(x => (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+
+                //var records = await _db.Records.Where(x => (x.AccountId == accountId) && (x.RecordDate >= budget.StartTime) && (x.RecordDate <= budget.EndTime) && (!x.IsIncome) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+
+                var transactions = await _db.SavingsAccounts.Where(x => x.Id == accountId).SelectMany(x => x.Transactions).Where(x => (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+
+                //var transactions = await _db.Transactions.Where(x => (x.AccountId == accountId) && (x.TransactionDate >= budget.StartTime) && (x.TransactionDate <= budget.EndTime) && (x.IsUserSender) && (budget.Category == "All" || x.Category == budget.Category)).ToListAsync();
+
+
                 budget.TotalSpentAmount = records.Sum(x => x.Amount) + transactions.Sum(x => x.Amount);
                 //logic for status
                 if ((budget.TotalSpentAmount <= budget.Amount) && (budget.EndTime > DateTime.Now))

@@ -18,6 +18,11 @@ namespace FinTrack_DataAccess.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<SavingsAccount> SavingsAccounts { get; set; }
+        public DbSet<InvestmentAccount> InvestmentAccounts { get; set; }
+        public DbSet<Holding> Holdings { get; set; }
+        public DbSet<MarketData> MarketData { get; set; }
+        public DbSet<Trade> Trades { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
@@ -27,27 +32,36 @@ namespace FinTrack_DataAccess.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Account>()
+                .HasDiscriminator<string>("Type")
+                .HasValue<SavingsAccount>("Savings")
+                .HasValue<InvestmentAccount>("Investment");
+
+            modelBuilder.Entity<Account>()
            .Property(a => a.Balance)
            .HasPrecision(18, 2); // Adjust the precision and scale as needed
 
-             modelBuilder.Entity<Account>()
+            //Account - Transaction (One to many)
+             modelBuilder.Entity<SavingsAccount>()
                  .HasMany(a => a.Transactions)
-                 .WithOne(t => t.Account)
+                 .WithOne(t => t.SavingsAccount)
                  .HasForeignKey(t => t.AccountId);
 
-            modelBuilder.Entity<Account>()
+            //Account - Record (One to many)
+            modelBuilder.Entity<SavingsAccount>()
                 .HasMany(a => a.Records)
-                .WithOne(r => r.Account)
+                .WithOne(r => r.SavingsAccount)
                 .HasForeignKey(r => r.AccountId);
 
-            modelBuilder.Entity<Account>()
+            //Account - Budget (One to many)
+            modelBuilder.Entity<SavingsAccount>()
                 .HasMany(a => a.Budgets)
-                .WithOne(b => b.Account)
+                .WithOne(b => b.SavingsAccount)
                 .HasForeignKey(b => b.AccountId);
 
-            modelBuilder.Entity<Account>()
+            //Account - Goal (One to many)
+            modelBuilder.Entity<SavingsAccount>()
                 .HasMany(a => a.Goals)
-                .WithOne(g => g.Account)
+                .WithOne(g => g.SavingsAccount)
                 .HasForeignKey(g => g.AccountId);
 
             // Configure relationships and indexes
@@ -61,54 +75,62 @@ namespace FinTrack_DataAccess.Data
             modelBuilder.Entity<Account>()
                 .HasIndex(a => new { a.UserId, a.Name })
                 .IsUnique(); // Unique constraint on UserId and Name
-
+            
+            // Account - User (many-to-one)
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.User)
                 .WithMany(u => u.Accounts)
                 .HasForeignKey(a => a.UserId); // Foreign key
 
+            // Holding - Account (many-to-one)
+            modelBuilder.Entity<Holding>()
+                .HasOne(h => h.InvestmentAccount)
+                .WithMany(a => a.Holdings)
+                .HasForeignKey(h => h.AccountId);
 
-            //+++++++++++++++++++++++++++++++++++++++++
-            //builder.Entity<Budget>().HasKey(e => e.Id);
-            //builder.Entity<Goal>().HasKey(e => e.Id);
-            //builder.Entity<Record>().HasKey(e => e.Id);
-            //builder.Entity<Transaction>().HasKey(e => e.Id);
-            //builder.Entity<User>().HasKey(e => e.Id);
+            // Holding - User (many-to-one)
+            modelBuilder.Entity<Holding>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            ////builder.Entity<Record>()
-            ////.HasKey(r => new { r.Id, r.UserId }); // Define composite key (Id and UserId)
+             //Trade - Account(many - to - one)
+            modelBuilder.Entity<Trade>()
+                .HasOne(t => t.InvestmentAccount)
+                .WithMany(a => a.Trades)
+                .HasForeignKey(t => t.AccountId);
 
-            ////builder.Entity<Record>()
-            ////    .HasOne(r => r.User) // Define one-to-many relationship (optional)
-            ////    .WithMany(u => u.Records) // User can have many Records (optional)
-            //base.OnModelCreating(builder);
+                // Trade - User (many-to-one)
+                modelBuilder.Entity<Trade>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Record - User (many-to-one)
+            modelBuilder.Entity<Record>()
+            .HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            // Budget - User (many-to-one)
+            modelBuilder.Entity<Budget>()
+               .HasOne<ApplicationUser>()
+               .WithMany()
+               .HasForeignKey(b => b.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // Goal - User (many-to-one)
+            modelBuilder.Entity<Goal>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MarketData>().HasKey(e => e.Symbol);
         }
     }
 }
 
-//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//{
-//    optionsBuilder.UseLazyLoadingProxies();
-//}
-
-//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//{
-//    //optionsBuilder.UseSqlite("Filename=FinTrack.db");
-//    base.OnConfiguring(optionsBuilder);
-//}
-
-//protected override void OnModelCreating(ModelBuilder builder)
-//{
-//    builder.Entity<Budget>().HasKey(e => e.Id);
-//    builder.Entity<Address>().HasKey(e => e.Id);
-//    builder.Entity<Employee>().HasKey(e => e.Id);
-//    builder.Entity<Team>().HasKey(e => e.Id);
-//    builder.Entity<Job>().HasKey(e => e.Id);
-
-//    builder.Entity<Employee>().HasOne(e => e.Address);
-//    builder.Entity<Employee>().HasOne(e => e.Job);
-
-//    builder.Entity<Team>().HasMany(e => e.Employees).WithMany(e => e.Teams);
-
-//    base.OnModelCreating(builder);
-//}

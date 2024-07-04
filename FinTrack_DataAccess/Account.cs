@@ -18,11 +18,6 @@ namespace FinTrack_DataAccess
         [Required]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-
-        public ICollection<Transaction> Transactions { get; set; } // Navigation property for Transactions
-        public ICollection<Record> Records { get; set; } // Navigation property for Records
-        public ICollection<Budget> Budgets { get; set; }
-        public ICollection<Goal> Goals { get; set; }
     }
 }
 

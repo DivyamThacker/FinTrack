@@ -4,6 +4,7 @@ using FinTrack_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinTrack_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240704104908_addTradeHoldingMarketData")]
+    partial class addTradeHoldingMarketData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,8 +41,7 @@ namespace FinTrack_DataAccess.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -51,10 +53,6 @@ namespace FinTrack_DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts");
-
-                    b.HasDiscriminator<string>("Type").HasValue("Account");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Budget", b =>
@@ -588,20 +586,6 @@ namespace FinTrack_DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FinTrack_DataAccess.InvestmentAccount", b =>
-                {
-                    b.HasBaseType("FinTrack_DataAccess.Account");
-
-                    b.HasDiscriminator().HasValue("Investment");
-                });
-
-            modelBuilder.Entity("FinTrack_DataAccess.SavingsAccount", b =>
-                {
-                    b.HasBaseType("FinTrack_DataAccess.Account");
-
-                    b.HasDiscriminator().HasValue("Savings");
-                });
-
             modelBuilder.Entity("FinTrack_DataAccess.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -626,7 +610,7 @@ namespace FinTrack_DataAccess.Migrations
 
             modelBuilder.Entity("FinTrack_DataAccess.Budget", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.SavingsAccount", "SavingsAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Budgets")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -638,12 +622,12 @@ namespace FinTrack_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SavingsAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Goal", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.SavingsAccount", "SavingsAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Goals")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -655,12 +639,12 @@ namespace FinTrack_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SavingsAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Holding", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.InvestmentAccount", "InvestmentAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Holdings")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -672,12 +656,12 @@ namespace FinTrack_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("InvestmentAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Record", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.SavingsAccount", "SavingsAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Records")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -689,12 +673,12 @@ namespace FinTrack_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SavingsAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Trade", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.InvestmentAccount", "InvestmentAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Trades")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -706,18 +690,18 @@ namespace FinTrack_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("InvestmentAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FinTrack_DataAccess.Transaction", b =>
                 {
-                    b.HasOne("FinTrack_DataAccess.SavingsAccount", "SavingsAccount")
+                    b.HasOne("FinTrack_DataAccess.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SavingsAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -771,20 +755,17 @@ namespace FinTrack_DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FinTrack_DataAccess.InvestmentAccount", b =>
-                {
-                    b.Navigation("Holdings");
-
-                    b.Navigation("Trades");
-                });
-
-            modelBuilder.Entity("FinTrack_DataAccess.SavingsAccount", b =>
+            modelBuilder.Entity("FinTrack_DataAccess.Account", b =>
                 {
                     b.Navigation("Budgets");
 
                     b.Navigation("Goals");
 
+                    b.Navigation("Holdings");
+
                     b.Navigation("Records");
+
+                    b.Navigation("Trades");
 
                     b.Navigation("Transactions");
                 });

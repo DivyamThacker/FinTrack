@@ -53,7 +53,9 @@ namespace FinTrack_Business.Repository
 
         public async Task<IEnumerable<TransactionDTO>> GetAll(string accountId)
         {
-            return await _db.Transactions.ProjectTo<TransactionDTO>(_mapper.ConfigurationProvider).Where(x=> (x.AccountId == accountId)).ToListAsync();
+            var transactions = await _db.SavingsAccounts.Where(x => x.Id == accountId).SelectMany(x => x.Transactions).ProjectTo<TransactionDTO>(_mapper.ConfigurationProvider).Where(x => (x.AccountId == accountId)).ToListAsync();
+            return transactions;
+            //return await _db.Transactions.ProjectTo<TransactionDTO>(_mapper.ConfigurationProvider).Where(x=> (x.AccountId == accountId)).ToListAsync();
         }
 
         public async Task<TransactionDTO> Update(TransactionDTO objDTO)

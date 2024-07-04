@@ -246,10 +246,10 @@ username: Username for login.
 
 Accounts:
 //account_type: (e.g., Brokerage account, IRA)
+//institution_name: Name of the financial institution holding the account.
 
 account_id (primary key): Unique identifier for the investment account.
 user_id (foreign key): References user_id in Users table.
-institution_name: Name of the financial institution holding the account.
 account_balance: Current cash balance in the account.
 
 
@@ -315,3 +315,7 @@ Remove user id from everywhere after adding account ids
 
 maybe when recent budget or goal is not available , do conditional rendering of the component and give a plus sign to add budget whiech redirects to budget page and also opens sets the isCreating flag to true so that it shows the create form.
 
+++++++++++++++++++++++++++++++++++++++
+Pages to be included: Portfolio , watchlist , find stocks, Trades
+
+Maybe add account Id also in the code even when you want to get a single Goal according to a given goalId, ie. in Get(goalId)  api  call., similarly for other things alos
